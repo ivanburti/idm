@@ -1,0 +1,19 @@
+<ol class="breadcrumb">
+    <?php $pages = $this->pages ?>
+    <?php if (current($pages)->getRoute() != 'home') : ?>
+        <li><a href="#">Home</a></li>
+    <?php endif; ?>
+    <?php foreach ($pages as $key => $page): ?>
+        <li class="<?= ($key < count($this->pages) - 1) ? '' : 'active' ?>">
+            <?php
+            if ($key < count($this->pages) - 1):
+                ?>
+                <a href="<?= $page->getHref() ?>"><?= $page->getLabel() ?></a>
+            <?php
+            else:
+            ?>
+                <strong><?= $page->getLabel() ?></strong>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+</ol>

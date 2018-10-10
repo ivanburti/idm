@@ -1,0 +1,13 @@
+<?php
+// module/Access/view/access/access/edit.phtml
+$title = $this->translate('edit_access');
+$this->headTitle($title);
+?>
+
+
+<?php
+$form->prepare();
+echo $this->form()->openTag($form);
+echo $this->formCollection($form);
+#echo $this->formRow($form->get('title'));
+echo $this->form()->closeTag();

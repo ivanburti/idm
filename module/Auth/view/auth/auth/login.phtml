@@ -1,0 +1,47 @@
+<?= $this->doctype() ?>
+<html lang="en">
+<head>
+	<?=
+	$this->headMeta()
+	->setCharset('utf-8')
+	->appendName('viewport', 'width=device-width, initial-scale=1, shrink-to-fit=no')
+	->appendName('description', 'width=device-width, initial-scale=1, shrink-to-fit=no')
+	->appendName('author', 'width=device-width, initial-scale=1, shrink-to-fit=no')
+	?>
+
+	<?= $this->headTitle('Login') ?>
+
+	<!-- Le styles -->
+	<?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+	->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+	->appendStylesheet($this->basePath('css/sigin.css'))
+	?>
+
+</head>
+
+<body class="text-center">
+	<?php
+	$form->setAttributes(['class' => 'm-t', 'role' => 'form']);
+	$form->prepare();
+	?>
+	<?= $this->form()->openTag($form) ?>
+	<?= $this->formElement($form->get('redirect_url')); ?>
+	<?= $this->formElement($form->get('csrf')) ?>
+
+		<img class="mb-4" src="<?= $this->basePath('img/logo_dark.png') ?>" alt="" height="20">
+		<h1 class="h3 mb-3 font-weight-normal"></h1>
+
+		<?php $element = $form->get('email') ?>
+		<div class="form-group">
+			<?= $this->formInput($element->setAttributes(['class' => 'form-control', 'required' => true, 'autofocus' => true])) ?>
+		</div>
+
+		<?php $element = $form->get('password') ?>
+		<div class="form-group">
+			<?= $this->formInput($element->setAttributes(['class' => 'form-control', 'placeholder' => 'Senha', 'required' => true])) ?>
+		</div>
+
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	<?= $this->form()->closeTag() ?>
+</body>
+</html>

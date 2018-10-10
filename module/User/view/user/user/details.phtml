@@ -1,0 +1,51 @@
+<?php
+// module/User/view/user/user/detail.phtml
+$title = $this->translate('User Details');
+$this->headTitle($title);
+?>
+
+<div class="row">
+    <div class="col-lg-6">
+        <table class="table table-responsive table-striped">
+            <thead>
+                <tr>
+                    <th colspan="2"><?= $this->escapeHtml($user->getFullName()) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th><?= $this->translate('Email') ?> :</th>
+                    <td><?= $this->escapeHtml($user->getEmail()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $this->translate('Position') ?> :</th>
+                    <td><?= $this->escapeHtml($user->getPosition()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $this->translate('Supervisor') ?> :</th>
+                    <td><?= $this->escapeHtml($user->getSupervisor()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $this->translate('Hiring Date') ?> :</th>
+                    <td><?= $this->escapeHtml($user->getHiringDate()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $this->translate('Resignation Date') ?> :</th>
+                    <td><?= $this->escapeHtml($user->getResignationDate()) ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <a class="btn btn-primary" href="<?= $this->url('user/user', ['action' => 'edit', 'id' => $user->getId()]) ?>"><i class="fas fa-edit"></i> <?= $this->translate('Edit User') ?></a>
+        <a class="btn btn-danger" href="<?= $this->url('user/user', ['action' => 'disable', 'id' => $user->getId()]) ?>"><i class="fas fa-ban"></i> <?= $this->translate('Disable User') ?></a>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h3><?= $this->translate('Accesses') ?></h3>
+        <?= $this->partial('access/table', ['accesses' => $accesses]) ?>
+    </div>
+</div>

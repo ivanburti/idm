@@ -1,0 +1,87 @@
+<?= $this->doctype() ?>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <?= $this->headTitle('IDM')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+    <?= $this->headMeta()
+    ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+    ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+    ?>
+
+    <!-- Le styles -->
+    <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
+    ->prependStylesheet($this->basePath('css/style.css'))
+    ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+    ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+    ->appendStylesheet('//use.fontawesome.com/releases/v5.2.0/css/all.css')
+    ->appendStylesheet('//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css')
+    //->appendStylesheet('//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css')
+    ->appendStylesheet('//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css')
+    ->appendStylesheet($this->basePath('plugins/chosen/chosen.min.css'))
+    ?>
+
+    <!-- Scripts -->
+    <?= $this->headScript()
+    ->prependFile($this->basePath('js/bootstrap.min.js'))
+    ->prependFile($this->basePath('js/jquery-3.1.0.min.js'))
+    ->appendFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js')
+    ->appendFile($this->basePath('plugins/chosen/chosen.jquery.min.js'))
+    //->appendFile('//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js')
+    ?>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="<?= $this->url('home') ?>">
+                    <img src="<?= $this->basePath('img/logo.png') ?>" height="20" alt="Netshoes IDM"/>
+                </a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <?= $this->navigation('navigation')->menu()->setPartial('application/navigation') ?>
+            </div>
+
+        </div>
+    </nav>
+    <div class="container">
+        <?php //$this->navigation('navigation')->breadcrumbs()->setMinDepth(0)->setPartial('application/breadcrumb') ?>
+        <div class="row">
+            <div class="col-lg-12">
+                <?php $title = $this->headTitle() ?>
+                <h2 class="page-header"><?= $title[0] ?></h2>
+            </div>
+        </div>
+
+        <?= $this->content ?>
+        <hr>
+        <footer>
+            <p>&copy; 2018 - <?= date('Y') ?> by Zend Technologies Ltd. <?= $this->translate('All rights reserved') ?></p>
+        </footer>
+    </div>
+
+    <?php
+	$this->inlineScript()->captureStart();
+echo <<<JS
+	$(document).ready(function () {
+        //$('.dataTable').DataTable();
+        //$(".select_multiple").select2();
+        $(".chosen-select").chosen();
+        $('.datepicker').datepicker({
+            format: "yyyy-mm-dd"
+        });
+	});
+JS;
+	$this->inlineScript()->captureEnd();
+	?>
+
+    <?= $this->inlineScript() ?>
+</body>
+</html>

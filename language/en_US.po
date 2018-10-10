@@ -1,0 +1,75 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2018-08-01 16:41-0300\n"
+"PO-Revision-Date: 2018-08-01 16:43-0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ../module\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: translate;_\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: ../vendor\n"
+
+#: Organization/src/Form/OrganizationForm.php:55
+#: Organization/view/organization/service-provider/index.phtml:18
+msgid "Expires On"
+msgstr "Expires On"
+
+#: Application/view/application/index/index.phtml:2
+msgid "Welcome to"
+msgstr "Welcome toen_US"
+
+#: Application/view/layout/layout.phtml:62
+msgid "All rights reserved"
+msgstr "All rights reserved"
+
+#: Auth/view/auth/user/add.phtml:3
+msgid "Adicionar Usuário"
+msgstr "Add User"
+
+#: Auth/view/auth/user/change-password.phtml:3
+msgid "Alterar Senha"
+msgstr "Change Password"
+
+#: Auth/view/auth/user/change-password.phtml:54
+msgid "Cancelar"
+msgstr "Cancel"
+
+#: Auth/view/auth/user/edit.phtml:3
+msgid "Editar Usuário - "
+msgstr "Edit User "
+
+#: Organization/view/organization/service-provider/add.phtml:3
+#: Organization/view/organization/service-provider/index.phtml:9
+msgid "Add Service Provider"
+msgstr "Add Service Provider"
+
+#: Organization/view/organization/service-provider/index.phtml:3
+msgid "Service Providers"
+msgstr "Service Providers"
+
+#: Organization/view/organization/service-provider/index.phtml:14
+msgid "Alias"
+msgstr "Alias"
+
+#: Organization/view/organization/service-provider/index.phtml:15
+msgid "Name"
+msgstr "Name"
+
+#: Organization/view/organization/service-provider/index.phtml:16
+msgid "Employer Number"
+msgstr "Employer Number"
+
+#: Organization/view/organization/service-provider/index.phtml:17
+msgid "Created On"
+msgstr "Created On"
+
+#: Organization/view/organization/service-provider/index.phtml:19
+msgid "Options"
+msgstr "Options"

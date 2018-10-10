@@ -1,0 +1,24 @@
+<table class="table table-responsive table-striped dataTable">
+    <thead>
+        <tr>
+            <th><?= $this->translate('Status') ?></th>
+            <th><?= $this->translate('Name') ?></th>
+            <th><?= $this->translate('Email') ?></th>
+            <th><?= $this->translate('Type') ?></th>
+            <th><?= $this->translate('Options') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($users as $user) : ?>
+            <tr>
+                <td><?= $this->escapeHtml($user->getStatusAsString()) ?></td>
+                <td><?= $this->escapeHtml($user->getFullName()) ?></td>
+                <td><?= $this->escapeHtml($user->getEmail()) ?></td>
+                <td><?= $this->escapeHtml($user->getStatusAsString()) ?></td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="<?= $this->url('user/user', ['action' => 'details', 'id' => $user->getId()]) ?>"><i class="fas fa-search-plus"></i> <?= $this->translate('Detail') ?></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

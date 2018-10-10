@@ -1,0 +1,73 @@
+<?= $this->doctype() ?>
+<html>
+<head>
+	<?=
+	$this->headMeta()
+	->setCharset('utf-8')
+	->appendName('viewport', 'width=device-width, initial-scale=1.0')
+	?>
+
+	<?= $this->headTitle('Login') ?>
+
+    <?=
+    $this->headLink()
+    ->prependStylesheet($this->basePath('layout/inspinia/font-awesome/css/font-awesome.css'))
+    ->prependStylesheet($this->basePath('layout/inspinia/css/bootstrap.min.css'))
+    ->appendStylesheet($this->basePath('layout/inspinia/css/animate.css'))
+    ->appendStylesheet($this->basePath('layout/inspinia/css/style.css'))
+    ?>
+
+</head>
+<body class="gray-bg">
+	<div class="middle-box text-center loginscreen animated fadeInDown">
+		<div>
+			<div>
+				<img alt="celectra-logo" src="<?= $this->basePath('img/logo.png') ?>" />
+			</div>
+			<h3>Acesso Restrito</h3>
+
+			<?php
+			$form->setAttributes(['class' => 'm-t', 'role' => 'form']);
+			$form->prepare();
+			?>
+			<?= $this->form()->openTag($form) ?>
+			<?= $this->formElement($form->get('redirect_url')); ?>
+			<?= $this->formElement($form->get('csrf')) ?>
+
+			<?php if ($isLoginError): ?>
+				<div class="alert alert-warning" role="alert">
+					Incorrect login and/or password.
+					<a href="<?= $this->url('reset-password') ?>">Forgot password?</a>
+				</div>
+			<?php endif; ?>
+
+			<?php $element = $form->get('email') ?>
+			<div class="form-group">
+				<?= $this->formInput($element->setAttributes(['class' => 'form-control', 'required' => true, 'autofocus' => true])) ?>
+			</div>
+
+			<?php $element = $form->get('password') ?>
+			<div class="form-group">
+				<?= $this->formInput($element->setAttributes(['class' => 'form-control', 'placeholder' => 'Senha', 'required' => true])) ?>
+			</div>
+
+			<?php $element = $form->get('remember_me') ?>
+			<div class="form-group">
+				<?php //$this->formElement($element) ?>
+			</div>
+
+			<?php $element = $form->get('submit') ?>
+			<?= $this->formElement($element->setAttributes(['class' => 'btn btn-primary block full-width m-b'])) ?>
+
+			<?= $this->form()->closeTag() ?>
+		</div>
+	</div>
+
+	<?php
+	$this->inlineScript()
+	//<!-- Mainly scripts -->
+	->prependFile($this->basePath('assets/inspinia/js/bootstrap.min.js'))
+	->prependFile($this->basePath('assets/inspinia/js/jquery-2.1.1.js'))
+	?>
+</body>
+</html>
