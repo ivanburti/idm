@@ -57,7 +57,7 @@ class EmployeeController extends AbstractActionController
 	{
 		$user_id = (int) $this->params()->fromRoute('id', 0);
 
-		$user = $this->userService->getEmployee($user_id);
+		$user = $this->userService->getEmployeeById($user_id);
 
 		$form = $this->userForm;
 		$form->bind($user);

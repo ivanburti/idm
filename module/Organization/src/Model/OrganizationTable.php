@@ -14,24 +14,7 @@ class OrganizationTable
         $this->tableGateway = $tableGateway;
     }
 
-    public function getOrganizations()
-    {
-        return $this->tableGateway->select();
-    }
-
-    public function searchOrganizations($data)
-    {
-        $select = $this->tableGateway->getSql()->select();
-
-        ($data['alias']) ? $select->where->like('alias', '%'.$data['alias'].'%') : null;
-        ($data['name']) ? $select->where->like('alias', '%'.$data['alias'].'%') : null;
-        ($data['type']) ? $select->where(['type' => $data['type']]) : null;
-        ($data['status']) ? $select->where(['status' => $data['status']]) : null;
-
-        return $this->tableGateway->selectWith($select);
-    }
-
-    public function getOrganization($organization_id)
+    public function getOrganizationById($organization_id)
     {
         $organization_id = (int) $organization_id;
         $rowset = $this->tableGateway->select(['organization_id' => $organization_id]);
@@ -43,15 +26,76 @@ class OrganizationTable
         return $row;
     }
 
-    public function getOrganizationWithCondition($where = [])
+    public function getInternalById($organization_id)
     {
-        $rowset = $this->tableGateway->select($where);
+        $organization_id = (int) $organization_id;
+        $rowset = $this->tableGateway->select(['organization_id' => $organization_id, 'type' => 1]);
         $row = $rowset->current();
         if (! $row) {
-            throw new RuntimeException(sprintf('Could not find organization with condition'));
+            throw new RuntimeException(sprintf('Could not find organization with organization_id'));
         }
 
         return $row;
+    }
+
+    public function getExternalById($organization_id)
+    {
+        $organization_id = (int) $organization_id;
+        $rowset = $this->tableGateway->select(['organization_id' => $organization_id, 'type' => 2]);
+        $row = $rowset->current();
+        if (! $row) {
+            throw new RuntimeException(sprintf('Could not find organization with organization_id'));
+        }
+
+        return $row;
+    }
+
+    public function getOrganizationByEmployerNumber($employer_number)
+    {
+        $rowset = $this->tableGateway->select(['employer_number' => $employer_number]);
+        $row = $rowset->current();
+        if (! $row) {
+            throw new RuntimeException(sprintf('Could not find organization with employer_number'));
+        }
+
+        return $row;
+    }
+
+    public function getInternalByEmployerNumber($employer_number)
+    {
+        $rowset = $this->tableGateway->select(['employer_number' => $employer_number, 'type' => 1]);
+        $row = $rowset->current();
+        if (! $row) {
+            throw new RuntimeException(sprintf('Could not find organization with employer_number'));
+        }
+
+        return $row;
+    }
+
+    public function getExternalByEmployerNumber($employer_number)
+    {
+        $rowset = $this->tableGateway->select(['employer_number' => $employer_number, 'type' => 2]);
+        $row = $rowset->current();
+        if (! $row) {
+            throw new RuntimeException(sprintf('Could not find organization with employer_number'));
+        }
+
+        return $row;
+    }
+
+    public function getOrganizations()
+    {
+        return $this->tableGateway->select();
+    }
+
+    public function getInternals()
+    {
+        return $this->tableGateway->select(['type' => 1]);
+    }
+
+    public function getExternals()
+    {
+        return $this->tableGateway->select(['type' => 2]);
     }
 
     public function saveOrganization(Organization $organization)
@@ -74,10 +118,23 @@ class OrganizationTable
             return;
         }
 
-        if (! $this->getOrganization($organization_id)) {
+        if (! $this->getOrganizationById($organization_id)) {
             throw new RuntimeException(sprintf('Cannot update organization with organization_id %d; does not exist', $organization_id));
         }
 
         $this->tableGateway->update($data, ['organization_id' => $organization_id]);
     }
+
+    public function searchOrganizations($data)
+    {
+        $select = $this->tableGateway->getSql()->select();
+
+        ($data['alias']) ? $select->where->like('alias', '%'.$data['alias'].'%') : null;
+        ($data['name']) ? $select->where->like('alias', '%'.$data['alias'].'%') : null;
+        ($data['type']) ? $select->where(['type' => $data['type']]) : null;
+        ($data['status']) ? $select->where(['status' => $data['status']]) : null;
+
+        return $this->tableGateway->selectWith($select);
+    }
+
 }

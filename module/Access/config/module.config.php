@@ -41,7 +41,7 @@ return [
     ],
     'input_filters' => [
         'factories' => [
-            InputFilter\AccessFormFilter::class => InputFilter\Factory\AccessFormFilterFactory::class,
+            Filter\AccessFilter::class => Filter\Factory\AccessFilterFactory::class,
         ],
     ],
     'view_manager' => [

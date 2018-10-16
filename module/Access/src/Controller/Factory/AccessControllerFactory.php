@@ -5,6 +5,7 @@ namespace Access\Controller\Factory;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Access\Form\AccessForm;
+use Access\Filter\AccessFilter;
 use Access\Service\AccessService;
 use Resource\Service\ResourceService;
 use User\Service\UserService;
@@ -17,13 +18,13 @@ class AccessControllerFactory implements FactoryInterface
         $formManager = $container->get('FormElementManager');
         $accessForm = $formManager->get(AccessForm::class);
 
-        //$inputManager = $container->get('InputFilterManager');
-        //$userFilter = $inputManager->get(UserFilter::class);
+        $inputManager = $container->get('InputFilterManager');
+        $accessFilter = $inputManager->get(AccessFilter::class);
 
         $accessService = $container->get(AccessService::class);
         $resourceService = $container->get(ResourceService::class);
         $userService = $container->get(UserService::class);
 
-        return new AccessController($accessForm, $accessService, $resourceService, $userService);
+        return new AccessController($accessForm, $accessFilter, $accessService, $resourceService, $userService);
     }
 }

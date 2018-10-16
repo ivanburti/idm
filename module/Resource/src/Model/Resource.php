@@ -82,8 +82,15 @@ class Resource
 		return $this->resource_email;
 	}
 
+	public function isActive()
+	{
+		if ($this->status == self::RESOURCE_STATUS_ACTIVE) {
+			return true;
+		}
+	}
+
 	public function getStatus() {
-		return $this->resource_email;
+		return $this->status;
 	}
 
 	public function getStatusAsString()

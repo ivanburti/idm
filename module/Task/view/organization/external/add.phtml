@@ -1,0 +1,12 @@
+<?php
+// module/Organization/view/organization/service-provider/add.phtml
+$title = $this->translate('Add Service Provider');
+$this->headTitle($title);
+?>
+
+<?php
+$form->prepare();
+echo $this->form()->openTag($form);
+$form->get('organization_owner')->setAttributes(['class' => 'select_multiple form-control']);
+echo $this->formCollection($form);
+echo $this->form()->closeTag();

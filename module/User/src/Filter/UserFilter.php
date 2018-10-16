@@ -10,7 +10,7 @@ use Zend\Filter;
 use Zend\Validator;
 use Organization\Service\OrganizationService;
 
-class UserFilter extends InputFilter
+class UserFilter extends InputFilter implements InputFilterAwareInterface
 {
     private $organizationService;
     private $inputFilter;
@@ -21,15 +21,16 @@ class UserFilter extends InputFilter
 
         $this->inputFilter = new InputFilter();
 
-        $this->inputFilter->add([
-            'name' => 'email',
-            'required' => true,
-            'filters' => [
-                ['name' => Filter\StripTags::class],
-                ['name' => Filter\StringTrim::class],
-            ],
-        ]);
+        return $this->inputFilter;
+    }
 
+
+    public function setInputFilter(InputFilterInterface $inputFilter)
+    {
+        throw new DomainException(sprintf('%s does not allow injection of an alternate input filter',__CLASS__));
+    }
+
+    public function setFullNameFilter(){
         $this->inputFilter->add([
             'name' => 'full_name',
             'required' => true,
@@ -38,7 +39,10 @@ class UserFilter extends InputFilter
                 ['name' => Filter\StringTrim::class],
             ],
         ]);
+    }
 
+    public function setBirthdayFilter()
+    {
         $this->inputFilter->add([
             'name' => 'birthday_date',
             'required' => true,
@@ -50,7 +54,26 @@ class UserFilter extends InputFilter
                 ['name' => Validator\Date::class],
             ],
         ]);
+    }
 
+    public function setOrganizationIdFilter($organizations)
+    {
+        $this->inputFilter->add([
+            'name' => 'organizations_organization_id',
+            'required' => true,
+            'validators' => [
+                [
+                    'name' => Validator\InArray::class,
+                    'options' => [
+                        'haystack' => array_keys($organizations),
+                    ],
+                ],
+            ],
+        ]);
+    }
+
+    public function setPersonalIdFilter()
+    {
         $this->inputFilter->add([
             'name' => 'personal_id',
             'required' => true,
@@ -59,7 +82,10 @@ class UserFilter extends InputFilter
                 ['name' => Filter\StringTrim::class],
             ],
         ]);
+    }
 
+    public function setWorkIdFilter()
+    {
         $this->inputFilter->add([
             'name' => 'work_id',
             'required' => true,
@@ -68,7 +94,10 @@ class UserFilter extends InputFilter
                 ['name' => Filter\StringTrim::class],
             ],
         ]);
+    }
 
+    public function setHiringFilter()
+    {
         $this->inputFilter->add([
             'name' => 'hiring_date',
             'required' => true,
@@ -80,7 +109,10 @@ class UserFilter extends InputFilter
                 ['name' => Validator\Date::class],
             ],
         ]);
+    }
 
+    public function setResignationFilter()
+    {
         $this->inputFilter->add([
             'name' => 'resignation_date',
             'required' => true,
@@ -93,7 +125,10 @@ class UserFilter extends InputFilter
                 ['name' => Validator\Date::class],
             ],
         ]);
+    }
 
+    public function setPositionFilter()
+    {
         $this->inputFilter->add([
             'name' => 'position',
             'required' => true,
@@ -103,39 +138,19 @@ class UserFilter extends InputFilter
                 ['name' => Filter\StringTrim::class],
             ],
         ]);
+    }
 
+    public function setSupervisorName()
+    {
         $this->inputFilter->add([
             'name' => 'supervisor_name',
             'required' => true,
-        ]);
-
-        //$internals = $this->organizationService->getInternalsList();
-        $this->inputFilter->add([
-            'name' => 'organizations_organization_id',
-            'required' => true,
-        ]);
-
-        //$internals = $this->organizationService->getInternalsListByEmployerNumber();
-        $this->inputFilter->add([
-            'name' => 'employer_number',
-            'required' => true,
-            'validators' => [
-
-                [
-                    'name' => Validator\InArray::class,
-                    'options' => [
-                        //'haystack' => array_keys($internals),
-                    ],
-                ],
+            'allow_empty' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
             ],
-
         ]);
-    }
-
-
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new DomainException(sprintf('%s does not allow injection of an alternate input filter',__CLASS__));
     }
 
     public function getInputFilter()
@@ -143,31 +158,36 @@ class UserFilter extends InputFilter
         return $this->inputFilter;
     }
 
-/*
-    public function getNewUserFilter()
+    public function getEmployeeFilter()
     {
-        $this->inputFilter->remove('organizations_organization_id');
-        $this->inputFilter->remove('email');
+        $this->setFullNameFilter();
+        $this->setBirthdayFilter();
+        $this->setPersonalIdFilter();
+        $this->setWorkIdFilter();
+        $this->setHiringFilter();
+        $this->setResignationFilter();
+        $this->setPositionFilter();
+        $this->setSupervisorName();
+
+        $internals = $this->organizationService->getInternalList();
+        $this->setOrganizationIdFilter($internals);
 
         return $this->inputFilter;
     }
 
-    public function getUpdateUserFilter()
+    public function getEmployeeUpdate()
     {
-
-        $this->inputFilter->remove('email');
-        $this->inputFilter->remove('birthday_date');
-        $this->inputFilter->remove('personal_id');
-        $this->inputFilter->remove('work_id');
-        $this->inputFilter->remove('hiring_date');
-        $this->inputFilter->remove('employer_number');
+        $this->setFullNameFilter();
+        $this->setResignationFilter();
+        $this->setPositionFilter();
+        $this->setSupervisorName();
 
         return $this->inputFilter;
-    }*/
+    }
 
     public function getUserSearchFilter()
     {
-        $this->inputFilter->get('email')->setRequired(false);
+        /*$this->inputFilter->get('email')->setRequired(false);
         $this->inputFilter->get('supervisor_name')->setRequired(false);
         $this->inputFilter->get('organizations_organization_id')->setRequired(false);
         $this->inputFilter->get('birthday_date')->setRequired(false);
@@ -180,5 +200,7 @@ class UserFilter extends InputFilter
         $this->inputFilter->get('employer_number')->setRequired(false);
 
         return $this->inputFilter;
+            */
     }
+
 }

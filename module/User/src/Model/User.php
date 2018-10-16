@@ -33,7 +33,8 @@ class User
 		$this->personal_id = !empty($data['personal_id']) ? $data['personal_id'] : null;
 		$this->work_id = !empty($data['work_id']) ? $data['work_id'] : null;
 		$this->hiring_date = !empty($data['hiring_date']) ? $data['hiring_date'] : null;
-		$this->resignation_date = !empty($data['resignation_date']) ? $data['resignation_date'] : null;
+		$this->setResignationDate($data['resignation_date']);
+		#$this->resignation_date = !empty($data['resignation_date']) ? $data['resignation_date'] : null;
 		$this->position = !empty($data['position']) ? $data['position'] : null;
 		$this->supervisor_name = !empty($data['supervisor_name']) ? $data['supervisor_name'] : null;
 		$this->status = !empty($data['status']) ? $data['status'] : null;
@@ -73,13 +74,18 @@ class User
 		}
 	}
 
-	public function getId() {
+	public function getUserId() {
 		return $this->user_id;
 	}
 
 	public function getEmail()
 	{
 		return $this->email;
+	}
+
+	public function setFullName($full_name)
+	{
+		$this->full_name = $full_name;
 	}
 
 	public function getFullName() {
@@ -94,15 +100,30 @@ class User
 		return $this->hiring_date;
 	}
 
+	public function setResignationDate($resignation_date)
+	{
+		$this->resignation_date = !empty($resignation_date) ? $resignation_date : null;
+	}
+
 	public function getResignationDate() {
 		return $this->resignation_date;
+	}
+
+	public function setPosition($position)
+	{
+		$this->position = $position;
 	}
 
 	public function getPosition() {
 		return $this->position;
 	}
 
-	public function getSupervisor() {
+	public function setSupervisorName($supervisor_name)
+	{
+		$this->supervisor_name = $supervisor_name;
+	}
+
+	public function getSupervisorName() {
 		return $this->supervisor_name;
 	}
 

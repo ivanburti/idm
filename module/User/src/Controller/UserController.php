@@ -76,7 +76,7 @@ class UserController extends AbstractActionController
 
 		$user = $this->userService->getUserById($user_id);
 
-		$organization = $this->organizationService->getOrganization($user->getOrganizationId());
+		$organization = $this->organizationService->getOrganizationById($user->getOrganizationId());
 
 		if ($organization->isInternal()) {
 			$route = 'user/employee';

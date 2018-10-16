@@ -2,7 +2,7 @@
 
 namespace Organization\Service;
 
-use Exception;
+use RuntimeException;
 use Organization\Model\Organization;
 use Organization\Model\OrganizationTable;
 
@@ -14,6 +14,74 @@ class OrganizationService
     {
         $this->organizationTable = $organizationTable;
     }
+
+    public function getOrganizationByEmployerNumber($employer_number)
+    {
+        return $this->organizationTable->getOrganizationByEmployerNumber($employer_number);
+    }
+
+    public function getInternalByEmployerNumber($employer_number)
+    {
+        return $this->organizationTable->getInternalByEmployerNumber($employer_number);
+    }
+
+    public function getExternalByEmployerNumber($employer_number)
+    {
+        return $this->organizationTable->getExternalByEmployerNumber($employer_number);
+    }
+
+    public function getOrganizations()
+    {
+        return $this->organizationTable->getOrganizations();
+    }
+
+    public function getOrganizationList()
+    {
+        return array_column($this->getOrganizations()->toArray(), 'alias', 'organization_id');
+    }
+
+    public function getInternals()
+    {
+        return $this->organizationTable->getInternals();
+    }
+
+    public function getInternalList()
+    {
+        return array_column($this->getInternals()->toArray(), 'alias', 'organization_id');
+    }
+
+    public function getExternals()
+    {
+        return $this->organizationTable->getExternals();
+    }
+
+    public function getExternalList()
+    {
+        return array_column($this->getExternals()->toArray(), 'alias', 'organization_id');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function searchOrganizations($data)
     {
@@ -79,91 +147,4 @@ class OrganizationService
         return true;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-    public function getInternals()
-    {
-        return $this->getOrganizations->getOrganizations(['type' => 1]);
-    }
-
-    //OK
-    public function getOrganizations()
-    {
-        return $this->organizationTable->getOrganizations();
-    }
-
-    public function getServiceProviders()
-    {
-        return $this->organizationTable->getOrganizations(['type' => 2]);
-    }
-
-    public function getInternalsList()
-    {
-        return array_column($this->getInternals()->toArray(), 'alias', 'organization_id');
-    }
-
-    public function getServiceProvidersList()
-    {
-        return array_column($this->getServiceProviders()->toArray(), 'alias', 'organization_id');
-    }
-
-    public function getInternalsListByEmployerNumber()
-    {
-        return array_column($this->getInternals()->toArray(), 'alias', 'employer_number');
-    }
-
-    public function getServiceProvidersListByEmployerNumber()
-    {
-        return array_column($this->getServiceProviders()->toArray(), 'alias', 'organization_id');
-    }
-
-    public function getServiceProvider($organization_id)
-    {
-        $organization = $this->getOrganization($organization_id);
-
-        if (1 == 2) {
-            throw new Exception("Organization exist but is not a service provider");
-        }
-        return $organization;
-    }
-
-    public function getInternalByEmployerNumber($employer_number)
-    {
-        $where = [
-            'employer_number' => $employer_number
-        ];
-
-        if (1 == 2) {
-            throw new Exception("Organization exist but is not internal");
-        }
-        return $this->organizationTable->getOrganizationWithCondition($where);
-    }
-
-    public function getServiceProviderByEmployerNumber($employer_number)
-    {
-        $where = [
-            'employer_number' => $employer_number
-        ];
-
-        if (1 == 2) {
-            throw new Exception("Organization exist but is not internal");
-        }
-        return $this->organizationTable->getOrganizationWithCondition($where);
-    }
-    */
 }

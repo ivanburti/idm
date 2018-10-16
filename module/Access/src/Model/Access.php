@@ -4,14 +4,16 @@ namespace Access\Model;
 
 class Access
 {
-	const ACCESS_STATUS_DISABLE = 0;
-	const ACCESS_STATUS_ENABLE = 1;
+	const ACCESS_STATUS_DISABLED = 2;
+	const ACCESS_STATUS_ACTIVE = 1;
 
 	public $access_id;
 	public $username;
 	public $status;
 	public $resources_resource_id;
 	public $users_user_id;
+	public $is_generic;
+	public $comment;
 
 	public $resource_name;
 	public $user_full_name;
@@ -25,6 +27,8 @@ class Access
 		$this->users_user_id = !empty($data['users_user_id']) ? $data['users_user_id'] : null;
 		$this->resource_name = !empty($data['resource_name']) ? $data['resource_name'] : null;
 		$this->user_full_name = !empty($data['user_full_name']) ? $data['user_full_name'] : null;
+		$this->is_generic = !empty($data['is_generic']) ? $data['is_generic'] : null;
+		$this->comment = !empty($data['comment']) ? $data['comment'] : null;
 	}
 
 	public function getArrayCopy()
@@ -35,6 +39,8 @@ class Access
 			'status' => $this->status,
 			'resources_resource_id' => $this->resources_resource_id,
 			'users_user_id' => $this->users_user_id,
+			'is_generic' => $this->is_generic,
+			'comment' => $this->comment,
 		];
 	}
 
@@ -61,6 +67,13 @@ class Access
 		return $this->status;
 	}
 
+	public function isActive()
+	{
+		if ($this->status == self::ACCESS_STATUS_ACTIVE) {
+			return true;
+		}
+	}
+
 	public function getStatusAsString() {
 		$list = self::getStatusList();
 		if (isset($list[$this->status]))
@@ -72,8 +85,8 @@ class Access
 	public function getStatusList()
 	{
 		return [
-			self::ACCESS_STATUS_ENABLE => 'Enable',
-			self::ACCESS_STATUS_DISABLE => 'Disable',
+			self::ACCESS_STATUS_ACTIVE => 'Active',
+			self::ACCESS_STATUS_DISABLED => 'Disabled',
 		];
 	}
 

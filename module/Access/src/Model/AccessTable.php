@@ -14,6 +14,32 @@ class AccessTable
         $this->tableGateway = $tableGateway;
     }
 
+    public function searchAccesses($data)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->join('resources', 'accesses.resources_resource_id = resources.resource_id', ['resource_name' => 'name']);
+        $select->join('users', 'accesses.users_user_id = users.user_id', ['user_full_name' => 'full_name'], 'left');
+
+        ($data['username']) ? $select->where->like('accesses.username', '%'.$data['username'].'%') : null;
+        ($data['resources_resource_id']) ? $select->where(['accesses.resources_resource_id' => $data['resources_resource_id']]) : null;
+        ($data['users_user_id']) ? $select->where(['accesses.users_user_id' => $data['users_user_id']]) : null;
+        ($data['status']) ? $select->where(['accesses.status' => $data['status']]) : null;
+
+        return $this->tableGateway->selectWith($select);
+    }
+
+    public function getOrphans()
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->join('resources', 'accesses.resources_resource_id = resources.resource_id', ['resource_name' => 'name']);
+        $select->join('users', 'accesses.users_user_id = users.user_id', ['user_full_name' => 'full_name'], 'left');
+        $select->where->isNull('users_user_id');
+        $select->where->isNull('is_generic');
+        $select->order('username ASC');
+
+        return $this->tableGateway->selectWith($select);
+    }
+
     public function getAccesses($conditions = [])
     {
         $select = $this->tableGateway->getSql()->select();
@@ -59,6 +85,7 @@ class AccessTable
             'status'  => $access->status,
             'resources_resource_id' => $access->resources_resource_id,
             'users_user_id'  => $access->users_user_id,
+            'is_generic' => $access->is_generic,
         ];
 
         $access_id = (int) $access->access_id;

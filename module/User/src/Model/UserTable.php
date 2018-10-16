@@ -15,55 +15,72 @@ class UserTable
         $this->tableGateway = $tableGateway;
     }
 
-    public function getUsers($conditions = [])
+    private function getSelectUsers()
     {
         $select = $this->tableGateway->getSql()->select();
         $select->join('organizations', 'organizations.organization_id = users.organizations_organization_id', ['organization_name' => 'name', 'organization_status' => 'status', 'organization_type' => 'type']);
 
-        if ($conditions) {
-            $select->where($conditions);
-        }
-
-        return $this->tableGateway->selectWith($select);
+        return $select;
     }
 
-    public function searchUsers($data)
+    public function getEmployeeByWorkIdOrganizationId($work_id, $organization_id)
     {
-        $select = $this->tableGateway->getSql()->select();
-        $select->join('organizations', 'organizations.organization_id = users.organizations_organization_id', ['organization_name' => 'name', 'organization_status' => 'status', 'organization_type' => 'type']);
+        $work_id = (int) $work_id;
+        $organization_id = (int) $organization_id;
 
-        ($data['full_name']) ? $select->where->like('full_name', '%'.$data['full_name'].'%') : null;
+        $select = $this->getSelectUsers();
+        $select->where([
+            'work_id' => $work_id,
+            'organizations_organization_id' => $organization_id,
+            'type' => 1
+        ]);
+
+        $rowset = $this->tableGateway->selectWith($select);
+        $row = $rowset->current();
+        if (! $row) {
+            throw new RuntimeException(sprintf('Cannot update user with user_id %d; does not exist', $work_id));
+        }
+
+        return $row;
+    }
+
+    public function getUsers($onlyEnabled = true)
+    {
+        $select = $this->getSelectUsers();
+
+        ($onlyEnabled) ? $select->where(['users.status' => 1 ]) : null;
 
         return $this->tableGateway->selectWith($select);
     }
 
     public function getEmployees($onlyEnabled = true)
     {
-        $conditions = [
-            'organizations.type' => 1
-        ];
+        $select = $this->getSelectUsers();
+        $select->where(['organizations.type' => 1]);
 
-        ($onlyEnabled) ? $conditions['users.status'] = 1 : null;
+        ($onlyEnabled) ? $select->where(['users.status' => 1 ]) : null;
 
-        return $this->getUsers($conditions);
+        return $this->tableGateway->selectWith($select);
     }
 
     public function getServiceProviders($onlyEnabled = true)
     {
-        $conditions = [
-            'organizations.type' => 2
-        ];
+        $select = $this->getSelectUsers();
+        $select->where(['organizations.type' => 2]);
 
-        ($onlyEnabled) ? $conditions['users.status'] = 1 : null;
+        ($onlyEnabled) ? $select->where(['users.status' => 1 ]) : null;
 
-        return $this->getUsers($conditions);
+        return $this->tableGateway->selectWith($select);
     }
 
     public function getUserById($user_id)
     {
         $user_id = (int) $user_id;
 
-        $rowset = $this->getUsers(['user_id' => $user_id]);
+        $select = $this->getSelectUsers();
+        $select->where(['user_id' => $user_id]);
+
+        $rowset = $this->tableGateway->selectWith($select);
         $row = $rowset->current();
         if (! $row) {
             throw new RuntimeException(sprintf('Could not find user with user_id'));
@@ -72,15 +89,62 @@ class UserTable
         return $row;
     }
 
-    public function getUsersFromOrganization($organization_id)
+    public function getEmployeeById($user_id)
+    {
+        $user_id = (int) $user_id;
+
+        $select = $this->getSelectUsers();
+        $select->where([
+            'user_id' => $user_id,
+            'organizations.type' => 1
+        ]);
+
+        $rowset = $this->tableGateway->selectWith($select);
+        $row = $rowset->current();
+        if (! $row) {
+            throw new RuntimeException(sprintf('Could not find employee with user_id'));
+        }
+
+        return $row;
+    }
+
+    public function getServiceProviderById($user_id)
+    {
+        $user_id = (int) $user_id;
+
+        $select = $this->getSelectUsers();
+        $select->where([
+            'user_id' => $user_id,
+            'organizations.type' => 2
+        ]);
+
+        $rowset = $this->tableGateway->selectWith($select);
+        $row = $rowset->current();
+        if (! $row) {
+            throw new RuntimeException(sprintf('Could not find service provider with user_id'));
+        }
+
+        return $row;
+    }
+
+
+    public function getUsersByOrganizationId($organization_id)
     {
         $organization_id = (int) $organization_id;
 
-        $conditions = [
-            'organizations_organization_id' => $organization_id,
-        ];
+        $select = $this->getSelectUsers();
+        $select->where(['organizations_organization_id' => $organization_id]);
 
-        return $this->getUsers($conditions);
+        return $this->tableGateway->selectWith($select);
+    }
+
+    public function searchUsers($data)
+    {
+        $select = $this->getSelectUsers();
+
+        ($data['full_name']) ? $select->where->like('full_name', '%'.$data['full_name'].'%') : null;
+
+        return $this->tableGateway->selectWith($select);
     }
 
     public function saveUser(User $user)
@@ -113,47 +177,4 @@ class UserTable
 
         $this->tableGateway->update($data, ['user_id' => $user_id]);
     }
-
-    public function getUsersById($users = [])
-    {
-        $conditions = [
-            'user_id' => $users,
-        ];
-
-        return $this->getUsers($conditions);
-    }
-
-
-
-
-
-
-
-    /*
-
-
-    public function searchUser(User $user)
-    {
-        $select = $this->tableGateway->getSql()->select();
-        $select->join('organizations', 'organizations.organization_id = users.organizations_organization_id', ['organization_status' => 'status']);
-
-        if ($user->getFullName()) {
-            $select->where->like('full_name', '%'.$user->getFullName().'%');
-        }
-
-        return $this->tableGateway->selectWith($select);
-    }
-
-    public function searchOrganizations($data)
-    {
-        $select = $this->tableGateway->getSql()->select();
-
-        ($data['alias']) ? $select->where->like('alias', '%'.$data['alias'].'%') : null;
-        ($data['name']) ? $select->where->like('alias', '%'.$data['alias'].'%') : null;
-        ($data['type']) ? $select->where(['type' => $data['type']]) : null;
-        ($data['status']) ? $select->where(['status' => $data['status']]) : null;
-
-        return $this->tableGateway->selectWith($select);
-    }
-    */
 }

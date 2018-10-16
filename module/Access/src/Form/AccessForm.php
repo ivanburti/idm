@@ -3,20 +3,26 @@
 namespace Access\Form;
 
 use Zend\Form\Form;
+use Access\Service\AccessService;
 use Resource\Service\ResourceService;
 use User\Service\UserService;
+use Access\Model\Access;
 
 class AccessForm extends Form
 {
     private $resourceService;
     private $userService;
+    private $accessService;
+    private $access;
 
-    public function __construct(ResourceService $resourceService, UserService $userService)
+    public function __construct(AccessService $accessService, ResourceService $resourceService, UserService $userService)
     {
         parent::__construct('form-access');
 
         $this->resourceService = $resourceService;
         $this->userService = $userService;
+        $this->accessService = $accessService;
+        $this->access = new Access();
 
         $this->add([
             'type'  => 'text',
@@ -34,7 +40,7 @@ class AccessForm extends Form
             'name' => 'resources_resource_id',
             'options' => [
                 'label' => 'Resource',
-                'empty_option' => 'Select...',
+                //'empty_option' => 'All',
                 'value_options' => $resourceService->getResourceList(),
             ],
             'attributes' => [
@@ -47,8 +53,8 @@ class AccessForm extends Form
             'name' => 'users_user_id',
             'options' => [
                 'label' => 'User',
-                'empty_option' => 'Select...',
-                'value_options' => $userService->getEmployeeList(),
+                //'empty_option' => 'All',
+                'value_options' => $userService->getUserList(),
             ],
             'attributes' => [
                 'id' => 'users_user_id'
@@ -56,10 +62,23 @@ class AccessForm extends Form
         ]);
 
         $this->add([
+            'type'  => 'select',
+            'name' => 'status',
+            'options' => [
+                'label' => 'Status',
+                //'empty_option' => 'All',
+                'value_options' => $this->access->getStatusList(),
+            ],
+            'attributes' => [
+                'id' => 'status'
+            ],
+        ]);
+
+        $this->add([
             'name' => 'submit',
             'type' => 'submit',
             'attributes' => [
-                'value' => 'Save',
+                'value' => 'Submit',
                 'id' => 'submit',
             ],
         ]);

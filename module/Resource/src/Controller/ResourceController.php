@@ -68,6 +68,7 @@ class ResourceController extends AbstractActionController
 		return [
 			'resource' => $resource,
 			'owners' => $this->userService->getUsersById($resource->owners),
+			'approvers' => $this->userService->getUsersById($resource->approvers),
 			'accesses' => $this->accessService->getAccessesByResourceId($resource_id)
 		];
 	}

@@ -1,18 +1,23 @@
-<table class="table table-responsive table-striped">
+<table class="table table-responsive table-striped table-condensed">
     <thead>
         <tr>
-            <th><?= $this->translate('resource') ?></th>
-            <th><?= $this->translate('username') ?></th>
-            <th><?= $this->translate('status') ?></th>
+            <th><?= $this->translate('Status') ?></th>
+            <th><?= $this->translate('Resource') ?></th>
+            <th><?= $this->translate('Username') ?></th>
+            <th><?= $this->translate('Name') ?></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         <?php foreach ($accesses as $access) : ?>
             <tr>
+                <td>
+                    <?php $label = ($access->isActive()) ? 'success' : 'default' ?>
+                    <span class="label label-<?= $label ?>"><?= $this->escapeHtml($access->getStatusAsString()) ?></span>
+                </td>
                 <td><?= $this->escapeHtml($access->getResourceName()) ?></td>
                 <td><?= $this->escapeHtml($access->getUsername()) ?></td>
-                <td><?= $this->escapeHtml($access->getStatusAsString()) ?></td>
+                <td><?= $this->escapeHtml($access->getUserFullName()) ?></td>
                 <td>
                     <?php if (1 == 1): ?>
                         <a class="btn btn-sm btn-danger" href="<?= $this->url('access', ['action' => 'disable', 'id' => $access->getAccessId()]) ?>"><i class="fas fa-ban"></i> <?= $this->translate('disable') ?></a>

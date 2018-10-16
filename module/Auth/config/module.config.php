@@ -72,8 +72,8 @@ return [
     ],
 	'access_filter' => [
 		'options' => [
-			//'mode' => 'restrictive'
-            'mode' => 'permissive'
+			'mode' => 'restrictive'
+            //'mode' => 'permissive'
 		],
 		'controllers' => [
             /*

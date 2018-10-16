@@ -5,67 +5,55 @@ $this->headTitle($title);
 ?>
 
 <div class="row">
-    <div class="col-lg-5">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th colspan="2"><?= $this->escapeHtml($resource->getName()) ?></th>
-                </tr>
-            </thead>
+    <div class="col-lg-6">
+        <table class="table table-responsive table-striped table-bordered">
             <tbody>
                 <tr>
-                    <th><?= $this->translate('Description') ?> :</th>
+                    <th><?= $this->translate('Name') ?></th>
+                    <td><?= $this->escapeHtml($resource->getName()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $this->translate('Description') ?></th>
                     <td><?= $this->escapeHtml($resource->getDescription()) ?></td>
                 </tr>
                 <tr>
-                    <th><?= $this->translate('Owners') ?> :</th>
+                    <th><?= $this->translate('Owners') ?></th>
                     <td>
                         <?php foreach($owners as $owner) : ?>
-                            <p><?= $this->escapeHtml($owner->getFullName()) ?></p>
+                            <a href="<?= $this->url('user/user', ['action' => 'details', 'id' => $owner->getId()]) ?>"><?= $this->escapeHtml($owner->getFullName()) ?></a><br>
                         <?php endforeach; ?>
                     </td>
                 </tr>
                 <tr>
-                    <th><?= $this->translate('Created On') ?> :</th>
+                    <th><?= $this->translate('Approvers') ?></th>
+                    <td>
+                        <?php foreach($approvers as $approver) : ?>
+                            <a href="<?= $this->url('user/user', ['action' => 'details', 'id' => $approver->getId()]) ?>"><?= $this->escapeHtml($owner->getFullName()) ?></a><br>
+                        <?php endforeach; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?= $this->translate('Created On') ?></th>
                     <td><?= $this->escapeHtml($resource->getCreatedOn()) ?></td>
                 </tr>
                 <tr>
-                    <th><?= $this->translate('Update On') ?> :</th>
+                    <th><?= $this->translate('Update On') ?></th>
                     <td><?= $this->escapeHtml($resource->getUpdateOn()) ?></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div class="col-lg-5">
-        <a class="btn btn-primary" href="<?= $this->url('resource', ['action' => 'edit', 'id' => $resource->getId()]) ?>"><i class="fas fa-edit"></i> <?= $this->translate('Edit Resource') ?></a>
+    <div class="col-lg-6">
+        <div class="pull-right">
+            <a class="btn btn-primary" href="<?= $this->url('resource', ['action' => 'edit', 'id' => $resource->getId()]) ?>"><i class="fas fa-edit"></i> <?= $this->translate('Edit Resource') ?></a>
+            <a class="btn btn-danger" href="<?= $this->url('resource', ['action' => 'disable', 'id' => $resource->getId()]) ?>"><i class="fas fa-ban"></i> <?= $this->translate('Disable Resource') ?></a>
+        </div>
     </div>
 </div>
 
-
-
 <div class="row">
     <div class="col-lg-12">
-        <table class="table table-responsive">
-            <thead>
-                <tr>
-                    <th><?= $this->translate('status') ?></th>
-                    <th><?= $this->translate('username') ?></th>
-                    <th><?= $this->translate('status') ?></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($accesses as $access) : ?>
-                    <tr>
-                        <td><?= $this->escapeHtml($access->getUsername()) ?></td>
-                        <td><?= $this->escapeHtml($access->getUserFullName()) ?></td>
-                        <td>
-                            <a class="btn btn-sm btn-primary" href="<?= $this->url('access', ['action' => 'edit', 'id' => $access->getAccessId()]) ?>"><i class="fas fa-edit"></i> <?= $this->translate('edit') ?></a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <?= $this->partial('access/table', ['accesses' => $accesses]) ?>
     </div>
 </div>

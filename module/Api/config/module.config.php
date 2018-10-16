@@ -4,10 +4,61 @@ namespace Api;
 
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
+use Zend\Router\Http\Hostname;
 
 return [
     'router' => [
         'routes' => [
+            'api' => [
+                'type' => Hostname::class,
+                'options' => [
+                    'route' => 'api-idm.netshoes.io',
+                    'defaults' => [
+                        'controller' => Controller\ApiController::class,
+                        //'action' => 'index',
+                    ],
+                ],
+                'may_terminate' => true,
+                'child_routes'=>[
+                    'user' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/users',
+                            'defaults' => [
+                                'controller' => Controller\UserController::class,
+                            ],
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'employee' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/employees[/:id]',
+                                    'constraints' => [
+                                        'id' => '[0-9]+',
+                                    ],
+                                    'defaults' => [
+                                        'controller' => Controller\UserEmployeeController::class,
+                                    ],
+                                ],
+                            ],
+                            'service-provider' => [
+                                'type' => Segment::class,
+                                'options' => [
+                                    'route' => '/service-providers[/:id]',
+                                    'constraints' => [
+                                        'id' => '[0-9]+',
+                                    ],
+                                    'defaults' => [
+                                        'controller' => Controller\UserServiceProviderController::class,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            /*
             'api' => [
                 'type' => Literal::class,
                 'options' => [
@@ -92,6 +143,8 @@ return [
                     ],
                 ],
             ],
+            */
+
         ],
     ],
     'controllers' => [
