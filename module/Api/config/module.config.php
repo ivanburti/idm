@@ -9,6 +9,7 @@ use Zend\Router\Http\Hostname;
 return [
     'router' => [
         'routes' => [
+            /*
             'api' => [
                 'type' => Hostname::class,
                 'options' => [
@@ -58,7 +59,7 @@ return [
                     ],
                 ],
             ],
-            /*
+            */
             'api' => [
                 'type' => Literal::class,
                 'options' => [
@@ -143,8 +144,6 @@ return [
                     ],
                 ],
             ],
-            */
-
         ],
     ],
     'controllers' => [
