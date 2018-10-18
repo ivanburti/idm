@@ -16,7 +16,7 @@
                 <td><?= $this->escapeHtml($user->getEmail()) ?></td>
                 <td><?= $this->escapeHtml($user->getStatusAsString()) ?></td>
                 <td>
-                    <a class="btn btn-sm btn-primary" href="<?= $this->url('user/user', ['action' => 'details', 'id' => $user->getId()]) ?>"><i class="fas fa-search-plus"></i> <?= $this->translate('Detail') ?></a>
+                    <a class="btn btn-sm btn-primary" href="<?= $this->url('user/user', ['action' => 'details', 'id' => $user->getUserId()]) ?>"><i class="fas fa-search-plus"></i> <?= $this->translate('Detail') ?></a>
                 </td>
             </tr>
         <?php endforeach; ?>

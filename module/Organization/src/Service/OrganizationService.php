@@ -15,21 +15,6 @@ class OrganizationService
         $this->organizationTable = $organizationTable;
     }
 
-    public function getOrganizationByEmployerNumber($employer_number)
-    {
-        return $this->organizationTable->getOrganizationByEmployerNumber($employer_number);
-    }
-
-    public function getInternalByEmployerNumber($employer_number)
-    {
-        return $this->organizationTable->getInternalByEmployerNumber($employer_number);
-    }
-
-    public function getExternalByEmployerNumber($employer_number)
-    {
-        return $this->organizationTable->getExternalByEmployerNumber($employer_number);
-    }
-
     public function getOrganizations()
     {
         return $this->organizationTable->getOrganizations();
@@ -60,91 +45,38 @@ class OrganizationService
         return array_column($this->getExternals()->toArray(), 'alias', 'organization_id');
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function searchOrganizations($data)
-    {
-        return $this->organizationTable->searchOrganizations($data);
-    }
-
-    public function getOrganizationStatusList()
-    {
-        $organization = new Organization();
-        return $organization->getStatusList();
-    }
-
-    //OK
-    public function getOrganizationTypeList()
-    {
-        $organization = new Organization();
-        return $organization->getTypesList();
-    }
-
-    //OK
     public function getOrganizationById($organization_id)
     {
-        $organization_id = (int) $organization_id;
-        return $this->organizationTable->getOrganization($organization_id);
+        return $this->organizationTable->getOrganizationById($organization_id);
     }
 
-    //OK
     public function getInternalById($organization_id)
     {
-        $organization = $this->getOrganizationById($organization_id);
-
-        if (1 == 2) {
-            throw new Exception("Organization exist but is not internal");
-        }
-
-        return $organization;
+        return $this->organizationTable->getInternalById($organization_id);
     }
 
-    //OK
     public function getExternalById($organization_id)
     {
-        $organization = $this->getOrganizationById($organization_id);
-
-        if (1 == 2) {
-            throw new Exception("Organization exist but is not external");
-        }
-
-        return $organization;
+        return $this->organizationTable->getExternalById($organization_id);
     }
 
-    //OK
-    public function updateExternal($organization_id, $data)
+    public function addInternal(Organization $organization)
     {
-        $organization_id = (int) $organization_id;
-        $organization = $this->getExternalById($organization_id);
-
-        $organization->setAlias($data['alias']);
-        $organization->setExpiresOn($data['expires_on']);
-        $organization->setOwners($data['owners']);
-
-        $this->organizationTable->saveOrganization($organization);
-
-        return true;
+        return $this->organizationTable->saveInternal($organization);
     }
 
+    public function addExternal(Organization $organization)
+    {
+        return $this->organizationTable->saveExternal($organization);
+    }
+
+    public function updateInternal(Organization $organization)
+    {
+        return $this->organizationTable->saveInternal($organization);
+    }
+
+    public function updateExternal(Organization $organization)
+    {
+        return $this->organizationTable->saveExternal($organization);
+    }
 }

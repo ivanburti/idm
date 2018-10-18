@@ -4,68 +4,68 @@ namespace Organization\Controller;
 
 use Exception;
 use Zend\Mvc\Controller\AbstractActionController;
+use Organization\Form\OrganizationForm;
 use Organization\Service\OrganizationService;
-use Organization\Filter\OrganizationFilter;
+use User\Service\UserService;
+use Organization\Model\Organization;
 
 class InternalController extends AbstractActionController
 {
+	private $organizationForm;
 	private $organizationService;
+	private $userService;
 
-	public function __construct(OrganizationService $organizationService)
+	public function __construct(OrganizationForm $organizationForm, OrganizationService $organizationService, UserService $userService)
 	{
+		$this->organizationForm = $organizationForm;
 		$this->organizationService = $organizationService;
+		$this->userService = $userService;
 	}
 
 	public function addAction()
 	{
-		$form = new OrganizationForm();
+		$form = $this->organizationForm->getInternalForm();
 
 		$request = $this->getRequest();
 		if (! $request->isPost()) {
 			return ['form' => $form];
 		}
 
-		$filter = new OrganizationFilter();
-		$filter->setNewInternalForm();
-		$form->setInputFilter($filter->getInputFilter());
-
 		$form->setData($request->getPost());
 		if (! $form->isValid()) {
 			return ['form' => $form];
 		}
 
-		$this->organizationService->createInternal($form->getData());
+		$organization = new Organization();
+		$organization->exchangeArray($form->getData());
 
-		return $this->redirect()->toRoute('organization/service-provider');
+		$organization_id = $this->organizationService->addInternal($organization);
+
+		return $this->redirect()->toRoute('organization/organization', ['action' => 'details', 'id' => $organization_id]);
 	}
 
 	public function editAction()
 	{
 		$organization_id = (int) $this->params()->fromRoute('id', 0);
 		$organization = $this->organizationService->getInternalById($organization_id);
-		var_dump($organization);
-		exit();
 
-		$form = new OrganizationForm();
-		$form->bind($organization);
-		$viewData = ['organization' => $organization, 'form' => $form];
+        $form = $this->organizationForm->getInternalForm();
+        $form->bind($organization);
 
-		$request = $this->getRequest();
-		if (! $request->isPost()) {
-			return $viewData;
-		}
+        $request = $this->getRequest();
+        $viewData = ['organization' => $organization, 'form' => $form];
 
-		$filter = new OrganizationFilter();
-		$form->setInputFilter($filter->getInputFilter());
-		$filter->setNewInternalForm();
+        if (! $request->isPost()) {
+            return $viewData;
+        }
 
-		$form->setData($request->getPost());
-		if (! $form->isValid()) {
-			return $viewData;
-		}
+        $form->setData($request->getPost());
+        if (! $form->isValid()) {
+            return $viewData;
+        }
 
-		$this->organizationService->updateInternal($form->getData());
+        $this->organizationService->updateInternal($organization);
 
-		return $this->redirect()->toRoute('organization/service-provider');
+        return $this->redirect()->toRoute('organization/organization', ['action' => 'details', 'id' => $organization_id]);
 	}
 }

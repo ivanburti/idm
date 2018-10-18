@@ -14,7 +14,7 @@ return [
                     'route' => '/users',
                     'defaults' => [
                         'controller' => Controller\UserController::class,
-                        'action' => 'index',
+                        'action' => 'search',
                     ],
                 ],
                 'may_terminate' => true,
@@ -29,7 +29,7 @@ return [
                             ],
                             'defaults' => [
                                 'controller' => Controller\UserController::class,
-                                'action' => 'index',
+                                'action' => 'search',
                             ],
                         ],
                     ],
@@ -75,6 +75,8 @@ return [
     'service_manager' => [
         'factories' => [
             Service\UserService::class => Service\Factory\UserServiceFactory::class,
+            Service\EmployeeService::class => Service\Factory\EmployeeServiceFactory::class,
+            //Service\ServiceProviderService::class => Service\Factory\ServiceProviderServiceFactory::class,
         ],
     ],
     'form_elements' => [
@@ -99,24 +101,7 @@ return [
         'default' => [
             [
                 'label' => 'Users',
-                'route' => 'user',
-                'pages' => [
-                    [
-                        'label' => 'Search',
-                        'route' => 'user/user',
-                        'action' => 'search',
-                    ],
-                    [
-                        'label' => 'Add Employee',
-                        'route' => 'user/employee',
-                        'action' => 'add',
-                    ],
-                    [
-                        'label' => 'Add Service Provider',
-                        'route' => 'user/service-provider',
-                        'action' => 'add',
-                    ],
-                ],
+                'route' => 'user/user',
             ],
         ],
     ],

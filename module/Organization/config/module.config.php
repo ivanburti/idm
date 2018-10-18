@@ -14,7 +14,7 @@ return [
                     'route' => '/organizations',
                     'defaults' => [
                         'controller' => Controller\OrganizationController::class,
-                        'action' => 'search',
+                        'action' => 'index',
                     ],
                 ],
                 'may_terminate' => true,
@@ -29,7 +29,7 @@ return [
                             ],
                             'defaults' => [
                                 'controller' => Controller\OrganizationController::class,
-                                'action' => 'search',
+                                'action' => 'index',
                             ],
                         ],
                     ],
@@ -91,29 +91,15 @@ return [
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
+        'template_map' => [
+            'organization/table' => __DIR__ . '/../view/partial/table-organization.phtml',
+        ],
     ],
     'navigation' => [
         'default' => [
             [
                 'label' => 'Organizations',
-                'route' => 'organization',
-                'pages' => [
-                    [
-                        'label' => 'Search',
-                        'route' => 'organization/organization',
-                        'action' => 'search',
-                    ],
-                    [
-                        'label' => 'Add Internal',
-                        'route' => 'organization/internal',
-                        'action' => 'add',
-                    ],
-                    [
-                        'label' => 'Add External',
-                        'route' => 'organization/external',
-                        'action' => 'add',
-                    ],
-                ],
+                'route' => 'organization/organization',
             ],
         ],
     ],

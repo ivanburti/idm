@@ -4,15 +4,21 @@ namespace Organization\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
+use Organization\Form\OrganizationForm;
 use Organization\Service\OrganizationService;
+use User\Service\UserService;
 use Organization\Controller\InternalController;
 
 class InternalControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $organizationService = $container->get(OrganizationService::class);
+        $formManager = $container->get('FormElementManager');
+        $organizationForm = $formManager->get(OrganizationForm::class);
 
-        return new InternalController($organizationService);
+        $organizationService = $container->get(OrganizationService::class);
+        $userService = $container->get(UserService::class);
+
+        return new InternalController($organizationForm, $organizationService, $userService);
     }
 }

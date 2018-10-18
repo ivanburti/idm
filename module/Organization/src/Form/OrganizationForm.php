@@ -3,20 +3,22 @@
 namespace Organization\Form;
 
 use Zend\Form\Form;
-use Organization\Service\OrganizationService;
+use Zend\InputFilter\InputFilter;
+use Zend\Filter;
+use Zend\Validator;
 use User\Service\UserService;
 
 class OrganizationForm extends Form
 {
-    private $organizationService;
+    private $inputFilter;
     private $userService;
 
-    public function __construct(OrganizationService $organizationService, UserService $userService)
+    public function __construct(UserService $userService)
     {
-        parent::__construct('form-organization');
-
-        $this->organizationService = $organizationService;
+        $this->inputFilter = new InputFilter();
         $this->userService = $userService;
+
+        parent::__construct('form-organization');
 
         $this->add([
             'type'  => 'text',
@@ -26,6 +28,15 @@ class OrganizationForm extends Form
             ],
             'attributes' => [
                 'id' => 'alias',
+            ],
+        ]);
+
+        $this->inputFilter->add([
+            'name' => 'alias',
+            'required' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
             ],
         ]);
 
@@ -40,16 +51,12 @@ class OrganizationForm extends Form
             ],
         ]);
 
-        $this->add([
-            'type'  => 'select',
-            'name' => 'type',
-            'options' => [
-                'label' => 'Type',
-                'empty_option' => 'Select ...',
-                'value_options' => $this->organizationService->getOrganizationTypeList()
-            ],
-            'attributes' => [
-                'id' => 'type',
+        $this->inputFilter->add([
+            'name' => 'name',
+            'required' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
             ],
         ]);
 
@@ -64,41 +71,12 @@ class OrganizationForm extends Form
             ],
         ]);
 
-        $this->add([
-            'type'  => 'text',
-            'name' => 'expires_on',
-            'options' => [
-                'label' => 'Expires On',
-            ],
-            'attributes' => [
-                'id' => 'expires_on',
-            ],
-        ]);
-
-        $this->add([
-            'type'  => 'select',
-            'name' => 'status',
-            'options' => [
-                'label' => 'Status',
-                'empty_option' => 'Select ...',
-                'value_options' => $this->organizationService->getOrganizationStatusList()
-            ],
-            'attributes' => [
-                'id' => 'status',
-            ],
-        ]);
-
-        $this->add([
-            'type'  => 'select',
-            'name' => 'owners',
-            'options' => [
-                'label' => 'Organization Owner',
-                //'empty_option' => 'Select ...',
-                'value_options' => $this->userService->getEmployeeList(),
-            ],
-            'attributes' => [
-                'multiple' => 'multiple',
-                'id' => 'organization_owner',
+        $this->inputFilter->add([
+            'name' => 'employer_number',
+            'required' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
             ],
         ]);
 
@@ -110,6 +88,66 @@ class OrganizationForm extends Form
                 'id' => 'submit',
             ],
         ]);
+
+        $this->setInputFilter($this->inputFilter);
     }
 
+    public function getInternalForm()
+    {
+        return $this;
+    }
+
+    public function getExternalForm()
+    {
+        $this->add([
+            'type'  => 'text',
+            'name' => 'expires_on',
+            'options' => [
+                'label' => 'Expires On',
+            ],
+            'attributes' => [
+                'id' => 'expires_on',
+            ],
+        ]);
+
+        $this->inputFilter->add([
+            'name' => 'expires_on',
+            'required' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
+            ],
+        ]);
+
+        $this->add([
+            'type'  => 'select',
+            'name' => 'owners',
+            'options' => [
+                'label' => 'Organization Owners',
+                'empty_option' => 'Select ...',
+                'value_options' => $this->userService->getEmployeeList(),
+            ],
+            'attributes' => [
+                'multiple' => 'multiple',
+                'id' => 'owners',
+            ],
+        ]);
+
+        $this->inputFilter->add([
+            'name' => 'owners',
+            'required' => true,
+            'validators' => [
+                [
+                    'name' => Validator\Explode::class,
+                    'options' => [
+                        'validator' => new Validator\InArray([
+                            'haystack' => array_keys($this->userService->getEmployeeList())
+                        ]),
+                    ],
+                ],
+            ],
+        ]);
+
+        return $this;
+    }
 }

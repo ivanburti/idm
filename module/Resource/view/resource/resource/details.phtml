@@ -20,7 +20,7 @@ $this->headTitle($title);
                     <th><?= $this->translate('Owners') ?></th>
                     <td>
                         <?php foreach($owners as $owner) : ?>
-                            <a href="<?= $this->url('user/user', ['action' => 'details', 'id' => $owner->getId()]) ?>"><?= $this->escapeHtml($owner->getFullName()) ?></a><br>
+                            <a href="<?= $this->url('user/user', ['action' => 'details', 'id' => $owner->getUserId()]) ?>"><?= $this->escapeHtml($owner->getFullName()) ?></a><br>
                         <?php endforeach; ?>
                     </td>
                 </tr>

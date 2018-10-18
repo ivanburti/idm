@@ -1,0 +1,12 @@
+<?php
+// module/Organization/view/organization/external/index.phtml
+$title = $this->translate('Externals');
+$this->headTitle($title);
+?>
+
+<div class="row">
+    <div class="col-lg-12">
+        <a class="btn btn-primary pull-right" href="<?= $this->url('organization/external', ['action' => 'add']) ?>"><i class="fa fa-plus"></i> <?= $this->translate('Add External') ?></a>
+        <?= $this->partial('organization/table', ['organizations' => $organizations]) ?>
+    </div>
+</div>

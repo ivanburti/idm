@@ -1,0 +1,28 @@
+<table class="table table-responsive table-striped table-condensed">
+    <thead>
+        <tr>
+            <th><?= $this->translate('Status') ?></th>
+            <th><?= $this->translate('Alias') ?></th>
+            <th><?= $this->translate('Name') ?></th>
+            <th><?= $this->translate('Employer Number') ?></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($organizations as $organization) : ?>
+            <tr>
+                <td>
+                    <?php if ($organization->isEnabled()) : ?>
+                        <span class="label label-success"><?= $this->translate('Enabled') ?></span>
+                    <?php endif; ?>
+                </td>
+                <td><?= $this->escapeHtml($organization->getAlias()) ?></td>
+                <td><?= $this->escapeHtml($organization->getName()) ?></td>
+                <td><?= $this->escapeHtml($organization->getEmployerNumber()) ?></td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="<?= $this->url('organization/organization', ['action' => 'details', 'id' => $organization->getOrganizationId()]) ?>"><i class="fas fa-search-plus"></i> <?= $this->translate('Details') ?></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

@@ -1,17 +1,15 @@
 <?php
-// module/Organization/view/organization/organization/add.phtml
-$title = 'Add Internal';
+// module/Organization/view/organization/internal/add.phtml
+$title = $this->translate('Add Internal');
 $this->headTitle($title);
 ?>
 
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-6">
 
         <?php $form->prepare() ?>
 
         <?= $this->form()->openTag($form) ?>
-
-        <?= $this->formHidden($form->get('organization_id')) ?>
 
         <div class="form-group">
             <?= $this->formRow($form->get('alias')->setAttributes(['class' => 'form-control'])) ?>
