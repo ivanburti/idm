@@ -52,7 +52,7 @@
         </div>
     </nav>
     <div class="container">
-        <?php //$this->navigation('navigation')->breadcrumbs()->setMinDepth(0)->setPartial('application/breadcrumb') ?>
+        <?= $this->navigation('navigation')->breadcrumbs()->setMinDepth(0)->setPartial('application/breadcrumb') ?>
         <div class="row">
             <div class="col-lg-12">
                 <?php $title = $this->headTitle() ?>

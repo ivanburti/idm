@@ -22,7 +22,7 @@ return [
                     'organization' => [
                         'type' => Segment::class,
                         'options' => [
-                            'route' => '[/:action[/:id]]',
+                            'route' => '/[:action[/:id]]',
                             'constraints' => [
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'id'     => '[0-9]+',
@@ -99,7 +99,46 @@ return [
         'default' => [
             [
                 'label' => 'Organizations',
-                'route' => 'organization/organization',
+                'route' => 'organization',
+                'pages' => [
+                    [
+                        'label' => 'Details',
+                        'route' => 'organization/organization',
+                        'action' => 'details'
+                    ],
+                    [
+                        'label' => 'Internals',
+                        'route' => 'organization/internal',
+                        'pages' => [
+                            [
+                                'label' => 'Add',
+                                'route' => 'organization/internal',
+                                'action' => 'add'
+                            ],
+                            [
+                                'label' => 'Edit',
+                                'route' => 'organization/internal',
+                                'action' => 'edit'
+                            ],
+                        ],
+                    ],
+                    [
+                        'label' => 'Externals',
+                        'route' => 'organization/external',
+                        'pages' => [
+                            [
+                                'label' => 'Add',
+                                'route' => 'organization/external',
+                                'action' => 'add'
+                            ],
+                            [
+                                'label' => 'Edit',
+                                'route' => 'organization/external',
+                                'action' => 'edit'
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ],
     ],

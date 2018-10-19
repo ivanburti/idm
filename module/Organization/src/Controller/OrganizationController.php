@@ -33,7 +33,6 @@ class OrganizationController extends AbstractActionController
 		return [
 			'organization' => $organization,
 			'owners' => $this->userService->getUsersById($organization->getOwners()),
-			'users' => $this->userService->getUsersByOrganizationId($organization_id),
 		];
 	}
 

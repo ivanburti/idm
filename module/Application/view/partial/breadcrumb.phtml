@@ -1,7 +1,7 @@
 <ol class="breadcrumb">
     <?php $pages = $this->pages ?>
     <?php if (current($pages)->getRoute() != 'home') : ?>
-        <li><a href="#">Home</a></li>
+        <li><a href="<?= $this->url('home') ?>">Home</a></li>
     <?php endif; ?>
     <?php foreach ($pages as $key => $page): ?>
         <li class="<?= ($key < count($this->pages) - 1) ? '' : 'active' ?>">

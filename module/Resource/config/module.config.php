@@ -53,6 +53,12 @@ return [
             [
                 'label' => 'Resources',
                 'route' => 'resource',
+                'pages' => [
+                    [
+                        'label' => 'Add Resource',
+                        'route' => 'resource',
+                    ],
+                ],
             ],
         ],
     ],

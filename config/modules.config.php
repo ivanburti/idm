@@ -13,12 +13,12 @@ return [
     'Zend\Hydrator',
     'Zend\Router',
     'Zend\Validator',
-    'Auth',
+    'Zend\Mvc\Console',
     'Application',
+    'Auth',
     'Organization',
     'User',
     'Resource',
     'Access',
-    'Api',
     'Report'
 ];

@@ -4,7 +4,6 @@ namespace Application;
 
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
-use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'router' => [
@@ -19,13 +18,18 @@ return [
                     ],
                 ],
             ],
-            'application' => [
-                'type'    => Segment::class,
-                'options' => [
-                    'route'    => '/application[/:action]',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+        ],
+    ],
+    'console' => [
+        'router' => [
+            'routes' => [
+                'user-list' => [
+                    'options' => [
+                        'route'    => 'users list',
+                        'defaults' => [
+                            'controller' => Controller\ApplicationController::class,
+                            'action'     => 'resetpassword',
+                        ],
                     ],
                 ],
             ],
@@ -33,7 +37,8 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            Controller\IndexController::class => InvokableFactory::class,
+            Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
+            Controller\ApplicationController::class => Controller\Factory\ApplicationControllerFactory::class,
         ],
     ],
     'view_manager' => [
@@ -59,9 +64,6 @@ return [
             [
                 'label' => 'Home',
                 'route' => 'home',
-                'icon' => 'fa fa-home',
-                'pages' => [
-                ]
             ],
         ],
     ],

@@ -24,7 +24,11 @@ class OrganizationTable
 
     public function getOrganizations()
     {
-        return $this->tableGateway->select();
+        $select = $this->getSelect();
+
+        $select->order('is_external ASC');
+
+        return $this->tableGateway->selectWith($select);
     }
 
     public function getInternals()

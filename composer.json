@@ -16,7 +16,6 @@
         "zendframework/zend-component-installer": "^1.0 || ^0.7 || ^1.0.0-dev@dev",
         "zendframework/zend-mvc": "^3.0.1",
         "zfcampus/zf-development-mode": "^3.0",
-        "zendframework/zend-console": "^2.7",
         "zendframework/zend-form": "^2.12",
         "zendframework/zend-json": "^3.1",
         "zendframework/zend-db": "^2.9",
@@ -27,12 +26,14 @@
         "zendframework/zend-navigation": "^2.9",
         "zendframework/zend-ldap": "^2.10",
         "zendframework/zend-mvc-i18n": "^1.1",
-        "zendframework/zend-paginator": "^2.8"
+        "zendframework/zend-paginator": "^2.8",
+        "zendframework/zend-console": "^2.7",
+        "zendframework/zend-mvc-console": "^1.2"
     },
     "autoload": {
         "psr-4": {
-            "Auth\\": "module/Auth/src/",
             "Application\\": "module/Application/src/",
+            "Auth\\": "module/Auth/src/",
             "Organization\\": "module/Organization/src/",
             "User\\": "module/User/src/",
             "Resource\\": "module/Resource/src/",

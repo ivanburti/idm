@@ -1,32 +1,19 @@
 <ul class="nav navbar-nav">
     <?php foreach ($container as $page): ?>
-        <?php $hasChildren = $page->hasPages() ?>
-        <?php $dropdownClass = ($hasChildren) ? 'dropdown' : '' ?>
-        <?php $link = ($hasChildren) ? '#' : $page->getHref() ?>
-        <?php $linkAttributes = ($hasChildren) ? 'class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"' : '' ?>
-        <?php $caret = ($hasChildren) ? ' <span class="caret"></span>' : '' ?>
-
-        <li class="<?= ($page->isActive()) ? 'active' : ''?> <?= $dropdownClass ?>">
-            <a href="<?= $link ?>" <?= $linkAttributes ?>><?= $page->getLabel() ?><?= $caret ?></a>
-            <?php if ($hasChildren): ?>
-                <ul class="dropdown-menu">
-                    <?php foreach ($page->getPages() as $child) : ?>
-                        <li><a href="<?= $child->getHref() ?>"><?= $child->getLabel() ?></a></li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
+        <?php
+        //var_dump(get_class_methods($page));
+        //$parent = $page->getParent();
+        //var_dump(get_class_methods($parent));
+        //var_dump($page->getParent());
+        //exit();
+        $active_class = 'active';
+        ?>
+        <li class="<?= $active_class ?>">
+            <a href="<?= $page->getHref() ?>"><?= $page->getLabel() ?></a>
         </li>
     <?php endforeach ?>
 </ul>
-<ul class="nav navbar-nav navbar-right">
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= $this->UserIdentity()->getUsername() ?> <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-            <li><a href="<?= $this->url('account') ?>"><?= $this->translate('my_profile') ?></a></li>
-            <li><a href="<?= $this->url('access', ['action' => 'request']) ?>"><?= $this->translate('request_access') ?></a></li>
-            <li><a href="<?= $this->url('account', ['action' => 'security_challenges']) ?>"><?= $this->translate('security_challenges') ?></a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="<?= $this->url('logout') ?>"><?= $this->translate('logout') ?></a></li>
-        </ul>
-    </li>
-</ul>
+
+<?php
+
+?>
