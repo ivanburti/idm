@@ -17,13 +17,13 @@ class AccessTable
     public function searchAccesses($data)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->join('resources', 'accesses.resources_resource_id = resources.resource_id', ['resource_name' => 'name']);
-        $select->join('users', 'accesses.users_user_id = users.user_id', ['user_full_name' => 'full_name'], 'left');
+        $select->join('resource', 'access.resource_resource_id = resource.resource_id', ['resource_name' => 'name']);
+        $select->join('user', 'access.user_user_id = user.user_id', ['user_full_name' => 'full_name'], 'left');
 
-        ($data['username']) ? $select->where->like('accesses.username', '%'.$data['username'].'%') : null;
-        ($data['resources_resource_id']) ? $select->where(['accesses.resources_resource_id' => $data['resources_resource_id']]) : null;
-        ($data['users_user_id']) ? $select->where(['accesses.users_user_id' => $data['users_user_id']]) : null;
-        ($data['status']) ? $select->where(['accesses.status' => $data['status']]) : null;
+        ($data['username']) ? $select->where->like('access.username', '%'.$data['username'].'%') : null;
+        ($data['resource_resource_id']) ? $select->where(['access.resource_resource_id' => $data['resource_resource_id']]) : null;
+        ($data['user_user_id']) ? $select->where(['access.user_user_id' => $data['user_user_id']]) : null;
+        ($data['status']) ? $select->where(['access.status' => $data['status']]) : null;
 
         return $this->tableGateway->selectWith($select);
     }
@@ -31,9 +31,9 @@ class AccessTable
     public function getOrphans()
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->join('resources', 'accesses.resources_resource_id = resources.resource_id', ['resource_name' => 'name']);
-        $select->join('users', 'accesses.users_user_id = users.user_id', ['user_full_name' => 'full_name'], 'left');
-        $select->where->isNull('users_user_id');
+        $select->join('resource', 'access.resource_resource_id = resource.resource_id', ['resource_name' => 'name']);
+        $select->join('user', 'access.user_user_id = user.user_id', ['user_full_name' => 'full_name'], 'left');
+        $select->where->isNull('user_user_id');
         $select->where->isNull('is_generic');
         $select->order('username ASC');
 
@@ -43,8 +43,8 @@ class AccessTable
     public function getAccesses($conditions = [])
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->join('resources', 'accesses.resources_resource_id = resources.resource_id', ['resource_name' => 'name']);
-        $select->join('users', 'accesses.users_user_id = users.user_id', ['user_full_name' => 'full_name'], 'left');
+        $select->join('resource', 'access.resource_resource_id = resource.resource_id', ['resource_name' => 'name']);
+        $select->join('user', 'access.user_user_id = user.user_id', ['user_full_name' => 'full_name'], 'left');
         if ($conditions) {
             $select->where($conditions);
         }
@@ -68,14 +68,14 @@ class AccessTable
     {
         $user_id = (int) $user_id;
 
-        return $this->getAccesses(['users_user_id' => $user_id]);
+        return $this->getAccesses(['user_user_id' => $user_id]);
     }
 
     public function getAccessesByResourceId($resource_id)
     {
         $resource_id = (int) $resource_id;
 
-        return $this->getAccesses(['resources_resource_id' => $resource_id]);
+        return $this->getAccesses(['resource_resource_id' => $resource_id]);
     }
 
     public function saveAccess(Access $access)
@@ -83,8 +83,8 @@ class AccessTable
         $data = [
             'username' => $access->username,
             'status'  => $access->status,
-            'resources_resource_id' => $access->resources_resource_id,
-            'users_user_id'  => $access->users_user_id,
+            'resource_resource_id' => $access->resource_resource_id,
+            'user_user_id'  => $access->user_user_id,
             'is_generic' => $access->is_generic,
         ];
 

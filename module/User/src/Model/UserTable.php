@@ -27,7 +27,7 @@ class UserTable
     {
         $select = $this->getSelectUsers();
 
-        ($onlyEnabled) ? $select->where(['user.status' => 1 ]) : null;
+        //($onlyEnabled) ? $select->where(['user.status' => 1 ]) : null;
 
         return $this->tableGateway->selectWith($select);
     }
@@ -37,7 +37,7 @@ class UserTable
         $select = $this->getSelectUsers();
         $select->where(['user_id' => $users]);
 
-        ($onlyEnabled) ? $select->where(['user.status' => 1 ]) : null;
+        //($onlyEnabled) ? $select->where(['user.status' => 1 ]) : null;
 
         return $this->tableGateway->selectWith($select);
     }
@@ -46,7 +46,7 @@ class UserTable
     {
         $select = $this->getSelectUsers();
 
-        ($onlyEnabled) ? $select->where(['user.status' => 1]) : null;
+        //($onlyEnabled) ? $select->where(['user.status' => 1]) : null;
 
         return $this->tableGateway->selectWith($select);
     }
@@ -55,7 +55,7 @@ class UserTable
     {
         $select = $this->getSelectUsers();
 
-        ($onlyEnabled) ? $select->where(['user.status' => 1]) : null;
+        //($onlyEnabled) ? $select->where(['user.status' => 1]) : null;
 
         return $this->tableGateway->selectWith($select);
     }

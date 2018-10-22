@@ -2,8 +2,9 @@
 
 namespace User\Controller;
 
+use RuntimeException;
 use Zend\Mvc\Controller\AbstractActionController;
-use User\Form\UserForm;
+use User\Filter\UserFilter;
 use User\Service\UserService;
 use Organization\Service\OrganizationService;
 use Access\Service\AccessService;
@@ -12,58 +13,65 @@ use User\Model\User;
 
 class UserConsoleController extends AbstractActionController
 {
-	private $userForm;
+	private $userFilter;
 	private $userService;
 	private $organizationService;
 	private $accessService;
 
-	public function __construct(UserForm $userForm, UserService $userService, OrganizationService $organizationService, AccessService $accessService)
+	public function __construct(UserFilter $userFilter, UserService $userService, OrganizationService $organizationService, AccessService $accessService)
 	{
-		$this->userForm = $userForm;
+		$this->userFilter = $userFilter;
 		$this->userService = $userService;
 		$this->organizationService = $organizationService;
 		$this->accessService = $accessService;
 	}
 
-	public function employeesUpdateAction()
+	public function updateEmployeesAction()
 	{
 		ini_set('max_execution_time', 300);
-		
-		$form = $this->userForm->getEmployeeForm();
-		$filter = $form->getInputFilter();
+
+		$organizations = $this->organizationService->getInternalListByEmployerNumber();
+		$filter = $this->userFilter->getEmployeeFilter();
 
 		foreach ($this->userService->getUserSources() as $source) {
+			if (! $source->isEnabled()) {
+				continue;
+			}
+
 			$data = $source->getData();
 
 			foreach ($data as $row) {
-				$organization_id = $this->organizationService->getInternalByEmployerNumber($row['employer_number'])->getOrganizationId();
-
 				$user = new User();
 				$user->exchangeArray($row);
-				$user->setOrganizationId($organization_id);
+				$user->setOrganizationId(array_search($row['employer_number'], $organizations));
 
 				$filter->setData($user->getArrayCopy());
 				if (! $filter->isValid()) {
-					var_dump($user);
-					var_dump($filter->getMessages());
+					//Generate alert
 					continue;
 				}
 
 				try {
 					$user = $this->userService->getEmployeeByWorkIdOrganizationId($user->getWorkId(), $user->getOrganizationId());
-				} catch (\Exception $e) {
+				} catch (RuntimeException $e) {
 					$user = $this->userService->addEmployee($user);
 				}
 
 				$this->userService->updateEmployee($user, $row);
+			}
+		}
+	}
 
-				if ($user->getResignationDate() && $user->isEnabled()) {
-					if (date_create($user->getResignationDate()) < date_create()) {
-						$this->userService->disableEmployee($user->getUserId());
-					}
+	public function disableAction()
+	{
+		$users = $this->userService->getUsers();
+
+		foreach($users as $user) {
+			if ($user->getResignationDate() && $user->isEnabled()) {
+				if (date_create($user->getResignationDate()) < date_create()) {
+					$this->userService->disableUser($user->getUserId());
 				}
 			}
-
 		}
 	}
 }

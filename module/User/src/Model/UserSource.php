@@ -15,10 +15,6 @@ class UserSource
     public $encoding;
     public $is_enabled;
 
-    public function isJson($string){
-        return is_string($string) && is_array(json_decode($string, true)) && (json_last_error() == JSON_ERROR_NONE) ? true : false;
-    }
-
     public function exchangeArray($data)
     {
         $this->user_source_id = !empty($data['user_source_id']) ? $data['user_source_id'] : null;
@@ -45,6 +41,15 @@ class UserSource
             'encoding' => $this->encoding,
             'is_enabled' => $this->is_enabled,
         ];
+    }
+
+    public function isJson($string){
+        return is_string($string) && is_array(json_decode($string, true)) && (json_last_error() == JSON_ERROR_NONE) ? true : false;
+    }
+
+    public function isEnabled()
+    {
+        return ($this->is_enabled) ? true : false;
     }
 
     public function getData()
@@ -84,7 +89,6 @@ class UserSource
 
             fclose($handle);
         }
-
 
         return $data;
 	}

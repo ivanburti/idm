@@ -35,6 +35,11 @@ class OrganizationService
         return array_column($this->getInternals()->toArray(), 'alias', 'organization_id');
     }
 
+    public function getInternalListByEmployerNumber()
+    {
+        return array_column($this->getInternals()->toArray(), 'employer_number', 'organization_id');
+    }
+
     public function getExternals()
     {
         return $this->organizationTable->getExternals();
@@ -53,11 +58,6 @@ class OrganizationService
     public function getInternalById($organization_id)
     {
         return $this->organizationTable->getInternalById($organization_id);
-    }
-
-    public function getInternalByEmployerNumber($employer_number)
-    {
-        return $this->organizationTable->getInternalByEmployerNumber($employer_number);
     }
 
     public function getExternalById($organization_id)
@@ -84,4 +84,11 @@ class OrganizationService
     {
         return $this->organizationTable->saveExternal($organization);
     }
+
+    /*
+    public function getInternalByEmployerNumber($employer_number)
+    {
+    return $this->organizationTable->getInternalByEmployerNumber($employer_number);
+}
+*/
 }

@@ -106,9 +106,9 @@ class UserService
         $this->userTable->saveUser($user);
     }
 
-    public function disableEmployee(int $user_id)
+    public function disableUser(int $user_id)
     {
-        $user = $this->getEmployeeById($user_id);
+        $user = $this->getUserById($user_id);
         $user->setIsNotEnabled();
 
         $this->userTable->saveUser($user);

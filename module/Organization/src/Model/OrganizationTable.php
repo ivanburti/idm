@@ -78,20 +78,6 @@ class OrganizationTable
         return $row;
     }
 
-    public function getInternalByEmployerNumber($employer_number)
-    {
-        $select = $this->getSelect();
-        $select->where->isNull('is_external');
-        $select->where(['employer_number' => $employer_number]);
-
-        $rowset = $this->tableGateway->selectWith($select);
-        $row = $rowset->current();
-        if (! $row) {
-            throw new RuntimeException(sprintf('Could not find organization with organization_id'));
-        }
-
-        return $row;
-    }
 
     public function getExternalById($organization_id)
     {
@@ -109,7 +95,7 @@ class OrganizationTable
 
         return $row;
     }
-
+    
     public function saveInternal(Organization $organization)
     {
         return $this->saveOrganization($organization);

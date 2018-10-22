@@ -126,15 +126,6 @@ class UserForm extends Form
             ],
         ]);
 
-        $this->inputFilter->add([
-            'name' => 'work_id',
-            'required' => true,
-            'filters' => [
-                ['name' => Filter\StripTags::class],
-                ['name' => Filter\StringTrim::class],
-            ],
-        ]);
-
         $this->add([
             'type'  => 'text',
             'name' => 'hiring_date',
@@ -144,18 +135,6 @@ class UserForm extends Form
             'attributes' => [
                 'id' => 'hiring_date',
                 'type' => 'date',
-            ],
-        ]);
-
-        $this->inputFilter->add([
-            'name' => 'hiring_date',
-            'required' => true,
-            'filters' => [
-                ['name' => Filter\StripTags::class],
-                ['name' => Filter\StringTrim::class],
-            ],
-            'validators' => [
-                ['name' => Validator\Date::class],
             ],
         ]);
 
@@ -171,19 +150,6 @@ class UserForm extends Form
             ],
         ]);
 
-        $this->inputFilter->add([
-            'name' => 'resignation_date',
-            'required' => true,
-            'allow_empty' => true,
-            'filters' => [
-                ['name' => Filter\StripTags::class],
-                ['name' => Filter\StringTrim::class],
-            ],
-            'validators' => [
-                ['name' => Validator\Date::class],
-            ],
-        ]);
-
         $this->add([
             'type'  => 'text',
             'name' => 'position',
@@ -192,16 +158,6 @@ class UserForm extends Form
             ],
             'attributes' => [
                 'id' => 'position'
-            ],
-        ]);
-
-        $this->inputFilter->add([
-            'name' => 'position',
-            'required' => true,
-            'allow_empty' => true,
-            'filters' => [
-                ['name' => Filter\StripTags::class],
-                ['name' => Filter\StringTrim::class],
             ],
         ]);
 
@@ -216,21 +172,9 @@ class UserForm extends Form
             ],
         ]);
 
-        $this->inputFilter->add([
-            'name' => 'supervisor_name',
-            'required' => true,
-            'allow_empty' => true,
-            'filters' => [
-                ['name' => Filter\StripTags::class],
-                ['name' => Filter\StringTrim::class],
-            ],
-        ]);
-
         $this->get('organization_organization_id')->setOptions(['value_options' => $this->organizationService->getInternalList()]);
 
-        $this->inputFilter->get('organization_organization_id')->getValidatorChain()->addValidator(new Validator\InArray([
-            'haystack' => array_keys($this->organizationService->getInternalList())
-        ]));
+
 
         return $this;
     }
