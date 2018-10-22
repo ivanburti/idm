@@ -55,6 +55,11 @@ class OrganizationService
         return $this->organizationTable->getInternalById($organization_id);
     }
 
+    public function getInternalByEmployerNumber($employer_number)
+    {
+        return $this->organizationTable->getInternalByEmployerNumber($employer_number);
+    }
+
     public function getExternalById($organization_id)
     {
         return $this->organizationTable->getExternalById($organization_id);

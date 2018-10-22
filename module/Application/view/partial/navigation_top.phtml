@@ -1,19 +1,16 @@
 <ul class="nav navbar-nav">
     <?php foreach ($container as $page): ?>
         <?php
-        //var_dump(get_class_methods($page));
-        //$parent = $page->getParent();
-        //var_dump(get_class_methods($parent));
-        //var_dump($page->getParent());
-        //exit();
-        $active_class = 'active';
-        ?>
-        <li class="<?= $active_class ?>">
-            <a href="<?= $page->getHref() ?>"><?= $page->getLabel() ?></a>
-        </li>
+        if ($page->getRouteMatch()) :
+            $matched_route_name = $page->getRouteMatch()->getMatchedRouteName();
+
+            $parent_route = explode("/", $matched_route_name);
+
+            $active_class = ($parent_route[0] == $page->getRoute()) ? 'active' : '';
+            ?>
+            <li class="<?= $active_class ?>">
+                <a href="<?= $page->getHref() ?>"><?= $page->getLabel() ?></a>
+            </li>
+        <?php endif; ?>
     <?php endforeach ?>
 </ul>
-
-<?php
-
-?>

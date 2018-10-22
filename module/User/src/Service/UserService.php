@@ -2,16 +2,20 @@
 
 namespace User\Service;
 
-use Exception;
+use RuntimeException;
 use User\Model\UserTable;
+use User\Model\UserSourceTable;
+use User\Model\User;
 
 class UserService
 {
     private $userTable;
+    private $userSourceTable;
 
-    public function __construct(UserTable $userTable)
+    public function __construct(UserTable $userTable,  UserSourceTable $userSourceTable)
     {
         $this->userTable = $userTable;
+        $this->userSourceTable = $userSourceTable;
     }
 
     public function getUsers($onlyEnabled = true)
@@ -63,6 +67,11 @@ class UserService
         return $this->userTable->getEmployeeById($user_id);
     }
 
+    public function getEmployeeByWorkIdOrganizationId($work_id, $organization_id)
+    {
+        return $this->userTable->getEmployeeByWorkIdOrganizationId($work_id, $organization_id);
+    }
+
     public function getServiceProviderById($user_id){
         return $this->userTable->getServiceProviderById($user_id);
     }
@@ -70,5 +79,38 @@ class UserService
     public function getUsersByOrganizationId($organization_id)
     {
         return $this->userTable->getUsersByOrganizationId($organization_id);
+    }
+
+    public function getUserSources()
+    {
+        return $this->userSourceTable->getSources();
+    }
+
+    public function addEmployee(User $user)
+    {
+        $user->setIsEnabled();
+        $user_id = $this->userTable->saveUser($user);
+
+        return $this->getEmployeeById($user_id);
+    }
+
+    public function updateEmployee(User $user, $data)
+    {
+        $this->getEmployeeById($user->getUserId());
+
+        $user->setFullName($data['full_name']);
+        $user->setSupervisorName($data['supervisor_name']);
+        $user->setPosition($data['position']);
+        $user->setResignationDate($data['resignation_date']);
+
+        $this->userTable->saveUser($user);
+    }
+
+    public function disableEmployee(int $user_id)
+    {
+        $user = $this->getEmployeeById($user_id);
+        $user->setIsNotEnabled();
+
+        $this->userTable->saveUser($user);
     }
 }

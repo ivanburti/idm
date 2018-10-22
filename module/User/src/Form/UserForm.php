@@ -3,31 +3,22 @@
 namespace User\Form;
 
 use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
+use Zend\Filter;
+use Zend\Validator;
 use Organization\Service\OrganizationService;
-use User\Service\UserService;
 
 class UserForm extends Form
 {
+    private $inputFilter;
     private $organizationService;
-    private $userService;
 
-    public function __construct(OrganizationService $organizationService, UserService $userService)
+    public function __construct(OrganizationService $organizationService)
     {
+        $this->inputFilter = new InputFilter();
+        $this->organizationService = $organizationService;
+
         parent::__construct('form-user');
-
-        //$this->organizationService = $organizationService;
-		//$this->userService = $userService;
-
-        $this->add([
-            'type'  => 'text',
-            'name' => 'email',
-            'options' => [
-                'label' => 'Email',
-            ],
-            'attributes' => [
-                'id' => 'email'
-            ],
-        ]);
 
         $this->add([
             'type'  => 'text',
@@ -37,6 +28,15 @@ class UserForm extends Form
             ],
             'attributes' => [
                 'id' => 'full_name'
+            ],
+        ]);
+
+        $this->inputFilter->add([
+            'name' => 'full_name',
+            'required' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
             ],
         ]);
 
@@ -52,6 +52,18 @@ class UserForm extends Form
             ],
         ]);
 
+        $this->inputFilter->add([
+            'name' => 'birthday_date',
+            'required' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
+            ],
+            'validators' => [
+                ['name' => Validator\Date::class],
+            ],
+        ]);
+
         $this->add([
             'type'  => 'text',
             'name' => 'personal_id',
@@ -63,6 +75,46 @@ class UserForm extends Form
             ],
         ]);
 
+        $this->inputFilter->add([
+            'name' => 'personal_id',
+            'required' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
+            ],
+        ]);
+
+        $this->add([
+            'type'  => 'select',
+            'name' => 'organization_organization_id',
+            'options' => [
+                'label' => 'Organization',
+                'empty_option' => 'Select ...',
+            ],
+            'attributes' => [
+                'id' => 'organization_organization_id',
+            ],
+        ]);
+
+        $this->inputFilter->add([
+            'name' => 'organization_organization_id',
+            'required' => true,
+        ]);
+
+        $this->add([
+            'name' => 'submit',
+            'type' => 'submit',
+            'attributes' => [
+                'value' => 'Save',
+                'id' => 'submit',
+            ],
+        ]);
+
+        $this->setInputFilter($this->inputFilter);
+    }
+
+    public function getEmployeeForm()
+    {
         $this->add([
             'type'  => 'text',
             'name' => 'work_id',
@@ -71,6 +123,15 @@ class UserForm extends Form
             ],
             'attributes' => [
                 'id' => 'work_id'
+            ],
+        ]);
+
+        $this->inputFilter->add([
+            'name' => 'work_id',
+            'required' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
             ],
         ]);
 
@@ -86,6 +147,18 @@ class UserForm extends Form
             ],
         ]);
 
+        $this->inputFilter->add([
+            'name' => 'hiring_date',
+            'required' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
+            ],
+            'validators' => [
+                ['name' => Validator\Date::class],
+            ],
+        ]);
+
         $this->add([
             'type'  => 'text',
             'name' => 'resignation_date',
@@ -95,6 +168,19 @@ class UserForm extends Form
             'attributes' => [
                 'id' => 'resignation_date',
                 'type' => 'date',
+            ],
+        ]);
+
+        $this->inputFilter->add([
+            'name' => 'resignation_date',
+            'required' => true,
+            'allow_empty' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
+            ],
+            'validators' => [
+                ['name' => Validator\Date::class],
             ],
         ]);
 
@@ -109,38 +195,49 @@ class UserForm extends Form
             ],
         ]);
 
+        $this->inputFilter->add([
+            'name' => 'position',
+            'required' => true,
+            'allow_empty' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
+            ],
+        ]);
+
         $this->add([
-            'type'  => 'select',
+            'type'  => 'text',
             'name' => 'supervisor_name',
             'options' => [
                 'label' => 'Supervisor Name',
-                'empty_option' => 'Select...'
             ],
             'attributes' => [
                 'id' => 'supervisor_name'
             ],
         ]);
 
-        $this->add([
-            'type'  => 'select',
-            'name' => 'organizations_organization_id',
-            'options' => [
-                'label' => 'Organization',
-                'empty_option' => 'Select...'
-                //'value_options' => $organizationService->getInternalList()
-            ],
-            'attributes' => [
-                'id' => 'organizations_organization_id'
+        $this->inputFilter->add([
+            'name' => 'supervisor_name',
+            'required' => true,
+            'allow_empty' => true,
+            'filters' => [
+                ['name' => Filter\StripTags::class],
+                ['name' => Filter\StringTrim::class],
             ],
         ]);
 
-        $this->add([
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => [
-                'value' => 'Save',
-                'id' => 'submit',
-            ],
-        ]);
+        $this->get('organization_organization_id')->setOptions(['value_options' => $this->organizationService->getInternalList()]);
+
+        $this->inputFilter->get('organization_organization_id')->getValidatorChain()->addValidator(new Validator\InArray([
+            'haystack' => array_keys($this->organizationService->getInternalList())
+        ]));
+
+        return $this;
+    }
+
+    public function getExternalForm()
+    {
+
+        return $this;
     }
 }

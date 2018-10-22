@@ -55,8 +55,14 @@ return [
                 'route' => 'resource',
                 'pages' => [
                     [
-                        'label' => 'Add Resource',
+                        'label' => 'Add',
                         'route' => 'resource',
+                        'action' => 'add'
+                    ],
+                    [
+                        'label' => 'Edit',
+                        'route' => 'resource',
+                        'action' => 'edit'
                     ],
                 ],
             ],

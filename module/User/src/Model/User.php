@@ -4,9 +4,6 @@ namespace User\Model;
 
 class User
 {
-	const USER_STATUS_ACTIVE = 1;
-	const USER_STATUS_DISABLED = 2;
-
 	public $user_id;
 	public $email;
 	public $full_name;
@@ -18,11 +15,13 @@ class User
 	public $position;
 	public $supervisor_name;
 	public $status;
+	public $is_enabled;
 	public $created_on;
 	public $updated_on;
-	public $organizations_organization_id;
-	public $organizations_type;
-	public $organizations_status;
+	public $organization_organization_id;
+	public $organization_name;
+	public $organization_is_enabled;
+	public $organization_is_external;
 
 	public function exchangeArray($data)
 	{
@@ -33,16 +32,17 @@ class User
 		$this->personal_id = !empty($data['personal_id']) ? $data['personal_id'] : null;
 		$this->work_id = !empty($data['work_id']) ? $data['work_id'] : null;
 		$this->hiring_date = !empty($data['hiring_date']) ? $data['hiring_date'] : null;
-		$this->setResignationDate($data['resignation_date']);
-		#$this->resignation_date = !empty($data['resignation_date']) ? $data['resignation_date'] : null;
+		$this->resignation_date = !empty($data['resignation_date']) ? $data['resignation_date'] : null;
 		$this->position = !empty($data['position']) ? $data['position'] : null;
 		$this->supervisor_name = !empty($data['supervisor_name']) ? $data['supervisor_name'] : null;
 		$this->status = !empty($data['status']) ? $data['status'] : null;
+		$this->is_enabled = !empty($data['is_enabled']) ? $data['is_enabled'] : null;
 		$this->created_on = !empty($data['created_on']) ? $data['created_on'] : null;
 		$this->updated_on = !empty($data['updated_on']) ? $data['updated_on'] : null;
-		$this->organizations_organization_id = !empty($data['organizations_organization_id']) ? $data['organizations_organization_id'] : null;
-		$this->organizations_type = !empty($data['organizations_type']) ? $data['organizations_type'] : null;
-		$this->organizations_status = !empty($data['organizations_status']) ? $data['organizations_status'] : null;
+		$this->organization_organization_id = !empty($data['organization_organization_id']) ? $data['organization_organization_id'] : null;
+		$this->organization_name = !empty($data['organization_name']) ? $data['organization_name'] : null;
+		$this->organization_is_enabled = !empty($data['organization_is_enabled']) ? $data['organization_is_enabled'] : null;
+		$this->organization_is_external = !empty($data['organization_is_external']) ? $data['organization_is_external'] : null;
 	}
 
 	public function getArrayCopy()
@@ -59,19 +59,16 @@ class User
 			'position' => $this->position,
 			'supervisor_name' => $this->supervisor_name,
 			'status' => $this->status,
+			'is_enabled' => $this->is_enabled,
 			'created_on' => $this->created_on,
 			'updated_on' => $this->updated_on,
-			'organizations_organization_id' => $this->organizations_organization_id,
-			'organizations_type' => $this->organizations_type,
-			'organizations_status' => $this->organizations_status,
+			'organization_organization_id' => $this->organization_organization_id,
 		];
 	}
 
-	public function isEnabled()
+	public function setUserId(int $user_id)
 	{
-		if ($this->status == 1) {
-			return true;
-		}
+		$this->user_id = $user_id;
 	}
 
 	public function getUserId() {
@@ -127,27 +124,33 @@ class User
 		return $this->supervisor_name;
 	}
 
-	public function getStatus() {
-		return $this->status;
-	}
-
-	public function getStatusAsString() {
-		$list = self::getStatusList();
-		if (isset($list[$this->status]))
-		return $list[$this->status];
-
-		return 'Unknown';
-	}
-
-	public static function getStatusList()
+	public function setIsEnabled()
 	{
-		return [
-			self::USER_STATUS_ACTIVE => 'Active',
-			self::USER_STATUS_DISABLED => 'Disabled',
-		];
+		$this->is_enabled = 1;
+	}
+
+	public function setIsNotEnabled()
+	{
+		$this->is_enabled = null;
+	}
+
+	public function getIsEnabled()
+	{
+		return $this->is_enabled;
+	}
+
+	public function isEnabled()
+	{
+		if ($this->getIsEnabled()) {
+			return true;
+		}
 	}
 
 	public function getOrganizationId() {
-		return $this->organizations_organization_id;
+		return $this->organization_organization_id;
+	}
+
+	public function setOrganizationId(int $organization_id) {
+		$this->organization_organization_id = $organization_id;
 	}
 }
