@@ -40,6 +40,7 @@ class User
 		$this->created_on = !empty($data['created_on']) ? $data['created_on'] : null;
 		$this->updated_on = !empty($data['updated_on']) ? $data['updated_on'] : null;
 		$this->organization_organization_id = !empty($data['organization_organization_id']) ? $data['organization_organization_id'] : null;
+		$this->organization_alias = !empty($data['organization_alias']) ? $data['organization_alias'] : null;
 		$this->organization_name = !empty($data['organization_name']) ? $data['organization_name'] : null;
 		$this->organization_is_enabled = !empty($data['organization_is_enabled']) ? $data['organization_is_enabled'] : null;
 		$this->organization_is_external = !empty($data['organization_is_external']) ? $data['organization_is_external'] : null;
@@ -63,6 +64,10 @@ class User
 			'created_on' => $this->created_on,
 			'updated_on' => $this->updated_on,
 			'organization_organization_id' => $this->organization_organization_id,
+			'organization_alias' => $this->organization_alias,
+			'organization_name' => $this->organization_name,
+			'organization_is_enabled' => $this->organization_is_enabled,
+			'organization_is_external' => $this->organization_is_external,
 		];
 	}
 
@@ -152,5 +157,25 @@ class User
 
 	public function setOrganizationId(int $organization_id) {
 		$this->organization_organization_id = $organization_id;
+	}
+
+	public function getOrganizationAlias()
+	{
+
+	}
+
+	public function getOrganizationName()
+	{
+
+	}
+
+	public function isOrganizationEnabled()
+	{
+		return ($this->organization_is_enabled) ? true : false;
+	}
+
+	public function isOrganizationExternal()
+	{
+		return ($this->organization_is_external) ? true : false;
 	}
 }

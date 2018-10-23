@@ -22,6 +22,11 @@ class InternalController extends AbstractActionController
 		$this->userService = $userService;
 	}
 
+	public function indexAction()
+	{
+		return $this->redirect()->toRoute('organization');
+	}
+
 	public function addAction()
 	{
 		$form = $this->organizationForm->getInternalForm();

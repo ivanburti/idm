@@ -12,7 +12,6 @@ $this->headTitle($title);
                     <th><?= $this->translate('Status') ?></th>
                     <th><?= $this->translate('Resource') ?></th>
                     <th><?= $this->translate('Username') ?></th>
-                    <th><?= $this->translate('Name') ?></th>
                     <th></th>
                 </tr>
             </thead>
@@ -20,15 +19,14 @@ $this->headTitle($title);
                 <?php foreach ($accesses as $access) : ?>
                     <tr>
                         <td>
-                            <?php $label = ($access->isActive()) ? 'success' : 'default' ?>
-                            <span class="label label-<?= $label ?>"><?= $this->escapeHtml($access->getStatusAsString()) ?></span>
+                            <?php $label = ($access->isEnabled()) ? 'success' : 'default' ?>
                         </td>
                         <td><?= $this->escapeHtml($access->getResourceName()) ?></td>
                         <td><?= $this->escapeHtml($access->getUsername()) ?></td>
-                        <td><?= $this->escapeHtml($access->getUserFullName()) ?></td>
+
                         <td>
                             <?php if (1 == 1): ?>
-                                <a class="btn btn-sm btn-primary" href="<?= $this->url('access', ['action' => 'link', 'id' => $access->getAccessId()]) ?>"><i class="fas fa-link"></i> <?= $this->translate('Link') ?></a>
+                                <a class="btn btn-sm btn-primary" href="<?= $this->url('access', ['action' => 'edit', 'id' => $access->getAccessId()]) ?>"><i class="fas fa-edit"></i> <?= $this->translate('Edit') ?></a>
                             <?php endif; ?>
                         <td>
                     </tr>

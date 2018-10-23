@@ -34,7 +34,7 @@ class UserController extends AbstractActionController
 
 		$viewData = [
 			'form' => $form,
-			'users' => [],
+			'users' => $this->userService->getUsers(),
 		];
 
 		$request = $this->getRequest();

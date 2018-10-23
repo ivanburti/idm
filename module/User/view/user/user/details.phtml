@@ -23,7 +23,7 @@ $this->headTitle($title);
                 </tr>
                 <tr>
                     <th><?= $this->translate('Supervisor') ?> :</th>
-                    <td><?= $this->escapeHtml($user->getSupervisor()) ?></td>
+                    <td><?= $this->escapeHtml($user->getSupervisorName()) ?></td>
                 </tr>
                 <tr>
                     <th><?= $this->translate('Hiring Date') ?> :</th>
@@ -37,8 +37,8 @@ $this->headTitle($title);
         </table>
     </div>
     <div class="col-lg-6">
-        <a class="btn btn-primary" href="<?= $this->url('user/user', ['action' => 'edit', 'id' => $user->getId()]) ?>"><i class="fas fa-edit"></i> <?= $this->translate('Edit User') ?></a>
-        <a class="btn btn-danger" href="<?= $this->url('user/user', ['action' => 'disable', 'id' => $user->getId()]) ?>"><i class="fas fa-ban"></i> <?= $this->translate('Disable User') ?></a>
+        <a class="btn btn-primary" href="<?= $this->url('user/user', ['action' => 'edit', 'id' => $user->getUserId()]) ?>"><i class="fas fa-edit"></i> <?= $this->translate('Edit User') ?></a>
+        <a class="btn btn-danger" href="<?= $this->url('user/user', ['action' => 'disable', 'id' => $user->getUserId()]) ?>"><i class="fas fa-ban"></i> <?= $this->translate('Disable User') ?></a>
     </div>
 </div>
 

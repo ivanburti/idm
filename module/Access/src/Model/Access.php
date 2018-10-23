@@ -4,31 +4,33 @@ namespace Access\Model;
 
 class Access
 {
-	const ACCESS_STATUS_DISABLED = 2;
-	const ACCESS_STATUS_ACTIVE = 1;
-
 	public $access_id;
 	public $username;
-	public $status;
-	public $resources_resource_id;
-	public $users_user_id;
+	public $is_enabled;
 	public $is_generic;
 	public $comment;
-
+	public $created_on;
+	public $resource_resource_id;
+	public $user_user_id;
 	public $resource_name;
+	public $resource_is_enabled;
 	public $user_full_name;
+	public $user_is_enabled;
 
 	public function exchangeArray($data)
 	{
 		$this->access_id = !empty($data['access_id']) ? $data['access_id'] : null;
 		$this->username = !empty($data['username']) ? $data['username'] : null;
-		$this->status = !empty($data['status']) ? $data['status'] : null;
-		$this->resources_resource_id = !empty($data['resources_resource_id']) ? $data['resources_resource_id'] : null;
-		$this->users_user_id = !empty($data['users_user_id']) ? $data['users_user_id'] : null;
-		$this->resource_name = !empty($data['resource_name']) ? $data['resource_name'] : null;
-		$this->user_full_name = !empty($data['user_full_name']) ? $data['user_full_name'] : null;
+		$this->is_enabled = !empty($data['is_enabled']) ? $data['is_enabled'] : null;
 		$this->is_generic = !empty($data['is_generic']) ? $data['is_generic'] : null;
 		$this->comment = !empty($data['comment']) ? $data['comment'] : null;
+		$this->created_on = !empty($data['created_on']) ? $data['created_on'] : null;
+		$this->resource_resource_id = !empty($data['resource_resource_id']) ? $data['resource_resource_id'] : null;
+		$this->user_user_id = !empty($data['user_user_id']) ? $data['user_user_id'] : null;
+		$this->resource_name = !empty($data['resource_name']) ? $data['resource_name'] : null;
+		$this->resource_is_enabled = !empty($data['resource_is_enabled']) ? $data['resource_is_enabled'] : null;
+		$this->user_full_name = !empty($data['user_full_name']) ? $data['user_full_name'] : null;
+		$this->user_is_enabled = !empty($data['user_is_enabled']) ? $data['user_is_enabled'] : null;
 	}
 
 	public function getArrayCopy()
@@ -36,11 +38,16 @@ class Access
 		return [
 			'access_id' => $this->access_id,
 			'username' => $this->username,
-			'status' => $this->status,
-			'resources_resource_id' => $this->resources_resource_id,
-			'users_user_id' => $this->users_user_id,
+			'is_enabled' => $this->is_enabled,
 			'is_generic' => $this->is_generic,
 			'comment' => $this->comment,
+			'created_on' => $this->created_on,
+			'resource_resource_id' => $this->resource_resource_id,
+			'user_user_id' => $this->user_user_id,
+			'resource_name' => $this->resource_name,
+			'resource_is_enabled' => $this->resource_is_enabled,
+			'user_full_name' => $this->user_full_name,
+			'user_is_enabled' => $this->user_is_enabled,
 		];
 	}
 
@@ -63,41 +70,22 @@ class Access
 		return $this->username;
 	}
 
-	public function getStatus() {
-		return $this->status;
-	}
-
-	public function isActive()
+	public function isEnabled()
 	{
-		if ($this->status == self::ACCESS_STATUS_ACTIVE) {
+		if ($this->is_enabled) {
 			return true;
 		}
-	}
-
-	public function getStatusAsString() {
-		$list = self::getStatusList();
-		if (isset($list[$this->status]))
-		return $list[$this->status];
-
 		return false;
 	}
 
-	public function getStatusList()
+	public function getComment()
 	{
-		return [
-			self::ACCESS_STATUS_ACTIVE => 'Active',
-			self::ACCESS_STATUS_DISABLED => 'Disabled',
-		];
+		return $this->comment;
 	}
 
-	public function getResourceId()
+	public function getCreatedOn()
 	{
-		return $this->resources_resource_id;
-	}
-
-	public function getUserId()
-	{
-		return $this->users_user_id;
+		return $this->created_on;
 	}
 
 	public function getResourceName()

@@ -56,35 +56,32 @@ class AccessController extends AbstractActionController
 	public function orphansAction()
 	{
 		return [
+			'resource_list' => $this->resourceService->getResourceList(),
 			'accesses' => $this->accessService->getOrphans()
 		];
 	}
 
-	public function linkAction()
+	public function editAction()
 	{
 		$access_id = (int) $this->params()->fromRoute('id', 0);
-
 		$access = $this->accessService->getAccessById($access_id);
 
 		$form = $this->accessForm;
 		$form->bind($access);
-
-		$request = $this->getRequest();
 		$viewData = ['access' => $access, 'form' => $form];
 
+		$request = $this->getRequest();
 		if (! $request->isPost()) {
 			return $viewData;
 		}
 
-		$filter = $this->accessFilter;
-		$form->setInputFilter($filter->getAccessLinkFilter());
-
+		$form->setInputFilter($this->accessFilter->getInputFilter());
 		$form->setData($request->getPost());
 		if (! $form->isValid()) {
 			return $viewData;
 		}
 
-		$this->accessService->linkAccess($access_id, $access->users_user_id);
+		$this->accessService->editAccess($access);
 
 		return $this->redirect()->toRoute('access', ['action' => 'orphans']);
 	}
@@ -102,37 +99,9 @@ class AccessController extends AbstractActionController
 		];
 	}
 
-	/*
-	public function editAction()
-	{
-		$access_id = (int) $this->params()->fromRoute('id', 0);
-
-		$access = $this->accessService->getAccessById($access_id);
-
-		$form = $this->accessForm;
-        $form->bind($access);
-
-		$request = $this->getRequest();
-		$viewData = ['form' => $form];
-
-		if (! $request->isPost()) {
-			return $viewData;
-		}
-
-		$form->setData($request->getPost());
-		if (! $form->isValid()) {
-			return $viewData;
-		}
-
-		$this->accessService->updateAccess($access);
-
-		return $this->redirect()->toRoute('access', ['action' => 'detail', 'id' => $access_id]);
-	}
-
 	public function disableAction() {
 		$access_id = (int) $this->params()->fromRoute('id', 0);
 
 		$access = $this->accessService->getAccessById($access_id);
 	}
-	*/
 }

@@ -11,7 +11,7 @@ return [
             'access' => [
                 'type' => Segment::class,
                 'options' => [
-                    'route' => '/accesses[/:action[/:id]]',
+                    'route' => '/access[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
