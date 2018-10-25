@@ -30,30 +30,31 @@ class UserController extends AbstractActionController
 
 	public function searchAction()
 	{
-		$form = $this->userForm->getUserSearchForm();
-		$user = new User;
+		$form = $this->userForm;
+
+		$viewData = [
+			'form' => $form,
+			'users' => $this->userService->getUsers(),
+		];
 
 		$request = $this->getRequest();
-		if ($request->getQuery('submit')) {
-			$form->setInputFilter($this->userFilter->getUserSearchFilter());
-			$form->setData($request->getQuery());
-
-			if (! $form->isValid()) {
-				throw new \RuntimeException("Error Processing Request", 1);
-			}
-
-			$user->exchangeArray($form->getData());
+		if (! $request->isPost()) {
+			return $viewData;
 		}
 
-		$paginator = $this->userService->searchUsers($user);
+		$form->setInputFilter($this->userFilter->getUserSearchFilter());
+		$form->setData($request->getPost());
 
-	    $page = (int) $this->params()->fromRoute('id', 1);
-	    $page = ($page < 1) ? 1 : $page;
-	    $paginator->setCurrentPageNumber($page);
+		$viewData['form'] = $form;
 
-	    $paginator->setItemCountPerPage(10);
+		if (! $form->isValid()) {
+			return $viewData;
+		}
 
-	    return ['form' => $form, 'users' => $paginator];
+		$viewData['users'] = $this->userService->searchUsers($request->getPost());
+
+		$users = $this->userService->searchUsers($user);
+		return $viewData;
 	}
 
 	public function detailsAction()

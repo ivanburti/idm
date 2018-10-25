@@ -38,8 +38,8 @@
             "User\\": "module/User/src/",
             "Resource\\": "module/Resource/src/",
             "Access\\": "module/Access/src/",
-            "Api\\": "module/Api/src/",
-            "Report\\": "module/Report/src/"
+            "Report\\": "module/Report/src/",
+            "Task\\": "module/Task/src/"
         }
     },
     "autoload-dev": {

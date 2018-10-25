@@ -27,13 +27,13 @@ class AccessController extends AbstractActionController
 		$this->userService = $userService;
 	}
 
-	public function indexAction()
+	public function searchAction()
 	{
 		$form = $this->accessForm;
 
 		$viewData = [
 			'form' => $form,
-			'accesses' => [],
+			'accesses' => $this->accessService->getOrphans(),
 		];
 
 		$request = $this->getRequest();
@@ -81,6 +81,17 @@ class AccessController extends AbstractActionController
 			return $viewData;
 		}
 
+		$this->accessService->editAccess($access);
+
+		return $this->redirect()->toRoute('access', ['action' => 'orphans']);
+	}
+
+	public function setGenericAction()
+	{
+		$access_id = (int) $this->params()->fromRoute('id', 0);
+		$access = $this->accessService->getAccessById($access_id);
+
+		$access->setIsGeneric();
 		$this->accessService->editAccess($access);
 
 		return $this->redirect()->toRoute('access', ['action' => 'orphans']);

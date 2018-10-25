@@ -28,15 +28,12 @@ class ServiceProviderController extends AbstractActionController
 
 	public function indexAction()
 	{
-		return [
-			'users' => $this->userService->getServiceProviders()
-		];
+		return $this->redirect()->toRoute('user');
 	}
 
 	public function addAction()
 	{
-		$form = $this->userForm;
-		//$form->configureServiceProviderForm();
+		$form = $this->userForm->getServiceProviderForm();
 
 		$request = $this->getRequest();
 		if (! $request->isPost()) {
@@ -60,26 +57,29 @@ class ServiceProviderController extends AbstractActionController
 	public function editAction()
 	{
 		$user_id = (int) $this->params()->fromRoute('id', 0);
+		$user = $this->userService->getServiceProviderById($user_id);
 
-		$user = $this->userService->getEmployee($user_id);
-
-		$form = $this->userForm;
+		$form = $this->userForm->getServiceProviderForm();
 		$form->bind($user);
+
+		$viewData = ['user' => $user, 'form' => $form];
 
 		$request = $this->getRequest();
 		if (! $request->isPost()) {
-			return ['form' => $form];
+			return $viewData;
 		}
-	}
 
-	public function viewAction()
-	{
-		$user_id = (int) $this->params()->fromRoute('id', 0);
+		$form->setInputFilter($this->userFilter->getServiceProviderFilter());
+		$form->setData($request->getPost());
+		if (! $form->isValid()) {
+			return $viewData;
+		}
 
-		return [
-			'user' => $this->userService->getEmployee($user_id),
-			'owners' => [],
-			'accesses' => $this->accessService->getUserAccesses($user_id),
-		];
+		var_dump($user);
+		exit();
+
+		$this->accessService->editAccess($access);
+
+		return $this->redirect()->toRoute('access', ['action' => 'orphans']);
 	}
 }

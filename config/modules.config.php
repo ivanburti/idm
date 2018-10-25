@@ -20,5 +20,6 @@ return [
     'User',
     'Resource',
     'Access',
-    'Report'
+    'Report',
+    'Task',
 ];

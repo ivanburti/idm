@@ -2,12 +2,15 @@
 
 namespace User\Filter;
 
+//use DomainException;
 use Zend\InputFilter\InputFilter;
+//use Zend\InputFilter\InputFilterAwareInterface;
+//use Zend\InputFilter\InputFilterInterface;
 use Zend\Filter;
 use Zend\Validator;
 use Organization\Service\OrganizationService;
 
-class UserFilter extends InputFilter
+class UserFilter extends InputFilter //implements InputFilterAwareInterface
 {
     private $organizationService;
     private $inputFilter;
@@ -48,6 +51,14 @@ class UserFilter extends InputFilter
         ]);
 
         $this->inputFilter->add([
+            'name' => 'organization_organization_id',
+            'required' => true,
+        ]);
+    }
+
+    public function getEmployeeFilter()
+    {
+        $this->inputFilter->add([
             'name' => 'work_id',
             'required' => true,
             'filters' => [
@@ -56,25 +67,6 @@ class UserFilter extends InputFilter
             ],
         ]);
 
-        $this->inputFilter->add([
-            'name' => 'organization_organization_id',
-            'required' => true,
-        ]);
-
-    }
-
-    public function getUserSearchFilter()
-    {
-        $this->inputFilter->get('full_name')->setAllowEmpty(true);
-        $this->inputFilter->get('birthday_date')->setRequired(false);
-        $this->inputFilter->get('personal_id')->setRequired(false);
-        $this->inputFilter->get('work_id')->setRequired(false);
-        $this->inputFilter->get('organization_organization_id')->setRequired(false);
-        return $this->inputFilter;
-    }
-
-    public function getEmployeeFilter()
-    {
         $this->inputFilter->add([
             'name' => 'hiring_date',
             'required' => true,
@@ -127,12 +119,13 @@ class UserFilter extends InputFilter
         return $this->inputFilter;
     }
 
+    public function getEmployeeFilter()
+    {
+        return $this->inputFilter;
+    }
+
     public function getServiceProviderFilter()
     {
-        $this->inputFilter->get('organization_organization_id')->getValidatorChain()->addValidator(new Validator\InArray([
-            'haystack' => array_keys($this->organizationService->getExternalList())
-        ]));
-
         return $this->inputFilter;
     }
 }

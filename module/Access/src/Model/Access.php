@@ -72,10 +72,22 @@ class Access
 
 	public function isEnabled()
 	{
-		if ($this->is_enabled) {
-			return true;
-		}
-		return false;
+		return ($this->is_enabled) ? true : false;
+	}
+
+	public function setIsEnabled()
+	{
+		$this->is_enabled = (int) 1;
+	}
+
+	public function isGeneric()
+	{
+		return ($this->is_generic) ? true : false;
+	}
+
+	public function setIsGeneric()
+	{
+		$this->is_generic = (int) 1;
 	}
 
 	public function getComment()

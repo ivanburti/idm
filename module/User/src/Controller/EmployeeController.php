@@ -56,12 +56,29 @@ class EmployeeController extends AbstractActionController
 	public function editAction()
 	{
 		$user_id = (int) $this->params()->fromRoute('id', 0);
-
 		$user = $this->userService->getEmployeeById($user_id);
 
-		$form = $this->userForm;
+		$form = $this->userForm->getEmployeeForm();
 		$form->bind($user);
 
-		return ['form' => $form];
+		$viewData = ['user' => $user, 'form' => $form];
+
+		$request = $this->getRequest();
+		if (! $request->isPost()) {
+			return $viewData;
+		}
+
+		$form->setInputFilter($this->userFilter->getEmployeeFilter());
+		$form->setData($request->getPost());
+		if (! $form->isValid()) {
+			return $viewData;
+		}
+
+		var_dump($user);
+		exit();
+
+		$this->accessService->editAccess($access);
+
+		return $this->redirect()->toRoute('access', ['action' => 'orphans']);
 	}
 }

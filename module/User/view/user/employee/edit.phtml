@@ -47,6 +47,14 @@ $this->headTitle($title);
 
             <div class="col-md-4">
                 <div class="form-group">
+                    <?= $this->formRow($form->get('resignation_date')->setAttributes(['class' => 'form-control'])) ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
                     <?= $this->formRow($form->get('position')->setAttributes(['class' => 'form-control'])) ?>
                 </div>
             </div>
@@ -58,10 +66,16 @@ $this->headTitle($title);
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <?= $this->formRow($form->get('organization_organization_id')->setAttributes(['class' => 'form-control'])) ?>
+                </div>
+            </div>
+        </div>
+
         <?= $this->formSubmit($form->get('submit')->setAttributes(['class' => 'btn btn-primary'])) ?>
 
         <?= $this->form()->closeTag() ?>
-
-
     </div>
 </div>

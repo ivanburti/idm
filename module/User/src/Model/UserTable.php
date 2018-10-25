@@ -3,16 +3,61 @@
 namespace User\Model;
 
 use RuntimeException;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
 use Zend\Db\TableGateway\TableGatewayInterface;
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
 
 class UserTable
 {
     private $tableGateway;
+    private $select;
 
     public function __construct(TableGatewayInterface $tableGateway)
     {
         $this->tableGateway = $tableGateway;
+        $this->select = $this->tableGateway->getSql()->select();
+        $this->select->join('organization', 'organization.organization_id = user.organization_organization_id', ['organization_name' => 'name', 'organization_is_enabled' => 'is_enabled', 'organization_is_external' => 'is_external']);
+    }
+
+    private function fetchPaginatedResults(Select $select)
+    {
+        // Create a new Select object for the table:
+        //$select = new Select($this->tableGateway->getTable());
+
+        // Create a new result set based on the Album entity:
+        $resultSetPrototype = new ResultSet();
+        $resultSetPrototype->setArrayObjectPrototype(new User());
+
+        // Create a new pagination adapter object:
+        $paginatorAdapter = new DbSelect(
+            // our configured select object:
+            $select,
+            // the adapter to run it against:
+            $this->tableGateway->getAdapter(),
+            // the result set to hydrate:
+            $resultSetPrototype
+        );
+
+        $paginator = new Paginator($paginatorAdapter);
+        return $paginator;
+    }
+
+    public function searchUsers(User $user, $paginated = false)
+    {
+        $select = $this->select;
+
+        ($user->full_name) ? $select->where->like('user.full_name', '%'.$user->full_name.'%') : null;
+        ($user->is_enabled) ? $select->where->isNotNull('user.is_enabled') : null;
+        ($user->organization_is_external) ? $select->where->isNotNull('organization.is_external') : null;
+
+        if ($paginated) {
+            return $this->fetchPaginatedResults($select);
+        }
+
+        return $this->tableGateway->selectWith($select);
     }
 
     private function getSelectUsers()

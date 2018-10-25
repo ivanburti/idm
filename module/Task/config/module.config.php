@@ -18,7 +18,7 @@ return [
                     ],
                     'defaults' => [
                         'controller' => Controller\TaskController::class,
-                        'action' => 'index',
+                        'action' => 'search',
                     ],
                 ],
             ],
@@ -36,12 +36,12 @@ return [
     ],
     'form_elements' => [
         'factories' => [
-            Form\OrganizationForm::class => Form\Factory\OrganizationFormFactory::class,
+            Form\TaskForm::class => Form\Factory\TaskFormFactory::class,
         ],
     ],
     'input_filters' => [
         'factories' => [
-            Filter\OrganizationFilter::class => Filter\Factory\OrganizationFilterFactory::class,
+            Filter\TaskFilter::class => Filter\Factory\TaskFilterFactory::class,
         ],
     ],
     'view_manager' => [
@@ -54,23 +54,6 @@ return [
             [
                 'label' => 'Tasks',
                 'route' => 'task',
-                'pages' => [
-                    [
-                        'label' => 'Search',
-                        'route' => 'organization/organization',
-                        'action' => 'search',
-                    ],
-                    [
-                        'label' => 'Add Internal',
-                        'route' => 'organization/internal',
-                        'action' => 'add',
-                    ],
-                    [
-                        'label' => 'Add External',
-                        'route' => 'organization/external',
-                        'action' => 'add',
-                    ],
-                ],
             ],
         ],
     ],

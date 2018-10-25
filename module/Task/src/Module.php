@@ -1,6 +1,6 @@
 <?php
 
-namespace Organization;
+namespace Task;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;

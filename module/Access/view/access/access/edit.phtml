@@ -4,7 +4,6 @@ $title = $this->translate('Edit Access');
 $this->headTitle($title);
 ?>
 
-
 <div class="row">
     <div class="col-lg-6">
 
@@ -33,5 +32,8 @@ $this->headTitle($title);
 
         <?= $this->form()->closeTag() ?>
 
+    </div>
+    <div class="col-lg-6">
+        <a class="btn btn-sm btn-primary" href="<?= $this->url('access', ['action' => 'set-generic', 'id' => $access->getAccessId()]) ?>"><i class="fab fa-slideshare"></i> <?= $this->translate('Set As Generic') ?></a>
     </div>
 </div>

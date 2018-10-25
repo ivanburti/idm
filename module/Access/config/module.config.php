@@ -18,7 +18,7 @@ return [
                     ],
                     'defaults' => [
                         'controller' => Controller\AccessController::class,
-                        'action' => 'index',
+                        'action' => 'search',
                     ],
                 ],
             ],

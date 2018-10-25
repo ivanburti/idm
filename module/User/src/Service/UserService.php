@@ -18,6 +18,11 @@ class UserService
         $this->userSourceTable = $userSourceTable;
     }
 
+    public function searchUsers(User $user)
+    {
+        return $this->userTable->searchUsers($user, true);
+    }
+
     public function getUsers($onlyEnabled = true)
     {
         return $this->userTable->getUsers($onlyEnabled);

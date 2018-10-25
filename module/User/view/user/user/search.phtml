@@ -6,6 +6,34 @@ $this->headTitle($title);
 
 <div class="row">
     <div class="col-lg-12">
+        <div class="well">
+            <?php
+            $form->prepare();
+            $form->setAttributes(['method' => 'get', 'class' => 'form-inline']);
+            echo $this->form()->openTag($form);
+            ?>
+
+            <div class="form-group">
+                <?= $this->formRow($form->get('full_name')->setAttributes(['class' => 'form-control'])) ?>
+            </div>
+
+            <?= $this->formRow($form->get('organization_is_external'), 'append') ?>
+            <?= $this->formRow($form->get('is_enabled'), 'append') ?>
+
+            <?= $this->formSubmit($form->get('submit')->setValue('Search')->setAttributes(['class' => 'btn btn-primary'])) ?>
+
+            <?= $this->form()->closeTag() ?>
+            <div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
         <?= $this->partial('user/table', ['users' => $users]) ?>
+        <div class="pull-right">
+            <?= $this->paginationControl($users, 'sliding', 'partial/paginator', ['route' => 'user/user', 'action' => 'search']) ?>
+        </div>
     </div>
 </div>

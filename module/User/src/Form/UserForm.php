@@ -3,23 +3,29 @@
 namespace User\Form;
 
 use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
-use Zend\Filter;
-use Zend\Validator;
 use Organization\Service\OrganizationService;
 
 class UserForm extends Form
 {
-    private $inputFilter;
     private $organizationService;
 
     public function __construct(OrganizationService $organizationService)
     {
-        $this->inputFilter = new InputFilter();
         $this->organizationService = $organizationService;
 
         parent::__construct('form-user');
 
+        $this->add([
+            'name' => 'submit',
+            'type' => 'submit',
+            'attributes' => [
+                'value' => 'Save',
+                'id' => 'submit',
+            ],
+        ]);
+    }
+
+    private function setFullNameField() {
         $this->add([
             'type'  => 'text',
             'name' => 'full_name',
@@ -30,16 +36,10 @@ class UserForm extends Form
                 'id' => 'full_name'
             ],
         ]);
+    }
 
-        $this->inputFilter->add([
-            'name' => 'full_name',
-            'required' => true,
-            'filters' => [
-                ['name' => Filter\StripTags::class],
-                ['name' => Filter\StringTrim::class],
-            ],
-        ]);
-
+    private function setBirthdayDateField()
+    {
         $this->add([
             'type'  => 'text',
             'name' => 'birthday_date',
@@ -51,19 +51,10 @@ class UserForm extends Form
                 'type' => 'date',
             ],
         ]);
+    }
 
-        $this->inputFilter->add([
-            'name' => 'birthday_date',
-            'required' => true,
-            'filters' => [
-                ['name' => Filter\StripTags::class],
-                ['name' => Filter\StringTrim::class],
-            ],
-            'validators' => [
-                ['name' => Validator\Date::class],
-            ],
-        ]);
-
+    private function setPersonalIdField()
+    {
         $this->add([
             'type'  => 'text',
             'name' => 'personal_id',
@@ -71,49 +62,12 @@ class UserForm extends Form
                 'label' => 'Personal Identification',
             ],
             'attributes' => [
-                'id' => 'personal_id'
+                'id' => 'personal_id',
             ],
         ]);
-
-        $this->inputFilter->add([
-            'name' => 'personal_id',
-            'required' => true,
-            'filters' => [
-                ['name' => Filter\StripTags::class],
-                ['name' => Filter\StringTrim::class],
-            ],
-        ]);
-
-        $this->add([
-            'type'  => 'select',
-            'name' => 'organization_organization_id',
-            'options' => [
-                'label' => 'Organization',
-                'empty_option' => 'Select ...',
-            ],
-            'attributes' => [
-                'id' => 'organization_organization_id',
-            ],
-        ]);
-
-        $this->inputFilter->add([
-            'name' => 'organization_organization_id',
-            'required' => true,
-        ]);
-
-        $this->add([
-            'name' => 'submit',
-            'type' => 'submit',
-            'attributes' => [
-                'value' => 'Save',
-                'id' => 'submit',
-            ],
-        ]);
-
-        $this->setInputFilter($this->inputFilter);
     }
 
-    public function getEmployeeForm()
+    private function setWorkIdField()
     {
         $this->add([
             'type'  => 'text',
@@ -122,10 +76,13 @@ class UserForm extends Form
                 'label' => 'Work Identification',
             ],
             'attributes' => [
-                'id' => 'work_id'
+                'id' => 'work_id',
             ],
         ]);
+    }
 
+    private function setHirindDateField()
+    {
         $this->add([
             'type'  => 'text',
             'name' => 'hiring_date',
@@ -137,7 +94,10 @@ class UserForm extends Form
                 'type' => 'date',
             ],
         ]);
+    }
 
+    private function setResignationDateField()
+    {
         $this->add([
             'type'  => 'text',
             'name' => 'resignation_date',
@@ -149,7 +109,10 @@ class UserForm extends Form
                 'type' => 'date',
             ],
         ]);
+    }
 
+    private function setPositionField()
+    {
         $this->add([
             'type'  => 'text',
             'name' => 'position',
@@ -160,7 +123,10 @@ class UserForm extends Form
                 'id' => 'position'
             ],
         ]);
+    }
 
+    private function setSupervisorField()
+    {
         $this->add([
             'type'  => 'text',
             'name' => 'supervisor_name',
@@ -171,17 +137,81 @@ class UserForm extends Form
                 'id' => 'supervisor_name'
             ],
         ]);
+    }
 
-        $this->get('organization_organization_id')->setOptions(['value_options' => $this->organizationService->getInternalList()]);
+    private function setOrganizationIdField($organizations = [])
+    {
+        $this->add([
+            'type'  => 'select',
+            'name' => 'organization_organization_id',
+            'options' => [
+                'label' => 'Organization',
+                'empty_option' => 'Select ...',
+                'value_options' => $organizations
+            ],
+            'attributes' => [
+                'id' => 'organization_organization_id',
+            ],
+        ]);
+    }
 
+    private function setIsEnabledField()
+    {
+        $this->add([
+            'type'  => 'checkbox',
+            'name' => 'is_enabled',
+            'options' => [
+                'label' => 'Only Enabled',
+            ],
+            'attributes' => [
+                'id' => 'is_enabled',
+            ],
+        ]);
+    }
 
+    private function setIsExternalField()
+    {
+        $this->add([
+            'type'  => 'checkbox',
+            'name' => 'organization_is_external',
+            'options' => [
+                'label' => 'Only External',
+            ],
+            'attributes' => [
+                'id' => 'organization_is_external',
+            ],
+        ]);
+    }
 
+    public function getUserSearchForm()
+    {
+        $this->setFullNameField();
+        $this->setIsEnabledField();
+        $this->setIsExternalField();
         return $this;
     }
 
-    public function getExternalForm()
+    public function getEmployeeForm()
     {
+        $this->setFullNameField();
+        $this->setBirthdayDateField();
+        $this->setPersonalIdField();
+        $this->setWorkIdField();
+        $this->setHirindDateField();
+        $this->setResignationDateField();
+        $this->setPositionField();
+        $this->setSupervisorField();
+        $this->setOrganizationIdField($this->organizationService->getInternalList());
+        return $this;
+    }
 
+    public function getServiceProviderForm()
+    {
+        $this->setFullNameField();
+        $this->setBirthdayDateField();
+        $this->setPersonalIdField();
+        $this->setWorkIdField();
+        $this->setOrganizationIdField($this->organizationService->getExternalList());
         return $this;
     }
 }
