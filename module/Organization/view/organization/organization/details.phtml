@@ -4,73 +4,79 @@ $title = $this->translate('Organization Details');
 $this->headTitle($title);
 ?>
 
-<div class="row mb-3">
+<div class="row">
     <div class="col-lg-6">
-        <table class="table table-striped table-bordered">
-            <tbody>
-                <tr>
-                    <th><?= $this->translate('Alias') ?></th>
-                    <td><?= $this->escapeHtml($organization->getAlias()) ?></td>
-                </tr>
-                <tr>
-                    <th><?= $this->translate('Name') ?></th>
-                    <td><?= $this->escapeHtml($organization->getName()) ?></td>
-                </tr>
-                <tr>
-                    <th><?= $this->translate('Employer Number') ?></th>
-                    <td><?= $this->escapeHtml($organization->getEmployerNumber()) ?></td>
-                </tr>
-                <?php if ($organization->isExternal()) : ?>
+        <div class="table-responsive-sm">
+            <table class="table table-striped table-bordered">
+                <tbody>
                     <tr>
-                        <th><?= $this->translate('Expires On') ?></th>
-                        <td><?= $this->escapeHtml($organization->getExpiresOn()) ?></td>
+                        <th scope="row"><?= $this->translate('Alias') ?></th>
+                        <td><?= $this->escapeHtml($organization->getAlias()) ?></td>
                     </tr>
-                <?php endif; ?>
-                <tr>
-                    <th><?= $this->translate('Enabled') ?></th>
-                    <td>
-                        <?php if ($organization->isEnabled()) : ?>
-                            <span class="badge badge-success"><?= $this->translate('Enabled') ?></span>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-                <?php if ($organization->isExternal()) : ?>
                     <tr>
-                        <th><?= $this->translate('Owners') ?></th>
+                        <th scope="row"><?= $this->translate('Name') ?></th>
+                        <td><?= $this->escapeHtml($organization->getName()) ?></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?= $this->translate('Employer Number') ?></th>
+                        <td><?= $this->escapeHtml($organization->getEmployerNumber()) ?></td>
+                    </tr>
+                    <?php if ($organization->isExternal()) : ?>
+                        <tr>
+                            <th scope="row"><?= $this->translate('Expires On') ?></th>
+                            <td><?= $this->escapeHtml($organization->getExpiresOn()) ?></td>
+                        </tr>
+                    <?php endif; ?>
+                    <tr>
+                        <th scope="row"><?= $this->translate('Enabled') ?></th>
                         <td>
-                            <?php foreach($owners as $owner) : ?>
-                                <a href="<?= $this->url('user', ['action' => 'details', 'id' => $owner->getUserId()]) ?>"><?= $this->escapeHtml($owner->getFullName()) ?></a><br>
-                            <?php endforeach; ?>
+                            <?php if ($organization->isEnabled()) : ?>
+                                <span class="badge badge-success"><?= $this->translate('Enabled') ?></span>
+                            <?php endif; ?>
                         </td>
                     </tr>
-                <?php endif; ?>
-                <tr>
-                    <th><?= $this->translate('Created On') ?></th>
-                    <td><?= $this->escapeHtml($organization->getCreatedOn()) ?></td>
-                </tr>
-                <tr>
-                    <th><?= $this->translate('Update On') ?></th>
-                    <td><?= $this->escapeHtml($organization->getUpdatedOn()) ?></td>
-                </tr>
-            </tbody>
-        </table>
+                    <?php if ($organization->isExternal()) : ?>
+                        <tr>
+                            <th scope="row"><?= $this->translate('Owners') ?></th>
+                            <td>
+                                <?php foreach($owners as $owner) : ?>
+                                    <a href="<?= $this->url('user', ['action' => 'details', 'id' => $owner->getUserId()]) ?>"><?= $this->escapeHtml($owner->getFullName()) ?></a><br>
+                                <?php endforeach; ?>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                    <tr>
+                        <th scope="row"><?= $this->translate('Created On') ?></th>
+                        <td><?= $this->escapeHtml($organization->getCreatedOn()) ?></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">    <?= $this->translate('Update On') ?></th>
+                        <td><?= $this->escapeHtml($organization->getUpdatedOn()) ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="col-lg-6">
         <a class="btn btn-primary" href="<?= $this->url('organization', ['action' => 'edit', 'id' => $organization->getOrganizationId()]) ?>"><i class="fas fa-edit"></i> <?= $this->translate('Edit Organization') ?></a>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-lg-12">
-        <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a class="nav-item nav-link active" id="nav-users-tab" data-toggle="tab" href="#nav-users" role="tab" aria-controls="nav-users" aria-selected="true"><?= $this->translate('Users') ?></a>
-            </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-users" role="tabpanel" aria-labelledby="nav-users-tab">
-                <?= $this->partial('user/table', ['users' => $users]) ?>
-            </div>
-        </div>
+<div class="card text-center">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#"><?= $this->translate('Users') ?></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <?= $this->partial('user/table', ['users' => $users]) ?>
     </div>
 </div>
