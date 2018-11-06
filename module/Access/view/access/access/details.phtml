@@ -21,8 +21,8 @@ $this->headTitle($title);
             <p><b><?= $this->translate('name') ?>:</b> <?= $this->escapeHtml($user->getFullName()) ?></p>
             <p><b><?= $this->translate('email') ?>:</b> <?= $this->escapeHtml($user->getEmail()) ?></p>
             <p><b><?= $this->translate('position') ?>:</b> <?= $this->escapeHtml($user->getPosition()) ?></p>
-            <p><b><?= $this->translate('supervisor') ?>:</b> <?= $this->escapeHtml($user->getSupervisor()) ?></p>
-            <a class="btn btn-primary" href="<?= $this->url('user/user', ['action' => 'detail', 'id' => $user->getUserId()]) ?>"><i class="fas fa-search-plus"></i> <?= $this->translate('detail_user') ?></a>
+            <p><b><?= $this->translate('supervisor') ?>:</b> <?= $this->escapeHtml($user->getSupervisorName()) ?></p>
+            <a class="btn btn-primary" href="<?= $this->url('user', ['action' => 'detail', 'id' => $user->getUserId()]) ?>"><i class="fas fa-search-plus"></i> <?= $this->translate('detail_user') ?></a>
         <?php endif; ?>
     </div>
 </div>

@@ -22,7 +22,14 @@ class AuditController extends AbstractActionController
 		//$this->accessService = $accessService;
 	}
 
-	public function indexAction()
+	public function reviewAccessesAction()
+	{
+		return [
+			//'resources' => $this->resourceService->getAudits(),
+		];
+	}
+
+	public function reviewProfilesAction()
 	{
 		return [
 			//'resources' => $this->resourceService->getAudits(),

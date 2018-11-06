@@ -1,4 +1,4 @@
-<ul class="nav navbar-nav">
+<ul class="navbar-nav mr-auto">
     <?php foreach ($container as $page): ?>
         <?php
         if ($page->getRouteMatch()) :
@@ -8,8 +8,8 @@
 
             $active_class = ($parent_route[0] == $page->getRoute()) ? 'active' : '';
             ?>
-            <li class="<?= $active_class ?>">
-                <a href="<?= $page->getHref() ?>"><?= $page->getLabel() ?></a>
+            <li class="nav-item <?= $active_class ?>">
+                <a class="nav-link" href="<?= $page->getHref() ?>"><?= $page->getLabel() ?></a>
             </li>
         <?php endif; ?>
     <?php endforeach ?>

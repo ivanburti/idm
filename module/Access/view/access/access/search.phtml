@@ -1,17 +1,41 @@
 <?php
 // module/Access/view/access/access/search.phtml
-$title = $this->translate('Search Accesses');
+$title = $this->translate('Search Access');
 $this->headTitle($title);
 ?>
 
 <div class="row">
     <div class="col-lg-12">
-        <table class="table table-responsive table-striped table-condensed">
+
+        <?php
+        $form->setAttributes(['class' => 'float-left mb-3']);
+        $form->prepare();
+        ?>
+
+        <?= $this->form()->openTag($form) ?>
+
+        <div class="form-row align-items-center">
+
+            <?php $element = $form->get('username')->setAttributes(['class' => 'form-control mb-2'])->setLabelAttributes(['class' => 'sr-only']) ?>
+            <div class="col-auto">
+                <?= $this->formRow($element) ?>
+            </div>
+
+            <?php $element = $form->get('submit')->setAttributes(['class' => 'btn btn-primary mb-2'])->setValue($this->translate('Search')) ?>
+            <div class="col-auto">
+                <?= $this->formSubmit($element) ?>
+            </div>
+        </div>
+
+        <?= $this->form()->closeTag() ?>
+
+        <table class="table table-striped">
             <thead>
                 <tr>
-                    <th><?= $this->translate('Status') ?></th>
+                    <th></th>
                     <th><?= $this->translate('Resource') ?></th>
                     <th><?= $this->translate('Username') ?></th>
+                    <th><?= $this->translate('User') ?></th>
                     <th></th>
                 </tr>
             </thead>
@@ -19,16 +43,20 @@ $this->headTitle($title);
                 <?php foreach ($accesses as $access) : ?>
                     <tr>
                         <td>
-                            <?php $label = ($access->isEnabled()) ? 'success' : 'default' ?>
+                            <?php if ($access->isEnabled()) : ?>
+                                <span class="badge badge-success"><?= $this->translate('Enabled') ?></span>
+                            <?php endif; ?>
                         </td>
                         <td><?= $this->escapeHtml($access->getResourceName()) ?></td>
                         <td><?= $this->escapeHtml($access->getUsername()) ?></td>
+                        <td><?= $this->escapeHtml($access->getUserFullName()) ?></td>
 
                         <td>
-                            <?php if (1 == 1): ?>
-                                <a class="btn btn-sm btn-primary" href="<?= $this->url('access', ['action' => 'edit', 'id' => $access->getAccessId()]) ?>"><i class="fas fa-edit"></i> <?= $this->translate('Edit') ?></a>
+                            <a class="btn btn-sm btn-primary" href="<?= $this->url('access', ['action' => 'details', 'id' => $access->getAccessId()]) ?>"><i class="fas fa-search-plus"></i></a>
+                            <?php if (! $access->isOrphan()): ?>
+                                <a class="btn btn-sm btn-secondary" href="<?= $this->url('user', ['action' => 'details', 'id' => $access->getUserId()]) ?>"><i class="fas fa-user-edit"></i></a>
                             <?php endif; ?>
-                        <td>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

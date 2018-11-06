@@ -4,7 +4,7 @@ namespace User\Service;
 
 use RuntimeException;
 use User\Model\UserTable;
-use User\Model\UserSourceTable;
+use User\Model\SourceTable;
 use User\Model\User;
 
 class UserService
@@ -12,7 +12,7 @@ class UserService
     private $userTable;
     private $userSourceTable;
 
-    public function __construct(UserTable $userTable,  UserSourceTable $userSourceTable)
+    public function __construct(UserTable $userTable,  SourceTable $userSourceTable)
     {
         $this->userTable = $userTable;
         $this->userSourceTable = $userSourceTable;
@@ -99,23 +99,44 @@ class UserService
         return $this->getEmployeeById($user_id);
     }
 
-    public function updateEmployee(User $user, $data)
+    public function updateEmployee(User $user)
     {
-        $this->getEmployeeById($user->getUserId());
+        $old = $this->getEmployeeById($user->getUserId());
 
-        $user->setFullName($data['full_name']);
-        $user->setSupervisorName($data['supervisor_name']);
-        $user->setPosition($data['position']);
-        $user->setResignationDate($data['resignation_date']);
+        $old_data = array_diff($old->getArrayCopy(), $user->getArrayCopy());
+        if (! $old_data) {
+            return true;
+        }
 
-        $this->userTable->saveUser($user);
+        $new_data = array_diff($user->getArrayCopy(), $old->getArrayCopy());
+
+        return $this->userTable->saveUser($user);
     }
 
-    public function disableUser(int $user_id)
+    public function updateServiceProvider(User $user)
     {
+        $old = $this->getServiceProviderById($user->getUserId());
+
+        $old_data = array_diff($old->getArrayCopy(), $user->getArrayCopy());
+        if (! $old_data) {
+            return true;
+        }
+
+        $new_data = array_diff($user->getArrayCopy(), $old->getArrayCopy());
+
+        return $this->userTable->saveUser($user);
+    }
+
+    public function disableUser($user_id)
+    {
+        $user_id = (int) $user_id;
         $user = $this->getUserById($user_id);
+
+        if (! $user->isEnabled()) {
+            throw new RuntimeException(sprintf('Cannot disable user with id %d, user is already disabled.', $user_id));
+        }
         $user->setIsNotEnabled();
 
-        $this->userTable->saveUser($user);
+        return $this->userTable->saveUser($user);
     }
 }

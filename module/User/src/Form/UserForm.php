@@ -33,7 +33,7 @@ class UserForm extends Form
                 'label' => 'Full Name',
             ],
             'attributes' => [
-                'id' => 'full_name'
+                'id' => 'full_name',
             ],
         ]);
     }
@@ -186,8 +186,7 @@ class UserForm extends Form
     public function getUserSearchForm()
     {
         $this->setFullNameField();
-        $this->setIsEnabledField();
-        $this->setIsExternalField();
+
         return $this;
     }
 

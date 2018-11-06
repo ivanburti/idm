@@ -60,7 +60,6 @@ class UserFilter extends InputFilter
             'name' => 'organization_organization_id',
             'required' => true,
         ]);
-
     }
 
     public function getUserSearchFilter()
@@ -70,6 +69,7 @@ class UserFilter extends InputFilter
         $this->inputFilter->get('personal_id')->setRequired(false);
         $this->inputFilter->get('work_id')->setRequired(false);
         $this->inputFilter->get('organization_organization_id')->setRequired(false);
+
         return $this->inputFilter;
     }
 

@@ -53,11 +53,7 @@ class Access
 
 	public function isOrphan()
 	{
-		$user_id = $this->getUserId();
-		if (! $user_id) {
-			return true;
-		}
-		return;
+		return ($this->user_user_id) ? false : true;
 	}
 
 	public function getAccessId()
@@ -100,9 +96,19 @@ class Access
 		return $this->created_on;
 	}
 
+	public function getResourceId()
+	{
+		return $this->resource_resource_id;
+	}
+
 	public function getResourceName()
 	{
 		return $this->resource_name;
+	}
+
+	public function getUserId()
+	{
+		return $this->user_user_id;
 	}
 
 	public function getUserFullName()

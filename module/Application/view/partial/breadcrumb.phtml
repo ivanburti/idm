@@ -3,12 +3,11 @@
     $pages = $this->pages;
     if ($pages) :
         ?>
-
         <?php if (current($pages)->getRoute() != 'home') : ?>
-            <li><a href="<?= $this->url('home') ?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?= $this->url('home') ?>">Home</a></li>
         <?php endif; ?>
         <?php foreach ($pages as $key => $page): ?>
-            <li class="<?= ($key < count($this->pages) - 1) ? '' : 'active' ?>">
+            <li class=breadcrumb-item "<?= ($key < count($this->pages) - 1) ? '' : 'active' ?>">
                 <?php
                 if ($key < count($this->pages) - 1):
                     ?>

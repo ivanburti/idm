@@ -9,60 +9,33 @@ return [
     'router' => [
         'routes' => [
             'user' => [
-                'type' => Literal::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route' => '/users',
+                    'route' => '/users[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
                     'defaults' => [
                         'controller' => Controller\UserController::class,
-                        'action' => 'search',
+                        'action' => 'index',
                     ],
                 ],
-                'may_terminate' => true,
-                'child_routes' => [
-                    'user' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/[:action[/:id]]',
-                            'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id'     => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'controller' => Controller\UserController::class,
-                                'action' => 'search',
-                            ],
-                        ],
+            ],
+            'source' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/sources[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
                     ],
-                    'employee' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/employees[/:action[/:id]]',
-                            'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id'     => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'controller' => Controller\EmployeeController::class,
-                                'action' => 'index',
-                            ],
-                        ],
+                    'defaults' => [
+                        'controller' => Controller\SourceController::class,
+                        'action' => 'index',
                     ],
-                    'service-provider' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/service-providers[/:action[/:id]]',
-                            'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id'     => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'controller' => Controller\ServiceProviderController::class,
-                                'action' => 'index',
-                            ],
-                        ],
-                    ],
-                ]
-            ]
+                ],
+            ],
         ],
     ],
     'console' => [
@@ -92,9 +65,10 @@ return [
     'controllers' => [
         'factories' => [
             Controller\UserController::class => Controller\Factory\UserControllerFactory::class,
-            Controller\EmployeeController::class => Controller\Factory\EmployeeControllerFactory::class,
+            //Controller\ServiceProviderController::class => Controller\Factory\ServiceProviderControllerFactory::class,
+            Controller\SourceController::class => Controller\Factory\SourceControllerFactory::class,
+            //Controller\EmployeeController::class => Controller\Factory\EmployeeControllerFactory::class,
             Controller\UserConsoleController::class => Controller\Factory\UserConsoleControllerFactory::class,
-            Controller\ServiceProviderController::class => Controller\Factory\ServiceProviderControllerFactory::class,
         ],
     ],
     'service_manager' => [

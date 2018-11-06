@@ -6,7 +6,7 @@ use RuntimeException;
 use Zend\Db\Sql\Expression;
 use Zend\Db\TableGateway\TableGatewayInterface;
 
-class UserSourceTable
+class SourceTable
 {
     private $tableGateway;
 

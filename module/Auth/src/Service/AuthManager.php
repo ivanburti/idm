@@ -4,19 +4,22 @@ namespace Auth\Service;
 
 use Zend\Authentication\Result;
 use Zend\Authentication\AuthenticationService;
+use User\Service\UserService;
 use Auth\Model\User;
 use Auth\Service\UserManager;
 
 class AuthManager
 {
     private $authService;
+    private $userService;
     private $sessionManager;
     private $config;
     private $userManager;
 
-    public function __construct(AuthenticationService $authService, $sessionManager, $config, UserManager $userManager)
+    public function __construct(AuthenticationService $authService, UserService $userService, $sessionManager, $config, UserManager $userManager)
     {
         $this->authService = $authService;
+        $this->userService = $userService;
         $this->sessionManager = $sessionManager;
         $this->config = $config;
         $this->userManager = $userManager;
@@ -30,6 +33,7 @@ class AuthManager
     {
         // Check if user has already logged in. If so, do not allow to log in
         // twice.
+        //
 
         if ($this->authService->getIdentity()!=null) {
             throw new \Exception('Already logged in');
@@ -39,7 +43,6 @@ class AuthManager
         $authAdapter = $this->authService->getAdapter()->setIdentity($email)->setCredential($password);
 
         $result = $this->authService->authenticate();
-
 
         // If user wants to "remember him", we will make session to expire in
         // one month. By default session expires in 1 hour (as specified in our

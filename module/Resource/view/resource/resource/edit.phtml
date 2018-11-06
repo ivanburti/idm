@@ -27,14 +27,6 @@ $this->headTitle($title);
             <?= $this->formRow($form->get('approvers')->setAttributes(['class' => 'form-control chosen-select', 'multiple' => 'multiple'])) ?>
         </div>
 
-        <div class="form-group">
-            <?= $this->formRow($form->get('resource_auth'), 'append') ?>
-        </div>
-
-        <div class="form-group">
-            <?= $this->formRow($form->get('resource_email'), 'append') ?>
-        </div>
-
         <?= $this->formSubmit($form->get('submit')->setAttributes(['class' => 'btn btn-primary'])) ?>
 
         <?= $this->form()->closeTag() ?>

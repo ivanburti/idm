@@ -12,7 +12,7 @@ class Resource
 	public $description;
 	public $resource_auth;
 	public $resource_email;
-	public $status;
+	public $is_enabled;
 	public $owners;
 	public $approvers;
 	public $created_on;
@@ -25,7 +25,7 @@ class Resource
 		$this->description = !empty($data['description']) ? $data['description'] : null;
 		$this->resource_auth = !empty($data['resource_auth']) ? $data['resource_auth'] : null;
 		$this->resource_email = !empty($data['resource_email']) ? $data['resource_email'] : null;
-		$this->status = !empty($data['status']) ? $data['status'] : null;
+		$this->is_enabled = !empty($data['is_enabled']) ? $data['is_enabled'] : null;
 		$this->owners = !empty($data['owners']) ? $data['owners'] : null;
 		$this->owners = $this->isJson($data['owners']) ? json_decode($data['owners']) : $data['owners'];
 		$this->approvers = !empty($data['approvers']) ? $data['approvers'] : null;
@@ -46,7 +46,7 @@ class Resource
 			'description' => $this->description,
 			'resource_auth' => $this->resource_auth,
 			'resource_email' => $this->resource_email,
-			'status' => $this->status,
+			'is_enabled' => $this->is_enabled,
 			'owners' => $this->owners,
 			'approvers' => $this->approvers,
 			'created_on' => $this->created_on,
@@ -54,15 +54,8 @@ class Resource
 		];
 	}
 
-	public static function getStatusList()
-	{
-		return [
-			self::RESOURCE_STATUS_ACTIVE => 'Active',
-			self::RESOURCE_STATUS_DISABLED => 'Disabled',
-		];
-	}
 
-	public function getId() {
+	public function getResourceId() {
 		return $this->resource_id;
 	}
 
@@ -89,17 +82,26 @@ class Resource
 		}
 	}
 
-	public function getStatus() {
-		return $this->status;
+	public function setIsEnabled()
+	{
+		$this->is_enabled = 1;
 	}
 
-	public function getStatusAsString()
+	public function setIsNotEnabled()
 	{
-		$list = self::getStatusList();
-		if (isset($list[$this->status]))
-		return $list[$this->status];
+		$this->is_enabled = null;
+	}
 
-		return 'Unknown';
+	public function getIsEnabled()
+	{
+		return $this->is_enabled;
+	}
+
+	public function isEnabled()
+	{
+		if ($this->getIsEnabled()) {
+			return true;
+		}
 	}
 
 	public function getOwners() {

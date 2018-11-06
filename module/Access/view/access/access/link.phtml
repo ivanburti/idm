@@ -28,12 +28,9 @@ $this->headTitle($title);
             <?= $this->formRow($form->get('user_user_id')->setAttributes(['class' => 'form-control chosen-select'])) ?>
         </div>
 
-        <?= $this->formSubmit($form->get('submit')->setAttributes(['class' => 'btn btn-primary'])) ?>
+        <?= $this->formSubmit($form->get('submit')->setAttributes(['class' => 'btn btn-primary'])->setValue($this->translate('Link'))) ?>
 
         <?= $this->form()->closeTag() ?>
 
-    </div>
-    <div class="col-lg-6">
-        <a class="btn btn-sm btn-primary" href="<?= $this->url('access', ['action' => 'set-generic', 'id' => $access->getAccessId()]) ?>"><i class="fab fa-slideshare"></i> <?= $this->translate('Set As Generic') ?></a>
     </div>
 </div>

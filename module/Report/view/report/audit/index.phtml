@@ -1,0 +1,12 @@
+<?php
+// module/Report/view/audit/audit/index.phtml
+$title = $this->translate('Audit');
+$this->headTitle($title);
+?>
+
+<div class="row">
+    <div class="col-lg-12">
+        <a class="btn btn-primary" href="<?= $this->url('audit', ['action' => 'review-accesses']) ?>"><?= $this->translate('Review Accesses') ?></a>
+        <a class="btn btn-primary" href="<?= $this->url('audit', ['action' => 'review-profiles']) ?>"><?= $this->translate('Review Profiles') ?></a>
+    </div>
+</div>

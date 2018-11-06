@@ -6,7 +6,7 @@ $this->headTitle($title);
 
 <div class="row">
     <div class="col-lg-6">
-        <table class="table table-responsive table-striped table-bordered">
+        <table class="table table-striped table-bordered">
             <tbody>
                 <tr>
                     <th><?= $this->translate('Name') ?></th>
@@ -20,7 +20,7 @@ $this->headTitle($title);
                     <th><?= $this->translate('Owners') ?></th>
                     <td>
                         <?php foreach($owners as $owner) : ?>
-                            <a href="<?= $this->url('user/user', ['action' => 'details', 'id' => $owner->getUserId()]) ?>"><?= $this->escapeHtml($owner->getFullName()) ?></a><br>
+                            <a href="<?= $this->url('user', ['action' => 'details', 'id' => $owner->getUserId()]) ?>"><?= $this->escapeHtml($owner->getFullName()) ?></a><br>
                         <?php endforeach; ?>
                     </td>
                 </tr>
@@ -28,7 +28,7 @@ $this->headTitle($title);
                     <th><?= $this->translate('Approvers') ?></th>
                     <td>
                         <?php foreach($approvers as $approver) : ?>
-                            <a href="<?= $this->url('user/user', ['action' => 'details', 'id' => $approver->getId()]) ?>"><?= $this->escapeHtml($owner->getFullName()) ?></a><br>
+                            <a href="<?= $this->url('user', ['action' => 'details', 'id' => $approver->getId()]) ?>"><?= $this->escapeHtml($owner->getFullName()) ?></a><br>
                         <?php endforeach; ?>
                     </td>
                 </tr>
@@ -46,8 +46,8 @@ $this->headTitle($title);
 
     <div class="col-lg-6">
         <div class="pull-right">
-            <a class="btn btn-primary" href="<?= $this->url('resource', ['action' => 'edit', 'id' => $resource->getId()]) ?>"><i class="fas fa-edit"></i> <?= $this->translate('Edit Resource') ?></a>
-            <a class="btn btn-danger" href="<?= $this->url('resource', ['action' => 'disable', 'id' => $resource->getId()]) ?>"><i class="fas fa-ban"></i> <?= $this->translate('Disable Resource') ?></a>
+            <a class="btn btn-primary" href="<?= $this->url('resource', ['action' => 'edit', 'id' => $resource->getResourceId()]) ?>"><i class="fas fa-edit"></i> <?= $this->translate('Edit Resource') ?></a>
+            <a class="btn btn-danger" href="<?= $this->url('resource', ['action' => 'disable', 'id' => $resource->getResourceId()]) ?>"><i class="fas fa-ban"></i> <?= $this->translate('Disable Resource') ?></a>
         </div>
     </div>
 </div>

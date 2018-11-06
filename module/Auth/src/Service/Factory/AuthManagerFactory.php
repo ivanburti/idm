@@ -5,6 +5,7 @@ namespace Auth\Service\Factory;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\Authentication\AuthenticationService;
+use User\Service\UserService;
 use Zend\Session\SessionManager;
 use Auth\Service\AuthManager;
 use Auth\Service\UserManager;
@@ -14,6 +15,7 @@ class AuthManagerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $authenticationService = $container->get(AuthenticationService::class);
+        $userService = $container->get(UserService::class);
         $sessionManager = $container->get(SessionManager::class);
         $userManager = $container->get(UserManager::class);
 
@@ -23,6 +25,6 @@ class AuthManagerFactory implements FactoryInterface
         else
             $config = [];
 
-        return new AuthManager($authenticationService, $sessionManager, $config, $userManager);
+        return new AuthManager($authenticationService, $userService, $sessionManager, $config, $userManager);
     }
 }

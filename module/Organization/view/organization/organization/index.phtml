@@ -6,19 +6,25 @@ $this->headTitle($title);
 
 <div class="row">
     <div class="col-lg-12">
-        <div class="pull-right">
-            <a class="btn btn-primary" href="<?= $this->url('organization/internal', ['action' => 'add']) ?>"><i class="fas fa-plus"></i> <?= $this->translate('Add Internal') ?></a>
-            <a class="btn btn-primary" href="<?= $this->url('organization/external', ['action' => 'add']) ?>"> <i class="fas fa-plus"></i> <?= $this->translate('Add External') ?></a>
+        <div class="dropdown float-right mb-3">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-plus"></i> <?= $this->translate('Add Organization') ?>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?= $this->url('organization', ['action' => 'add']) ?>"><?= $this->translate('Internal') ?></a>
+                <a class="dropdown-item" href="<?= $this->url('organization', ['action' => 'add-external']) ?>"><?= $this->translate('External') ?></a>
+            </div>
         </div>
-        <table class="table table-responsive table-striped table-condensed">
+
+        <table class="table table-striped">
             <thead>
                 <tr>
-                    <th><?= $this->translate('Status') ?></th>
-                    <th><?= $this->translate('Alias') ?></th>
-                    <th><?= $this->translate('Name') ?></th>
-                    <th><?= $this->translate('Type') ?></th>
-                    <th><?= $this->translate('Employer Number') ?></th>
-                    <th></th>
+                    <th scope="col"><?= $this->translate('Status') ?></th>
+                    <th scope="col"><?= $this->translate('Alias') ?></th>
+                    <th scope="col"><?= $this->translate('Name') ?></th>
+                    <th scope="col"><?= $this->translate('Type') ?></th>
+                    <th scope="col"><?= $this->translate('Employer Number') ?></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
@@ -26,24 +32,23 @@ $this->headTitle($title);
                     <tr>
                         <td>
                             <?php if ($organization->isEnabled()) : ?>
-                                <span class="label label-success"><?= $this->translate('Enabled') ?></span>
+                                <span class="badge badge-success"><?= $this->translate('Enabled') ?></span>
                             <?php endif; ?>
                         </td>
                         <td><?= $this->escapeHtml($organization->getAlias()) ?></td>
                         <td><?= $this->escapeHtml($organization->getName()) ?></td>
                         <td>
                             <?php if ($organization->isExternal()) : ?>
-                                <span class="label label-default"><?= $this->translate('External') ?></span>
+                                <span class="badge badge-secondary"><?= $this->translate('External') ?></span>
                             <?php endif; ?>
                         </td>
                         <td><?= $this->escapeHtml($organization->getEmployerNumber()) ?></td>
                         <td>
-                            <a class="btn btn-sm btn-primary" href="<?= $this->url('organization/organization', ['action' => 'details', 'id' => $organization->getOrganizationId()]) ?>"><i class="fas fa-search-plus"></i> <?= $this->translate('Details') ?></a>
+                            <a class="btn btn-sm btn-primary" href="<?= $this->url('organization', ['action' => 'details', 'id' => $organization->getOrganizationId()]) ?>"><i class="fas fa-search-plus"></i></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-
     </div>
 </div>

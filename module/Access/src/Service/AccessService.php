@@ -15,6 +15,11 @@ class AccessService
         $this->accessTable = $accessTable;
     }
 
+    public function searchAccesses(Access $access)
+    {
+        return $this->accessTable->searchAccesses($access);
+    }
+
     public function getAccesses()
     {
         return $this->accessTable->getAccesses();

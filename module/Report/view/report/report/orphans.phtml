@@ -1,5 +1,5 @@
 <?php
-// module/Access/view/access/access/orphans.phtml
+// module/Report/view/report/report/orphans.phtml
 $title = $this->translate('Orphans');
 $this->headTitle($title);
 ?>
@@ -25,9 +25,9 @@ $this->headTitle($title);
                 <td><?= $this->escapeHtml($access->getUsername()) ?></td>
                 <td>
                     <?php if (1 == 1): ?>
-                        <a class="btn btn-sm btn-primary" href="<?= $this->url('access', ['action' => 'link', 'id' => $access->getAccessId()]) ?>"><i class="fas fa-link"></i></a>
+                        <a class="btn btn-sm btn-primary" href="<?= $this->url('access', ['action' => 'disable', 'id' => $access->getAccessId()]) ?>"><i class="fas fa-link"></i></a>
                     <?php endif; ?>
-                </td>
+                <td>
             </tr>
         <?php endforeach; ?>
     </tbody>

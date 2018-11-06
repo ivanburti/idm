@@ -4,14 +4,12 @@ namespace Access\Filter;
 
 use DomainException;
 use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
 use Zend\Filter;
 use Zend\Validator;
 use Resource\Service\ResourceService;
 use User\Service\UserService;
 
-class AccessFilter extends InputFilter implements InputFilterAwareInterface
+class AccessFilter extends InputFilter
 {
     private $resourceService;
     private $userService;
@@ -48,24 +46,24 @@ class AccessFilter extends InputFilter implements InputFilterAwareInterface
         $this->inputFilter->add([
             'name' => 'user_user_id',
             'required' => true,
-            'validators' => [
-                [
-                    'name' => Validator\InArray::class,
-                    'options' => [
-                        'haystack' => array_keys($userService->getUserList()),
-                    ],
-                ],
-            ],
         ]);
     }
 
-    public function setInputFilter(InputFilterInterface $inputFilter)
+    public function getAccessFilter()
     {
-        throw new DomainException(sprintf('%s does not allow injection of an alternate input filter', __CLASS__));
+        $this->inputFilter->get('user_user_id')->getValidatorChain()->addValidator(new Validator\InArray([
+            'haystack' => array_keys($this->userService->getUserList())
+        ]));
+
+        return $this->inputFilter;
     }
 
-    public function getInputFilter()
+    public function getAccessSearchFilter()
     {
+        $this->inputFilter->get('username')->setAllowEmpty(true);
+        $this->inputFilter->get('resource_resource_id')->setRequired(false);
+        $this->inputFilter->get('user_user_id')->setRequired(false);
+
         return $this->inputFilter;
     }
 }

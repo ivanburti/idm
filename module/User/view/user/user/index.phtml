@@ -1,0 +1,47 @@
+<?php
+// module/User/view/user/user/search.phtml
+$title = $this->translate('Search Users');
+$this->headTitle($title);
+?>
+
+<div class="row">
+    <div class="col-lg-12">
+        <?php
+        $form->setAttributes(['class' => 'float-left']);
+        $form->prepare();
+        ?>
+
+        <?= $this->form()->openTag($form) ?>
+
+        <div class="form-row align-items-center">
+
+            <?php $element = $form->get('full_name')->setAttributes(['class' => 'form-control mb-2', 'placeholder' => $this->translate('Name')])->setLabelAttributes(['class' => 'sr-only']) ?>
+            <div class="col-auto">
+                <?= $this->formRow($element) ?>
+            </div>
+
+            <?php $element = $form->get('submit')->setAttributes(['class' => 'btn btn-primary mb-2'])->setValue($this->translate('Search')) ?>
+            <div class="col-auto">
+                <?= $this->formSubmit($element) ?>
+            </div>
+        </div>
+
+        <?= $this->form()->closeTag() ?>
+
+        <div class="dropdown float-right mb-3">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-plus"></i> <?= $this->translate('Add User') ?>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="<?= $this->url('user', ['action' => 'add']) ?>"><?= $this->translate('Employee') ?></a>
+                <a class="dropdown-item" href="<?= $this->url('user', ['action' => 'add-service-provider']) ?>"><?= $this->translate('Service Provider') ?></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <?= $this->partial('user/table', ['users' => $users]) ?>
+    </div>
+</div>

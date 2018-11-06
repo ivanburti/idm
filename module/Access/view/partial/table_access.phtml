@@ -1,4 +1,4 @@
-<table class="table table-responsive table-striped table-condensed">
+<table class="table table-striped">
     <thead>
         <tr>
             <th><?= $this->translate('Status') ?></th>
@@ -13,7 +13,7 @@
             <tr>
                 <td>
                     <?php if ($access->isEnabled()) : ?>
-                        <span class="label label-success"><?= $this->translate('Enabled') ?></span>
+                        <span class="badge badge-success"><?= $this->translate('Enabled') ?></span>
                     <?php endif; ?>
                 </td>
                 <td><?= $this->escapeHtml($access->getResourceName()) ?></td>
@@ -21,7 +21,7 @@
                 <td><?= $this->escapeHtml($access->getUserFullName()) ?></td>
                 <td>
                     <?php if (1 == 1): ?>
-                        <a class="btn btn-sm btn-danger" href="<?= $this->url('access', ['action' => 'disable', 'id' => $access->getAccessId()]) ?>"><i class="fas fa-ban"></i> <?= $this->translate('Disable') ?></a>
+                        <a class="btn btn-sm btn-danger" href="<?= $this->url('access', ['action' => 'disable', 'id' => $access->getAccessId()]) ?>"><i class="fas fa-ban"></i></a>
                     <?php endif; ?>
                 <td>
             </tr>

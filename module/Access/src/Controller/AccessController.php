@@ -2,13 +2,14 @@
 
 namespace Access\Controller;
 
+use RuntimeException;
 use Zend\Mvc\Controller\AbstractActionController;
 use Access\Form\AccessForm;
 use Access\Filter\AccessFilter;
 use Access\Service\AccessService;
 use Resource\Service\ResourceService;
 use User\Service\UserService;
-use User\Model\User;
+use Access\Model\Access;
 
 class AccessController extends AbstractActionController
 {
@@ -29,61 +30,29 @@ class AccessController extends AbstractActionController
 
 	public function searchAction()
 	{
-		$form = $this->accessForm;
+		$form = $this->accessForm->getAccessSearchForm();
 
-		$viewData = [
-			'form' => $form,
-			'accesses' => $this->accessService->getOrphans(),
-		];
+		$viewData = ['form' => $form, 'accesses' => []];
 
 		$request = $this->getRequest();
-		if (! $request->getQuery('submit')) {
-			return $viewData;
-		}
+        if (! $request->isPost()) {
+            return $viewData;
+        }
 
 		$form->setInputFilter($this->accessFilter->getAccessSearchFilter());
-		$form->setData($request->getQuery());
-
-		$viewData['form'] = $form;
-		if (! $form->isValid()) {
-			return $viewData;
-		}
-
-		$viewData['accesses'] = $this->accessService->searchAccesses($form->getData());
-		return $viewData;
-	}
-
-	public function orphansAction()
-	{
-		return [
-			'resource_list' => $this->resourceService->getResourceList(),
-			'accesses' => $this->accessService->getOrphans()
-		];
-	}
-
-	public function editAction()
-	{
-		$access_id = (int) $this->params()->fromRoute('id', 0);
-		$access = $this->accessService->getAccessById($access_id);
-
-		$form = $this->accessForm;
-		$form->bind($access);
-		$viewData = ['access' => $access, 'form' => $form];
-
-		$request = $this->getRequest();
-		if (! $request->isPost()) {
-			return $viewData;
-		}
-
-		$form->setInputFilter($this->accessFilter->getInputFilter());
 		$form->setData($request->getPost());
+
 		if (! $form->isValid()) {
 			return $viewData;
 		}
 
-		$this->accessService->editAccess($access);
+		$access = new Access();
+		$access->exchangeArray($form->getData());
 
-		return $this->redirect()->toRoute('access', ['action' => 'orphans']);
+		$viewData['accesses'] = $this->accessService->searchAccesses($access);
+		return $viewData;
+
+		$access = new Access();
 	}
 
 	public function setGenericAction()
@@ -94,13 +63,12 @@ class AccessController extends AbstractActionController
 		$access->setIsGeneric();
 		$this->accessService->editAccess($access);
 
-		return $this->redirect()->toRoute('access', ['action' => 'orphans']);
+		return $this->redirect()->toRoute('access', ['action' => 'details', 'id' => $access_id]);
 	}
 
 	public function detailsAction()
 	{
 		$access_id = (int) $this->params()->fromRoute('id', 0);
-
 		$access = $this->accessService->getAccessById($access_id);
 
 		return [
@@ -112,7 +80,38 @@ class AccessController extends AbstractActionController
 
 	public function disableAction() {
 		$access_id = (int) $this->params()->fromRoute('id', 0);
-
 		$access = $this->accessService->getAccessById($access_id);
+	}
+
+	public function orphansAction()
+	{
+		return [
+			'accesses' => $this->accessService->getOrphans(),
+		];
+	}
+
+	public function linkAction()
+	{
+		$access_id = (int) $this->params()->fromRoute('id', 0);
+		$access = $this->accessService->getAccessById($access_id);
+
+		$form = $this->accessForm->getAccessForm();
+		$form->bind($access);
+		$viewData = ['access' => $access, 'form' => $form];
+
+		$request = $this->getRequest();
+		if (! $request->isPost()) {
+			return $viewData;
+		}
+
+		$form->setInputFilter($this->accessFilter->getAccessFilter());
+		$form->setData($request->getPost());
+		if (! $form->isValid()) {
+			return $viewData;
+		}
+
+		$this->accessService->editAccess($access);
+
+		return $this->redirect()->toRoute('access', ['action' => 'orphans']);
 	}
 }

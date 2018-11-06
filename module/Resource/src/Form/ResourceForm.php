@@ -67,30 +67,6 @@ class ResourceForm extends Form
         ]);
 
         $this->add([
-            'type'  => 'checkbox',
-            'name' => 'resource_auth',
-            'options' => [
-                'label' => 'Resource Auth',
-                'checked_value' => 1,
-            ],
-            'attributes' => [
-                'id' => 'resource_auth',
-            ],
-        ]);
-
-        $this->add([
-            'type'  => 'checkbox',
-            'name' => 'resource_email',
-            'options' => [
-                'label' => 'Resource Email',
-                'checked_value' => 1,
-            ],
-            'attributes' => [
-                'id' => 'resource_email',
-            ],
-        ]);
-
-        $this->add([
             'name' => 'submit',
             'type' => 'submit',
             'attributes' => [

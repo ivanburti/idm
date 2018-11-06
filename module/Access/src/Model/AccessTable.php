@@ -3,7 +3,11 @@
 namespace Access\Model;
 
 use RuntimeException;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Select;
 use Zend\Db\TableGateway\TableGatewayInterface;
+use Zend\Paginator\Adapter\DbSelect;
+use Zend\Paginator\Paginator;
 
 class AccessTable
 {
@@ -17,6 +21,32 @@ class AccessTable
         $this->select = $this->tableGateway->getSql()->select();
         $this->select->join('resource', 'access.resource_resource_id = resource.resource_id', ['resource_name' => 'name', 'resource_is_enabled' => 'is_enabled']);
         $this->select->join('user', 'access.user_user_id = user.user_id', ['user_full_name' => 'full_name', 'user_is_enabled' => 'is_enabled'], 'left');
+        $this->select->where->isNull('is_generic');
+    }
+
+    public function getOrphans()
+    {
+        $select = $this->select;
+        $select->where->isNull('user_user_id');
+
+        return $this->tableGateway->selectWith($select);
+    }
+
+    public function getAccesses()
+    {
+        $select = $this->select;
+
+        return $this->tableGateway->selectWith($select);
+    }
+
+    public function searchAccesses(Access $access)
+    {
+        $select = $this->select;
+
+        ($access->username) ? $select->where->like('username', '%'.$access->username.'%') : null;
+        ($access->user_user_id) ? $select->where->isNull('user_user_id') : null;
+
+        return $this->tableGateway->selectWith($select);
     }
 
     public function getAccessById($access_id)
@@ -35,28 +65,17 @@ class AccessTable
         return $row;
     }
 
-    public function getAccesses()
-    {
-        $select = $this->select;
-
-        return $this->tableGateway->selectWith($select);
-    }
-
     public function getAccessesByUserId($user_id)
     {
-        $user_id = (int) $user_id;
-
         $select = $this->select;
-        $select->where(['user_user_id' => $user_id]);
+        $select->where(['user_user_id' => (int) $user_id]);
         return $this->tableGateway->selectWith($select);
     }
 
     public function getAccessesByResourceId($resource_id)
     {
-        $resource_id = (int) $resource_id;
-
         $select = $this->select;
-        $select->where(['resource_resource_id' => $resource_id]);
+        $select->where(['resource_resource_id' => (int) $resource_id]);
         return $this->tableGateway->selectWith($select);
     }
 
@@ -87,30 +106,4 @@ class AccessTable
         return $this->tableGateway->update($data, ['access_id' => $access_id]);
     }
 
-
-
-
-
-
-    public function getOrphans()
-    {
-        $select = $this->select;
-        $select->where->isNull('user_user_id');
-        $select->where->isNull('is_generic');
-        $select->order('username ASC');
-
-        return $this->tableGateway->selectWith($select);
-    }
-
-    public function searchAccesses($data)
-    {
-        $select = $this->select;
-
-        ($data['username']) ? $select->where->like('access.username', '%'.$data['username'].'%') : null;
-        ($data['resource_resource_id']) ? $select->where(['access.resource_resource_id' => $data['resource_resource_id']]) : null;
-        ($data['user_user_id']) ? $select->where(['access.user_user_id' => $data['user_user_id']]) : null;
-        ($data['status']) ? $select->where(['access.status' => $data['status']]) : null;
-
-        return $this->tableGateway->selectWith($select);
-    }
 }

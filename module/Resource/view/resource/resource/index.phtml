@@ -6,31 +6,32 @@ $this->headTitle($title);
 
 <div class="row">
     <div class="col-lg-12">
-        <a class="btn btn-success pull-right" href="<?= $this->url('resource', ['action' => 'add']) ?>"><i class="fa fa-plus"></i> <?= $this->translate('Add Resource') ?></a>
-        <table class="table table-responsive table-striped">
-            <thead>
-                <tr>
-                    <th><?= $this->translate('Status') ?></th>
-                    <th><?= $this->translate('Name') ?></th>
-                    <th><?= $this->translate('Created On') ?></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($resources as $resource) : ?>
-                    <tr>
-                        <td>
-                            <?php $label = ($resource->isActive()) ? 'success' : 'default' ?>
-                            <span class="label label-<?= $label ?>"><?= $this->escapeHtml($resource->getStatusAsString()) ?></span>
-                        </td>
-                        <td><?= $this->escapeHtml($resource->getName()) ?></td>
-                        <td><?= $this->escapeHtml($resource->getCreatedOn()) ?></td>
-                        <td>
-                            <a class="btn btn-sm btn-primary" href="<?= $this->url('resource', ['action' => 'details', 'id' => $resource->resource_id]) ?>"><i class="fas fa-search-plus"></i> <?= $this->translate('Details') ?></a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <a class="btn btn-primary float-right mb-3" href="<?= $this->url('resource', ['action' => 'add']) ?>"><i class="fa fa-plus"></i> <?= $this->translate('Add Resource') ?></a>
     </div>
 </div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th><?= $this->translate('Status') ?></th>
+            <th><?= $this->translate('Name') ?></th>
+            <th><?= $this->translate('Created On') ?></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($resources as $resource) : ?>
+            <tr>
+                <td>
+                    <?php if ($resource->isEnabled()) : ?>
+                        <span class="badge badge-success"><?= $this->translate('Enabled') ?></span>
+                    <?php endif; ?>
+                </td>
+                <td><?= $this->escapeHtml($resource->getName()) ?></td>
+                <td><?= $this->escapeHtml($resource->getCreatedOn()) ?></td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="<?= $this->url('resource', ['action' => 'details', 'id' => $resource->resource_id]) ?>"><i class="fas fa-search-plus"></i> <?= $this->translate('Details') ?></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

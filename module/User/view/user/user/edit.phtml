@@ -45,6 +45,7 @@ $this->headTitle($title);
                 </div>
             </div>
 
+            <?php $element = $form->get('resignation_date') ?>
             <div class="col-md-4">
                 <div class="form-group">
                     <?= $this->formRow($form->get('resignation_date')->setAttributes(['class' => 'form-control'])) ?>

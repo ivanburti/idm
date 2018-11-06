@@ -28,38 +28,110 @@ class UserController extends AbstractActionController
 		$this->accessService = $accessService;
 	}
 
-	public function searchAction()
+	public function indexAction()
 	{
 		$form = $this->userForm->getUserSearchForm();
-		$user = new User;
+
+		$viewData = ['form' => $form, 'users' => []];
 
 		$request = $this->getRequest();
-		if ($request->getQuery('submit')) {
-			$form->setInputFilter($this->userFilter->getUserSearchFilter());
-			$form->setData($request->getQuery());
-
-			if (! $form->isValid()) {
-				throw new \RuntimeException("Error Processing Request", 1);
-			}
-
-			$user->exchangeArray($form->getData());
+		if (! $request->isPost()) {
+			return $viewData;
 		}
 
-		$paginator = $this->userService->searchUsers($user);
+		$form->setInputFilter($this->userFilter->getUserSearchFilter());
+		$form->setData($request->getPost());
 
-	    $page = (int) $this->params()->fromRoute('id', 1);
-	    $page = ($page < 1) ? 1 : $page;
-	    $paginator->setCurrentPageNumber($page);
+		if (! $form->isValid()) {
+			return $viewData;
+		}
 
-	    $paginator->setItemCountPerPage(10);
+		$user = new User;
+		$user->exchangeArray($form->getData());
 
-	    return ['form' => $form, 'users' => $paginator];
+		$viewData['users'] = $this->userService->searchUsers($user);
+		return $viewData;
+	}
+
+	public function addAction()
+	{
+		$form = $this->userForm->getEmployeeForm();
+
+		$request = $this->getRequest();
+		if (! $request->isPost()) {
+			return ['form' => $form];
+		}
+
+		$form->setInputFilter($this->userFilter->getEmployeeFilter());
+		$form->setData($request->getPost());
+		if (! $form->isValid()) {
+			return ['form' => $form];
+		}
+
+		$this->userService->createEmployee($form->getData());
+
+		return $this->redirect()->toRoute('user/employee');
+	}
+
+	public function editAction()
+	{
+		$user_id = (int) $this->params()->fromRoute('id', 0);
+		$user = $this->userService->getUserById($user_id);
+
+		$organization = $this->organizationService->getOrganizationById($user->getOrganizationId());
+
+		if ($organization->isExternal()) {
+			return $this->redirect()->toRoute('user', ['action' => 'edit-service-provider', 'id' => $user_id]);
+		}
+
+		$form = $this->userForm->getEmployeeForm();
+		$form->bind($user);
+
+		$viewData = ['user' => $user, 'form' => $form];
+		$request = $this->getRequest();
+		if (! $request->isPost()) {
+			return $viewData;
+		}
+
+		$form->setInputFilter($this->userFilter->getEmployeeFilter());
+		$form->setData($request->getPost());
+		if (! $form->isValid()) {
+			return $viewData;
+		}
+
+		$this->userService->updateEmployee($user);
+
+		return $this->redirect()->toRoute('user', ['action' => 'details', 'id' => $user_id]);
+	}
+
+	public function editServiceProviderAction()
+	{
+		$user_id = (int) $this->params()->fromRoute('id', 0);
+		$user = $this->userService->getServiceProviderById($user_id);
+
+		$form = $this->userForm->getServiceProviderForm();
+		$form->bind($user);
+
+		$viewData = ['user' => $user, 'form' => $form];
+		$request = $this->getRequest();
+		if (! $request->isPost()) {
+			return $viewData;
+		}
+
+		$form->setInputFilter($this->userFilter->getServiceProviderFilter());
+		$form->setData($request->getPost());
+		if (! $form->isValid()) {
+			return $viewData;
+		}
+
+		$this->userService->updateServiceProvider($user);
+
+		return $this->redirect()->toRoute('user', ['action' => 'details', 'id' => $user_id]);
 	}
 
 	public function detailsAction()
 	{
 		$user_id = (int) $this->params()->fromRoute('id', 0);
-
 		$user = $this->userService->getUserById($user_id);
 
 		return [
@@ -69,19 +141,19 @@ class UserController extends AbstractActionController
 		];
 	}
 
-	public function editAction()
+	public function disableAction()
 	{
 		$user_id = (int) $this->params()->fromRoute('id', 0);
 
-		$user = $this->userService->getUserById($user_id);
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+			$this->userService->disableUser($user_id);
 
-		$organization = $this->organizationService->getOrganizationById($user->getOrganizationId());
-
-		if ($organization->isExternal()) {
-			return $this->redirect()->toRoute('user/service-provider', ['action' => 'edit', 'id' => $user_id]);
+			return $this->redirect()->toRoute('user', ['action' => 'details', 'id' => $user_id]);
 		}
 
-		return $this->redirect()->toRoute('user/employee', ['action' => 'edit', 'id' => $user_id]);
+		return [
+            'user' => $this->userService->getUserById($user_id),
+        ];
 	}
-
 }

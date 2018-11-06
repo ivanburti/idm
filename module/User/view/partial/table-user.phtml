@@ -1,11 +1,10 @@
-<table class="table table-responsive table-striped dataTable">
+<table class="table table-striped dataTable">
     <thead>
         <tr>
-            <th><?= $this->translate('Enabled') ?></th>
+            <th></th>
             <th><?= $this->translate('Name') ?></th>
-
             <th><?= $this->translate('External') ?></th>
-            <th><?= $this->translate('Options') ?></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -13,17 +12,17 @@
             <tr>
                 <td>
                     <?php if ($user->isEnabled()) : ?>
-                        <span class="label label-success"><?= $this->translate('Enabled') ?></span>
+                        <span class="badge badge-success"><?= $this->translate('Enabled') ?></span>
                     <?php endif; ?>
                 </td>
                 <td><?= $this->escapeHtml($user->getFullName()) ?></td>
                 <td>
                     <?php if ($user->isOrganizationExternal()) : ?>
-                        <span class="label label-default"><?= $this->translate('External') ?></span>
+                        <span class="badge badge-default"><?= $this->translate('External') ?></span>
                     <?php endif; ?>
                 </td>
                 <td>
-                    <a class="btn btn-sm btn-primary" href="<?= $this->url('user/user', ['action' => 'details', 'id' => $user->getUserId()]) ?>"><i class="fas fa-search-plus"></i> <?= $this->translate('Detail') ?></a>
+                    <a class="btn btn-sm btn-primary" href="<?= $this->url('user', ['action' => 'details', 'id' => $user->getUserId()]) ?>"><i class="fas fa-search-plus"></i></a>
                 </td>
             </tr>
         <?php endforeach; ?>

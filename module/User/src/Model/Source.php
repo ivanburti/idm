@@ -2,7 +2,7 @@
 
 namespace User\Model;
 
-class UserSource
+class Source
 {
     const USERSOURCE_TYPE_CSVFILE = 1;
 

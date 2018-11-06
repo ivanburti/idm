@@ -9,67 +9,24 @@ return [
     'router' => [
         'routes' => [
             'organization' => [
-                'type' => Literal::class,
+                'type' => Segment::class,
                 'options' => [
-                    'route' => '/organizations',
+                    'route' => '/organizations[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ],
                     'defaults' => [
                         'controller' => Controller\OrganizationController::class,
                         'action' => 'index',
                     ],
                 ],
-                'may_terminate' => true,
-                'child_routes' => [
-                    'organization' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/[:action[/:id]]',
-                            'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id'     => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'controller' => Controller\OrganizationController::class,
-                                'action' => 'index',
-                            ],
-                        ],
-                    ],
-                    'internal' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/internals[/:action[/:id]]',
-                            'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id'     => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'controller' => Controller\InternalController::class,
-                                'action' => 'index',
-                            ],
-                        ],
-                    ],
-                    'external' => [
-                        'type' => Segment::class,
-                        'options' => [
-                            'route' => '/externals[/:action[/:id]]',
-                            'constraints' => [
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id'     => '[0-9]+',
-                            ],
-                            'defaults' => [
-                                'controller' => Controller\ExternalController::class,
-                                'action' => 'index',
-                            ],
-                        ],
-                    ],
-                ]
-            ]
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\OrganizationController::class => Controller\Factory\OrganizationControllerFactory::class,
-            Controller\InternalController::class => Controller\Factory\InternalControllerFactory::class,
-            Controller\ExternalController::class => Controller\Factory\ExternalControllerFactory::class,
         ],
     ],
     'service_manager' => [
@@ -103,40 +60,33 @@ return [
                 'pages' => [
                     [
                         'label' => 'Details',
-                        'route' => 'organization/organization',
+                        'route' => 'organization',
                         'action' => 'details'
                     ],
                     [
-                        'label' => 'Internals',
-                        'route' => 'organization/internal',
-                        'pages' => [
-                            [
-                                'label' => 'Add',
-                                'route' => 'organization/internal',
-                                'action' => 'add'
-                            ],
-                            [
-                                'label' => 'Edit',
-                                'route' => 'organization/internal',
-                                'action' => 'edit'
-                            ],
-                        ],
+                        'label' => 'Disable',
+                        'route' => 'organization',
+                        'action' => 'disable'
                     ],
                     [
-                        'label' => 'Externals',
-                        'route' => 'organization/external',
-                        'pages' => [
-                            [
-                                'label' => 'Add',
-                                'route' => 'organization/external',
-                                'action' => 'add'
-                            ],
-                            [
-                                'label' => 'Edit',
-                                'route' => 'organization/external',
-                                'action' => 'edit'
-                            ],
-                        ],
+                        'label' => 'Add',
+                        'route' => 'organization',
+                        'action' => 'add'
+                    ],
+                    [
+                        'label' => 'Add External',
+                        'route' => 'organization',
+                        'action' => 'add-external'
+                    ],
+                    [
+                        'label' => 'edit',
+                        'route' => 'organization',
+                        'action' => 'edit'
+                    ],
+                    [
+                        'label' => 'Edit External',
+                        'route' => 'organization',
+                        'action' => 'edit-external'
                     ],
                 ],
             ],
