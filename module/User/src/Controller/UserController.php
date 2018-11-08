@@ -68,9 +68,29 @@ class UserController extends AbstractActionController
 			return ['form' => $form];
 		}
 
+		$user_id = $this->userService->createEmployee($form->getData());
+
+		return $this->redirect()->toRoute('user', ['action' => 'details', 'id' => $user_id]);
+	}
+
+	public function addServiceProviderAction()
+	{
+		$form = $this->userForm->getServiceProviderForm();
+
+		$request = $this->getRequest();
+		if (! $request->isPost()) {
+			return ['form' => $form];
+		}
+
+		$form->setInputFilter($this->userFilter->getServiceProviderFilter());
+		$form->setData($request->getPost());
+		if (! $form->isValid()) {
+			return ['form' => $form];
+		}
+
 		$this->userService->createEmployee($form->getData());
 
-		return $this->redirect()->toRoute('user/employee');
+		return $this->redirect()->toRoute('user', ['action' => 'details', 'id' => $user_id]);
 	}
 
 	public function editAction()

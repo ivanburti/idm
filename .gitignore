@@ -2,7 +2,9 @@
 vendor/
 config/development.config.php
 data/cache/*
+!data/cache/.gitkeep
 data/files/input/*
 data/files/processed/*
-!data/cache/.gitkeep
+!data/files/input/.gitkeep
+!data/files/processed/.gitkeep
 phpunit.xml

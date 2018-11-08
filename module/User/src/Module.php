@@ -29,15 +29,15 @@ class Module implements ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new Model\User());
                     return new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
                 },
-                Model\SourceTable::class => function($container) {
-                    $tableGateway = $container->get(Model\SourceTableGateway::class);
-                    return new Model\SourceTable($tableGateway);
+                Model\PopulatorTable::class => function($container) {
+                    $tableGateway = $container->get(Model\PopulatorTableGateway::class);
+                    return new Model\PopulatorTable($tableGateway);
                 },
-                Model\SourceTableGateway::class => function ($container) {
+                Model\PopulatorTableGateway::class => function ($container) {
                     $dbAdapter = $container->get(AdapterInterface::class);
                     $resultSetPrototype = new ResultSet();
-                    $resultSetPrototype->setArrayObjectPrototype(new Model\Source());
-                    return new TableGateway('source', $dbAdapter, null, $resultSetPrototype);
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\Populator());
+                    return new TableGateway('populators', $dbAdapter, null, $resultSetPrototype);
                 },
             ],
         ];

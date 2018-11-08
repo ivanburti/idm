@@ -1,0 +1,43 @@
+<?php
+// module/User/view/user/populator/add.phtml
+$title = $this->translate('Add Populator');
+$this->headTitle($title);
+?>
+
+<div class="row">
+    <div class="col-lg-12">
+        <?php
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        echo $this->formHidden($form->get('populator_id'));
+        ?>
+
+        <div class="form-group">
+            <?= $this->formRow($form->get('description')->setAttributes(['class' => 'form-control'])) ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formRow($form->get('config')->setAttributes(['class' => 'form-control'])) ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formRow($form->get('field_map')->setAttributes(['class' => 'form-control'])) ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formRow($form->get('date_format')->setAttributes(['class' => 'form-control'])) ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formRow($form->get('date_format_null')->setAttributes(['class' => 'form-control'])) ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formRow($form->get('encoding')->setAttributes(['class' => 'form-control'])) ?>
+        </div>
+
+        <?= $this->formSubmit($form->get('submit')->setAttributes(['class' => 'btn btn-primary'])) ?>
+
+        <?= $this->form()->closeTag() ?>
+    </div>
+</div>

@@ -4,6 +4,7 @@ namespace User;
 
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
+use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'router' => [
@@ -16,22 +17,35 @@ return [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
                     ],
-                    'defaults' => [
-                        'controller' => Controller\UserController::class,
-                        'action' => 'index',
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'servuce-provider' => [
+                        'type' => Segment::class,
+                        'options' => [
+                            'route' => '/servuce-providers[/:action[/:id]]',
+                            'constraints' => [
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                 'id' => '[a-zA-Z0-9_-]+',
+                            ],
+                            'defaults' => [
+                                'controller' => Controller\ServiceProviderController::class,
+                                'action' => 'index',
+                            ],
+                        ],
                     ],
                 ],
             ],
-            'source' => [
+            'populator' => [
                 'type' => Segment::class,
                 'options' => [
-                    'route' => '/sources[/:action[/:id]]',
+                    'route' => '/populators[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
                     ],
                     'defaults' => [
-                        'controller' => Controller\SourceController::class,
+                        'controller' => Controller\PopulatorController::class,
                         'action' => 'index',
                     ],
                 ],
@@ -41,21 +55,21 @@ return [
     'console' => [
         'router' => [
             'routes' => [
-                'user-update-employees' => [
+                'populator-pull' => [
                     'options' => [
-                        'route'    => 'users update-employees',
+                        'route'    => 'populators pull',
                         'defaults' => [
-                            'controller' => Controller\UserConsoleController::class,
-                            'action'     => 'update-employees',
+                            'controller' => Controller\PopulatorController::class,
+                            'action'     => 'pull',
                         ],
                     ],
                 ],
-                'user-disable' => [
+                'populator-push' => [
                     'options' => [
-                        'route'    => 'users disable',
+                        'route'    => 'populators pull',
                         'defaults' => [
-                            'controller' => Controller\UserConsoleController::class,
-                            'action'     => 'disable',
+                            'controller' => Controller\PopulatorController::class,
+                            'action'     => 'push',
                         ],
                     ],
                 ],
@@ -65,20 +79,24 @@ return [
     'controllers' => [
         'factories' => [
             Controller\UserController::class => Controller\Factory\UserControllerFactory::class,
-            //Controller\ServiceProviderController::class => Controller\Factory\ServiceProviderControllerFactory::class,
-            Controller\SourceController::class => Controller\Factory\SourceControllerFactory::class,
-            //Controller\EmployeeController::class => Controller\Factory\EmployeeControllerFactory::class,
+            Controller\PopulatorController::class => Controller\Factory\PopulatorControllerFactory::class,
             Controller\UserConsoleController::class => Controller\Factory\UserConsoleControllerFactory::class,
         ],
     ],
     'service_manager' => [
         'factories' => [
             Service\UserService::class => Service\Factory\UserServiceFactory::class,
+            Service\PopulatorService::class => Service\Factory\PopulatorServiceFactory::class,
+        ],
+        'invokables'=> [
+            //Model\CSV::class => Model\CSV::class,
+            //Model\CSV::class => InvokableFactory::class,
         ],
     ],
     'form_elements' => [
         'factories' => [
             Form\UserForm::class => Form\Factory\UserFormFactory::class,
+            //Form\PopulatorForm::class => Form\Factory\PopulatorFormFactory::class,
         ],
     ],
     'input_filters' => [
@@ -96,6 +114,10 @@ return [
     ],
     'navigation' => [
         'default' => [
+            [
+                'label' => 'Populators',
+                'route' => 'populator',
+            ],
             [
                 'label' => 'Users',
                 'route' => 'user',

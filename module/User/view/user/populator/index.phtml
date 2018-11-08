@@ -1,0 +1,38 @@
+<?php
+// module/User/view/user/populator/index.phtml
+$title = $this->translate('Populators');
+$this->headTitle($title);
+?>
+
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col"><?= $this->translate('Description') ?></th>
+                    <th scope="col"><?= $this->translate('Last Pull') ?></th>
+                    <th scope="col"><?= $this->translate('Last Push') ?></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($populators as $populator) : ?>
+                    <tr>
+                        <td>
+                            <?php if ($populator->isEnabled()) : ?>
+                                <span class="badge badge-success"><?= $this->translate('Enabled') ?></span>
+                            <?php endif; ?>
+                        </td>
+                        <td><?= $this->escapeHtml($populator->getDescription()) ?></td>
+                        <td><?= $this->escapeHtml($populator->getLastPull()) ?></td>
+                        <td><?= $this->escapeHtml($populator->getLastPush()) ?></td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" href="<?= $this->url('populator', ['action' => 'details', 'id' => $populator->getPopulatorId()]) ?>"><i class="fas fa-search-plus"></i></a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

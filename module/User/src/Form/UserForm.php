@@ -209,7 +209,7 @@ class UserForm extends Form
         $this->setFullNameField();
         $this->setBirthdayDateField();
         $this->setPersonalIdField();
-        $this->setWorkIdField();
+        $this->setResignationDateField();
         $this->setOrganizationIdField($this->organizationService->getExternalList());
         return $this;
     }

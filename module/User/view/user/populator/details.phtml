@@ -1,0 +1,47 @@
+<?php
+// module/User/view/user/populator/details.phtml
+$title = $this->translate('Populator Details');
+$this->headTitle($title);
+?>
+
+<div class="row">
+    <div class="col-lg-6">
+        <table class="table table-striped table-bordered">
+            <tbody>
+                <tr>
+                    <th scope="row"><?= $this->escapeHtml('ID') ?></th>
+                    <td><?= $this->escapeHtml($populator->getPopulatorId()) ?></td>
+                </tr>
+                <tr>
+                    <th scope="row"><?= $this->escapeHtml('Description') ?></th>
+                    <td><?= $this->escapeHtml($populator->getDescription()) ?></td>
+                </tr>
+                <tr>
+                    <th scope="row"><?= $this->escapeHtml('Enabled') ?></th>
+                    <td>
+                        <?php if ($populator->isEnabled()) : ?>
+                            <span class="badge badge-success"><?= $this->translate('Enabled') ?></span>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><?= $this->escapeHtml('Last Pull') ?></th>
+                    <td><?= $this->escapeHtml($populator->getLastPull()) ?></td>
+                </tr>
+                <tr>
+                    <th scope="row"><?= $this->escapeHtml('Last Push') ?></th>
+                    <td><?= $this->escapeHtml($populator->getLastPush()) ?></td>
+                </tr>
+                <tr>
+                    <th scope="row"><?= $this->escapeHtml('Last Update') ?></th>
+                    <td><?= $this->escapeHtml($populator->getLastUpdate()) ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <a class="btn btn-sm btn-primary" href="<?= $this->url('populator', ['action' => 'pull', 'id' => $populator->getPopulatorId()]) ?>"><i class="fas fa-arrow-alt-circle-down"></i> <?= $this->translate('Pull Now') ?></a>
+        <a class="btn btn-sm btn-primary" href="<?= $this->url('populator', ['action' => 'push', 'id' => $populator->getPopulatorId()]) ?>"><i class="fas fa-arrow-alt-circle-up"></i> <?= $this->translate('Push Now') ?></a>
+        <a class="btn btn-sm btn-primary" href="<?= $this->url('populator', ['action' => 'edit', 'id' => $populator->getPopulatorId()]) ?>"><i class="fas fa-edit"></i> <?= $this->translate('Edit') ?></a>
+    </div>
+</div>

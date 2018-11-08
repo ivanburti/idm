@@ -33,6 +33,11 @@ interfaces. You can then visit the site at http://localhost:8080/
 
 **Note:** The built-in CLI server is *for development only*.
 
+## Configuração Cron
+
+*/60 * * * * php /var/www/idm/public/index.php populators pull
+*/1 scp 'root@idm.ns2online.com.br:/dados/IDM/*' Projects/idm-netshoes/data/files/input/netshoes-sap
+
 ## Development mode
 
 The skeleton ships with [zf-development-mode](https://github.com/zfcampus/zf-development-mode)
@@ -50,7 +55,7 @@ configuration in `config/autoload/development.local.php.dist`. Enabling
 development mode will copy these files to versions removing the `.dist` suffix,
 while disabling development mode will remove those copies.
 
-Development mode is automatically enabled as part of the skeleton installation process. 
+Development mode is automatically enabled as part of the skeleton installation process.
 After making changes to one of the above-mentioned `.dist` configuration files you will
 either need to disable then enable development mode for the changes to take effect,
 or manually make matching updates to the `.dist`-less copies of those files.

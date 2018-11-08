@@ -4,7 +4,6 @@ namespace User\Service;
 
 use RuntimeException;
 use User\Model\UserTable;
-use User\Model\SourceTable;
 use User\Model\User;
 
 class UserService
@@ -12,7 +11,7 @@ class UserService
     private $userTable;
     private $userSourceTable;
 
-    public function __construct(UserTable $userTable,  SourceTable $userSourceTable)
+    public function __construct(UserTable $userTable)
     {
         $this->userTable = $userTable;
         $this->userSourceTable = $userSourceTable;
