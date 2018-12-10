@@ -1,0 +1,35 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col"><?= $this->translate('Status') ?></th>
+            <th scope="col"><?= $this->translate('Name') ?></th>
+            <th scope="col"><?= $this->translate('Email') ?></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($users as $user) : ?>
+            <tr>
+                <td>
+                    <?php if ($user->isEnabled()) : ?>
+                        <span class="badge badge-success"><?= $this->translate('Enabled') ?></span>
+                    <?php endif; ?>
+                    <?php if (! $user->isEnabled()) : ?>
+                        <span class="badge badge-danger"><?= $this->translate('Disabled') ?></span>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <?= $this->escapeHtml($user->getFullName()) ?>
+                    <?php if ($user->isOrganizationExternal()) : ?>
+                        <span class="badge badge-secondary"><?= $this->translate('Service Provider') ?></span>
+                    <?php endif; ?>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-primary" href="<?= $this->url('user', ['action' => 'details', 'id' => $user->getUserId()]) ?>"><i class="fas fa-search-plus"></i></a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

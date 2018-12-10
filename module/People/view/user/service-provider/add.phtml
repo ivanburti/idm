@@ -1,0 +1,71 @@
+<?php
+// module/User/view/user/service-provider/add.phtml
+$title = $this->translate('Add Service Provider');
+$this->headTitle($title);
+?>
+
+<div class="row">
+    <div class="col-lg-12">
+
+        <?php $form->prepare() ?>
+        <?= $this->form()->openTag($form) ?>
+
+        <div class="row">
+            <div class="col-md-5">
+                <?php $element = $form->get('email') ?>
+                <div class="form-group">
+                    <?= $this->formRow($element->setAttributes(['class' => 'form-control'])) ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <?php $element = $form->get('full_name') ?>
+                <div class="form-group">
+                    <?= $this->formRow($element->setAttributes(['class' => 'form-control'])) ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <?php $element = $form->get('resignation_date') ?>
+                <div class="form-group">
+                    <?= $this->formRow($element->setAttributes(['class' => 'form-control datepicker2'])) ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <?php $element = $form->get('personal_id') ?>
+                <div class="form-group">
+                    <?= $this->formRow($element->setAttributes(['class' => 'form-control'])) ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <?php $element = $form->get('birthday_date') ?>
+                <div class="form-group">
+                    <?= $this->formRow($element->setAttributes(['class' => 'form-control datepicker2'])) ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <?php $element = $form->get('organization_organization_id') ?>
+                <div class="form-group">
+                    <?= $this->formRow($element->setAttributes(['class' => 'form-control chosen-select'])->setOptions(['empty_option' => 'Search...'])) ?>
+                </div>
+            </div>
+        </div>
+
+        <?= $this->formSubmit($form->get('submit')->setAttributes(['class' => 'btn btn-primary'])) ?>
+
+        <?= $this->form()->closeTag() ?>
+    </div>
+</div>

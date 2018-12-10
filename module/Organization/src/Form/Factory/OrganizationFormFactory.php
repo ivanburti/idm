@@ -5,7 +5,7 @@ namespace Organization\Form\Factory;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use User\Service\UserService;
+use People\Service\UserService;
 use Organization\Form\OrganizationForm;
 
 class OrganizationFormFactory implements FactoryInterface

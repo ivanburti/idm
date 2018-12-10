@@ -78,7 +78,6 @@ class OrganizationTable
         return $row;
     }
 
-
     public function getExternalById($organization_id)
     {
         $organization_id = (int) $organization_id;
@@ -95,7 +94,7 @@ class OrganizationTable
 
         return $row;
     }
-    
+
     public function saveInternal(Organization $organization)
     {
         return $this->saveOrganization($organization);

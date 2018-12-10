@@ -6,7 +6,7 @@ use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Organization\Form\OrganizationForm;
 use Organization\Service\OrganizationService;
-use User\Service\UserService;
+use People\Service\UserService;
 use Organization\Controller\OrganizationController;
 
 class OrganizationControllerFactory implements FactoryInterface

@@ -4,7 +4,7 @@ namespace Auth\Service;
 
 use Zend\Authentication\Result;
 use Zend\Authentication\AuthenticationService;
-use User\Service\UserService;
+use People\Service\UserService;
 use Auth\Model\User;
 use Auth\Service\UserManager;
 
@@ -25,10 +25,6 @@ class AuthManager
         $this->userManager = $userManager;
     }
 
-    /**
-     * Performs a login attempt. If $rememberMe argument is true, it forces the session
-     * to last for one month (otherwise the session expires on one hour).
-     */
     public function login($email, $password, $rememberMe)
     {
         // Check if user has already logged in. If so, do not allow to log in

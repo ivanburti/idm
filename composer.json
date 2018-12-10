@@ -35,7 +35,7 @@
             "Application\\": "module/Application/src/",
             "Auth\\": "module/Auth/src/",
             "Organization\\": "module/Organization/src/",
-            "User\\": "module/User/src/",
+            "People\\": "module/People/src/",
             "Resource\\": "module/Resource/src/",
             "Access\\": "module/Access/src/",
             "Report\\": "module/Report/src/",

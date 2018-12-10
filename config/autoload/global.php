@@ -32,14 +32,4 @@ return [
 	'session_storage' => [
 		'type' => SessionArrayStorage::class
 	],
-	'translator' => [
-		'locale' => 'en_US',
-		'translation_file_patterns' => [
-			[
-				'type'     => 'gettext',
-				'base_dir' => getcwd() .  '/language',
-				'pattern'  => '%s.mo',
-			],
-		],
-	],
 ];

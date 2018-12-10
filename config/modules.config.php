@@ -17,7 +17,7 @@ return [
     'Application',
     'Auth',
     'Organization',
-    'User',
+    'People',
     'Resource',
     'Access',
     'Report',

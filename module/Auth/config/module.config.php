@@ -76,14 +76,10 @@ return [
             //'mode' => 'permissive'
 		],
 		'controllers' => [
-            /*
 			Controller\UserController::class => [
 				['actions' => ['resetPassword', 'message', 'setPassword'], 'allow' => '*'],
-				['actions' => ['index', 'add', 'edit', 'view', 'changePassword'], 'allow' => '@']
+				//['actions' => ['index', 'add', 'edit', 'view', 'changePassword'], 'allow' => '@']
 			],
-            \Application\Controller\IndexController ::class => [
-                ['actions' => ['index'], 'allow' => '*'],
-            ],*/
 		]
 	],
 	'service_manager' => [

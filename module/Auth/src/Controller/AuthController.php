@@ -10,31 +10,31 @@ use Auth\Form\LoginForm;
 use Auth\Entity\User;
 
 /**
- * This controller is responsible for letting the user to log in and log out.
- */
+* This controller is responsible for letting the user to log in and log out.
+*/
 class AuthController extends AbstractActionController
 {
     /**
-     * Auth manager.
-     * @var User\Service\AuthManager
-     */
+    * Auth manager.
+    * @var User\Service\AuthManager
+    */
     private $authManager;
 
     /**
-     * Auth service.
-     * @var \Zend\Authentication\AuthenticationService
-     */
+    * Auth service.
+    * @var \Zend\Authentication\AuthenticationService
+    */
     private $authService;
 
     /**
-     * User manager.
-     * @var User\Service\UserManager
-     */
+    * User manager.
+    * @var User\Service\UserManager
+    */
     private $userManager;
 
     /**
-     * Constructor.
-     */
+    * Constructor.
+    */
     public function __construct($authManager, $authService, $userManager)
     {
         $this->authManager = $authManager;
@@ -43,8 +43,8 @@ class AuthController extends AbstractActionController
     }
 
     /**
-     * Authenticates user given email address and password credentials.
-     */
+    * Authenticates user given email address and password credentials.
+    */
     public function loginAction()
     {
         // Retrieve the redirect URL (if passed). We will redirect the user to this
@@ -93,7 +93,7 @@ class AuthController extends AbstractActionController
                         // (if someone tries to redirect user to another domain).
                         $uri = new Uri($redirectUrl);
                         if (!$uri->isValid() || $uri->getHost()!=null)
-                            throw new \Exception('Incorrect redirect URL: ' . $redirectUrl);
+                        throw new \Exception('Incorrect redirect URL: ' . $redirectUrl);
                     }
 
                     // If redirect URL is provided, redirect the user to that URL;
@@ -111,19 +111,19 @@ class AuthController extends AbstractActionController
             }
         }
 
-		$viewModel = new ViewModel([
+        $viewModel = new ViewModel([
             'form' => $form,
             'isLoginError' => $isLoginError,
             'redirectUrl' => $redirectUrl
         ]);
-		$viewModel->setTerminal(true);
+        $viewModel->setTerminal(true);
 
-		return $viewModel;
+        return $viewModel;
     }
 
     /**
-     * The "logout" action performs logout operation.
-     */
+    * The "logout" action performs logout operation.
+    */
     public function logoutAction()
     {
         $this->authManager->logout();

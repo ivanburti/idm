@@ -5,7 +5,7 @@ namespace Organization\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Organization\Form\OrganizationForm;
 use Organization\Service\OrganizationService;
-use User\Service\UserService;
+use People\Service\UserService;
 
 class OrganizationController extends AbstractActionController
 {

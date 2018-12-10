@@ -14,7 +14,7 @@
     ->appendStylesheet('//use.fontawesome.com/releases/v5.4.1/css/all.css',  'screen', '', ['integrity' => 'sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz', 'crossorigin' => 'anonymous'])
     ->appendStylesheet($this->basePath('plugins/chosen/chosen.min.css'))
     ->appendStylesheet('//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css')
-    ->appendStylesheet('//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker3.min.css')
+    ->appendStylesheet($this->basePath('plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css'))
     ?>
 
     <?= $this->headTitle('IDM')->setSeparator(' - ')->setAutoEscape(false) ?>
@@ -65,7 +65,7 @@
         ->prependFile('//code.jquery.com/jquery-3.3.1.slim.min.js', 'text/javascript', 'text/javascript', ['integrity' => 'sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', 'crossorigin' => 'anonymous'])
         ->appendFile($this->basePath('plugins/chosen/chosen.jquery.min.js'))
         ->appendFile('//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js')
-        ->appendFile('//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js')
+        ->appendFile($this->basePath('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js'))
         ->appendFile($this->basePath('js/idm.js'))
         ?>
 

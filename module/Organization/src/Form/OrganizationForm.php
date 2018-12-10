@@ -6,7 +6,7 @@ use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 use Zend\Filter;
 use Zend\Validator;
-use User\Service\UserService;
+use People\Service\UserService;
 
 class OrganizationForm extends Form
 {
