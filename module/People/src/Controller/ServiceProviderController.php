@@ -1,15 +1,15 @@
 <?php
 
-namespace User\Controller;
+namespace People\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use User\Form\UserForm;
-use User\Filter\UserFilter;
-use User\Service\UserService;
+use People\Form\UserForm;
+use People\Filter\UserFilter;
+use People\Service\UserService;
 use Organization\Service\OrganizationService;
 use Access\Service\AccessService;
 use Organization\Model\Organization;
-use User\Model\User;
+use People\Model\User;
 
 class ServiceProviderController extends AbstractActionController
 {

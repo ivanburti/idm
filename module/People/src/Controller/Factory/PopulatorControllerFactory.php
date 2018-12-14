@@ -1,14 +1,14 @@
 <?php
 
-namespace User\Controller\Factory;
+namespace People\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use User\Service\PopulatorService;
+use People\Service\PopulatorService;
 use Organization\Service\OrganizationService;
-use User\Filter\UserFilter;
-use User\Service\UserService;
-use User\Controller\PopulatorController;
+use People\Filter\UserFilter;
+use People\Service\UserService;
+use People\Controller\PopulatorController;
 
 class PopulatorControllerFactory implements FactoryInterface
 {

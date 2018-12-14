@@ -1,15 +1,15 @@
 <?php
 
-namespace User\Controller\Factory;
+namespace People\Controller\Factory;
 
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
-use User\Form\UserForm;
-use User\Filter\UserFilter;
-use User\Service\UserService;
+use People\Form\UserForm;
+use People\Filter\UserFilter;
+use People\Service\UserService;
 use Organization\Service\OrganizationService;
 use Access\Service\AccessService;
-use User\Controller\UserController;
+use People\Controller\UserController;
 
 class UserControllerFactory implements FactoryInterface
 {

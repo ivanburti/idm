@@ -1,15 +1,15 @@
 <?php
 
-namespace User\Controller;
+namespace People\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use User\Service\PopulatorService;
+use People\Service\PopulatorService;
 use Organization\Service\OrganizationService;
-use User\Filter\UserFilter;
-use User\Service\UserService;
-use User\Model\Populator;
-use User\Model\User;
-use User\Form\PopulatorForm;
+use People\Filter\UserFilter;
+use People\Service\UserService;
+use People\Model\Populator;
+use People\Model\User;
+use People\Form\PopulatorForm;
 
 class PopulatorController extends AbstractActionController
 {
